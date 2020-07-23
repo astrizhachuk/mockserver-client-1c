@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" xmlns:mdclassExtension="http://g5.1c.ru/v8/dt/metadata/mdclass/extension" uuid="f9caef8c-4319-4019-85a9-1b187ed4e12b">
+<mdclass:Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" xmlns:mdclassExtension="http://g5.1c.ru/v8/dt/metadata/mdclass/extension" uuid="8cd8a45f-fffe-42b4-bf45-7f23a2b0b2bb">
   <name>Tests</name>
   <synonym>
     <key>ru</key>
@@ -9,36 +9,44 @@
   <extension xsi:type="mdclassExtension:ConfigurationExtension">
     <defaultRunMode>Checked</defaultRunMode>
     <usePurposes>Checked</usePurposes>
+    <commandInterface>Extended</commandInterface>
+    <mainSectionCommandInterface>Extended</mainSectionCommandInterface>
     <defaultLanguage>Checked</defaultLanguage>
     <interfaceCompatibilityMode>Checked</interfaceCompatibilityMode>
     <compatibilityMode>Checked</compatibilityMode>
     <defaultStyle>Extended</defaultStyle>
     <defaultRoles>Extended</defaultRoles>
   </extension>
-  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="da3ff905-eef4-4842-a992-2ddd09d7711c"/>
-  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="b72604c1-79e0-48f6-832c-77d27d239484"/>
-  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="8e5b3611-e4e0-44c0-9e2d-cf21b18f4164"/>
-  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="1e7eb4db-d65c-40e2-8823-8a92e74dad39"/>
-  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="7d8e3018-79bd-48e9-9ec6-fe610d9523af"/>
-  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="2de68042-5d92-4998-be1a-b1a3a43c1213"/>
+  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="970c665e-09a6-4ab6-9dc5-6eb04d9c77bd"/>
+  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="afd59479-1c3a-4fde-a397-017d91defb0c"/>
+  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="942ca357-36a0-4a32-a7e3-b13502cc7644"/>
+  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="d915b52c-61dd-4a58-a890-7087820fbc24"/>
+  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="584b1dae-a25a-4c61-afa8-0ab8364b5f67"/>
+  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="837bb1db-9230-4a7c-be3d-fba74d0e3baf"/>
   <keepMappingToExtendedConfigurationObjectsByIDs>true</keepMappingToExtendedConfigurationObjectsByIDs>
   <namePrefix>Tests_</namePrefix>
   <configurationExtensionCompatibilityMode>8.3.16</configurationExtensionCompatibilityMode>
   <configurationExtensionPurpose>Customization</configurationExtensionPurpose>
   <defaultRunMode>ManagedApplication</defaultRunMode>
   <usePurposes>PersonalComputer</usePurposes>
-  <defaultLanguage>Language.Русский</defaultLanguage>
+  <version>0.0.1</version>
+  <defaultLanguage>Language.English</defaultLanguage>
   <dataLockControlMode>Managed</dataLockControlMode>
   <objectAutonumerationMode>NotAutoFree</objectAutonumerationMode>
   <modalityUseMode>DontUse</modalityUseMode>
   <synchronousPlatformExtensionAndAddInCallUseMode>DontUse</synchronousPlatformExtensionAndAddInCallUseMode>
   <compatibilityMode>8.3.16</compatibilityMode>
-  <languages uuid="8447195e-4a05-4796-a800-30cb2d6f26a4">
-    <name>Русский</name>
+  <languages uuid="8c2bdcd4-1e60-4863-a749-62b6f66923cf">
+    <name>English</name>
+    <synonym>
+      <key>en</key>
+      <value>English</value>
+    </synonym>
     <objectBelonging>Adopted</objectBelonging>
     <extension xsi:type="mdclassExtension:LanguageExtension">
       <languageCode>Checked</languageCode>
     </extension>
-    <languageCode>ru</languageCode>
+    <languageCode>en</languageCode>
   </languages>
+  <commonModules>CommonModule.Tests_MockServerClient</commonModules>
 </mdclass:Configuration>

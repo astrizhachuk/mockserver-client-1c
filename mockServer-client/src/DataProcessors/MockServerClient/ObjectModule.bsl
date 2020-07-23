@@ -11,9 +11,18 @@ Function Server( Val Url ) Export
 	
 EndFunction
 
+//Function When( Val When ) Export
+//	
+//	ThisObject.Запрос = Запрос;
+//	
+//	Return ThisObject;
+//	
+//КонецФункции
+
 Function Request() Export
 	
-	If ( ThisObject.Constructor = Undefined ) Then
+	If ( ThisObject.Constructor = Undefined
+		Or TypeOf(ThisObject.Constructor) <> Type("Map")) Then
 		ThisObject.Constructor = New Map();
 	EndIf;
 	
@@ -29,20 +38,22 @@ Function WithMethod( Val Method = "" ) Export
 	
 	Var Result;
 	
+	// TODO extract
 	If ( ThisObject.Constructor = Undefined ) Then
 		Raise RuntimeError(
-		    NStr("en = 'Constructor not initialized';
-		         |ru = 'Конструктор не был инициализирован'")
+		    NStr("en = 'Constructor not initialized.';
+		         |ru = 'Конструктор не был инициализирован.'")
 		);
 	EndIf;
-	
+	// TODO extract from extract?
 	Result = ThisObject.Constructor.Get("httpRequest");
-	If ( Result = Undefined Or TypeOf(Result) <> Type("Map") ) Then
+	If ( TypeOf(Result) <> Type("Map") ) Then
 		Raise RuntimeError(
-		    NStr("en = 'Request constructor is empty or not correct';
-		         |ru = 'Пустой или ошибочный конструктор запроса'")
+		    NStr("en = 'Request constructor is not correct.';
+		         |ru = 'Некорректный конструктор запроса.'")
 		);
 	EndIf;
+	//
 	
 	Result.Insert( "method", Method );
 	

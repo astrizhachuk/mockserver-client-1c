@@ -78,6 +78,7 @@ EndFunction
 //	
 //КонецФункции
 ///////////////////////////
+
 #EndRegion
 
 #Region Ru

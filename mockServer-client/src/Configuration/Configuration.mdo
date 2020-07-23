@@ -15,7 +15,7 @@
     <permission>AllowOSBackup</permission>
     <use>true</use>
   </requiredMobileApplicationPermissions>
-  <defaultLanguage>Language.Русский</defaultLanguage>
+  <defaultLanguage>Language.English</defaultLanguage>
   <dataLockControlMode>Managed</dataLockControlMode>
   <objectAutonumerationMode>NotAutoFree</objectAutonumerationMode>
   <modalityUseMode>DontUse</modalityUseMode>
@@ -37,4 +37,5 @@
     </synonym>
     <languageCode>en</languageCode>
   </languages>
+  <dataProcessors>DataProcessor.MockServerClient</dataProcessors>
 </mdclass:Configuration>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" xmlns:mdclassExtension="http://g5.1c.ru/v8/dt/metadata/mdclass/extension" uuid="f9caef8c-4319-4019-85a9-1b187ed4e12b">
+  <name>Tests</name>
+  <synonym>
+    <key>ru</key>
+    <value>Tests</value>
+  </synonym>
+  <objectBelonging>Adopted</objectBelonging>
+  <extension xsi:type="mdclassExtension:ConfigurationExtension">
+    <defaultRunMode>Checked</defaultRunMode>
+    <usePurposes>Checked</usePurposes>
+    <defaultLanguage>Checked</defaultLanguage>
+    <interfaceCompatibilityMode>Checked</interfaceCompatibilityMode>
+    <compatibilityMode>Checked</compatibilityMode>
+    <defaultStyle>Extended</defaultStyle>
+    <defaultRoles>Extended</defaultRoles>
+  </extension>
+  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="da3ff905-eef4-4842-a992-2ddd09d7711c"/>
+  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="b72604c1-79e0-48f6-832c-77d27d239484"/>
+  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="8e5b3611-e4e0-44c0-9e2d-cf21b18f4164"/>
+  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="1e7eb4db-d65c-40e2-8823-8a92e74dad39"/>
+  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="7d8e3018-79bd-48e9-9ec6-fe610d9523af"/>
+  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="2de68042-5d92-4998-be1a-b1a3a43c1213"/>
+  <keepMappingToExtendedConfigurationObjectsByIDs>true</keepMappingToExtendedConfigurationObjectsByIDs>
+  <namePrefix>Tests_</namePrefix>
+  <configurationExtensionCompatibilityMode>8.3.16</configurationExtensionCompatibilityMode>
+  <configurationExtensionPurpose>Customization</configurationExtensionPurpose>
+  <defaultRunMode>ManagedApplication</defaultRunMode>
+  <usePurposes>PersonalComputer</usePurposes>
+  <defaultLanguage>Language.Русский</defaultLanguage>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <objectAutonumerationMode>NotAutoFree</objectAutonumerationMode>
+  <modalityUseMode>DontUse</modalityUseMode>
+  <synchronousPlatformExtensionAndAddInCallUseMode>DontUse</synchronousPlatformExtensionAndAddInCallUseMode>
+  <compatibilityMode>8.3.16</compatibilityMode>
+  <languages uuid="8447195e-4a05-4796-a800-30cb2d6f26a4">
+    <name>Русский</name>
+    <objectBelonging>Adopted</objectBelonging>
+    <extension xsi:type="mdclassExtension:LanguageExtension">
+      <languageCode>Checked</languageCode>
+    </extension>
+    <languageCode>ru</languageCode>
+  </languages>
+</mdclass:Configuration>

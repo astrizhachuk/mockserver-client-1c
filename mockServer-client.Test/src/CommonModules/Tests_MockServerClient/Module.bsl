@@ -19,16 +19,16 @@ Procedure InitServer(Context) Export
 	//given
 	Mock = DataProcessors.MockServerClient.Create();
 	//when
-	Mock.Server("http://host.docker.internal:1080");
+	Mock.Server("http://localhost:1080");
 	//then
-	Context.AssertEqual(Mock.URL, "http://host.docker.internal:1080");
+	Context.AssertEqual(Mock.URL, "http://localhost:1080");
 	
 	//given
 	MockRu = DataProcessors.MockServerClient.Create();
 	//when
-	MockRu.Server("http://host.docker.internal:1090");
+	MockRu.Server("http://localhost:1090");
 	//then
-	Context.AssertEqual(MockRu.URL, "http://host.docker.internal:1090");
+	Context.AssertEqual(MockRu.URL, "http://localhost:1090");
 	Context.AssertNotEqual(Mock.URL, MockRu.URL);
 	
 EndProcedure

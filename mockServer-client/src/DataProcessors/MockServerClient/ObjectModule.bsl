@@ -29,7 +29,21 @@ Function WithMethod( Val Method = "" ) Export
 	
 	Var Result;
 	
-	Result = ThisObject.Constructor[ "httpRequest" ];
+	If ( ThisObject.Constructor = Undefined ) Then
+		Raise RuntimeError(
+		    NStr("en = 'Constructor not initialized';
+		         |ru = 'Конструктор не был инициализирован'")
+		);
+	EndIf;
+	
+	Result = ThisObject.Constructor.Get("httpRequest");
+	If ( Result = Undefined Or TypeOf(Result) <> Type("Map") ) Then
+		Raise RuntimeError(
+		    NStr("en = 'Request constructor is empty or not correct';
+		         |ru = 'Пустой или ошибочный конструктор запроса'")
+		);
+	EndIf;
+	
 	Result.Insert( "method", Method );
 	
 	Return ThisObject;
@@ -93,6 +107,16 @@ Function Путь( Val Путь = "" ) Export
 EndFunction
 
 #EndRegion
+
+#EndRegion
+
+#Region Private
+
+Function RuntimeError( Message = "" )
+    
+    Return "[RuntimeError]" + Chars.LF + Message;
+    
+EndFunction
 
 #EndRegion
 

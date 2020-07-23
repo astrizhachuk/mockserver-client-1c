@@ -48,6 +48,7 @@
     </extension>
     <languageCode>en</languageCode>
   </languages>
+  <commonModules>CommonModule.Assert</commonModules>
   <commonModules>CommonModule.Tests_MockServerClient</commonModules>
   <commonModules>CommonModule.Tests_RequestMatchers</commonModules>
 </mdclass:Configuration>

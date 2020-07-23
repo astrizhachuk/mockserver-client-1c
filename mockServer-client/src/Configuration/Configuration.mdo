@@ -37,5 +37,6 @@
     </synonym>
     <languageCode>en</languageCode>
   </languages>
+  <commonModules>CommonModule.HTTPConnector</commonModules>
   <dataProcessors>DataProcessor.MockServerClient</dataProcessors>
 </mdclass:Configuration>

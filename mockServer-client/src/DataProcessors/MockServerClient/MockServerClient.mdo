@@ -21,4 +21,34 @@
       <stringQualifiers/>
     </type>
   </attributes>
+  <attributes uuid="8612dc00-2353-43b5-90a8-6a245653e621">
+    <name>Constructor</name>
+    <synonym>
+      <key>ru</key>
+      <value>Constructor</value>
+    </synonym>
+    <type>
+      <types>Arbitrary</types>
+    </type>
+  </attributes>
+  <attributes uuid="93054b63-e2c2-4c70-9ce3-f4fc6df6c31b">
+    <name>Request</name>
+    <synonym>
+      <key>ru</key>
+      <value>Request</value>
+    </synonym>
+    <type>
+      <types>Arbitrary</types>
+    </type>
+  </attributes>
+  <attributes uuid="13d4cea9-38f2-4636-8968-451eec4057dc">
+    <name>Response</name>
+    <synonym>
+      <key>ru</key>
+      <value>Response</value>
+    </synonym>
+    <type>
+      <types>Arbitrary</types>
+    </type>
+  </attributes>
 </mdclass:DataProcessor>

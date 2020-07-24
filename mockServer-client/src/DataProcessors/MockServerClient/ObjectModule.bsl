@@ -9,6 +9,7 @@
 Function Server( Val Url ) Export
 	
 	ThisObject.URL = URL;
+	
 	Return ThisObject;
 	
 EndFunction
@@ -249,5 +250,7 @@ Function RuntimeError( Message = "" )
 EndFunction
 
 #EndRegion
+
+ThisObject.URL = "localhost:1080";
 
 #EndIf

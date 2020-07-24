@@ -11,7 +11,7 @@ Function Server( Val Url ) Export
 	
 EndFunction
 
-Function When( Val Request ) Export
+Function When( Request ) Export
 	
 	If ( TypeOf(Request) = Type("String") ) Then
 		ThisObject.RequestJson = Request;
@@ -23,6 +23,7 @@ EndFunction
 
 Function Request() Export
 	
+	// TODO extract
 	If ( ThisObject.Constructor = Undefined
 		Or TypeOf(ThisObject.Constructor) <> Type("Map")) Then
 			
@@ -35,6 +36,46 @@ Function Request() Export
 	Return ThisObject;
 	
 EndFunction
+
+Function Response() Export
+	// TODO extract
+	If ( ThisObject.Constructor = Undefined
+		Or TypeOf(ThisObject.Constructor) <> Type("Map")) Then
+			
+			ThisObject.Constructor = New Map();
+			
+	EndIf;
+	
+	ThisObject.Constructor.Insert( "httpResponse", New Map() );
+	
+	Return ThisObject;
+	
+EndFunction
+
+#Region Terminal
+
+Procedure Respond( Response ) Export
+	
+	If ( TypeOf(Response) = Type("String") ) Then
+		ThisObject.ResponseJson = Response;
+	EndIf;
+//	
+//	ЭтотОбъект.Ответ = Ответ;
+//	
+//	Заголовки = Новый Соответствие;
+//	Заголовки.Вставить("Content-Type", "application/json; charset=utf-8");
+//	ДополнительныеПараметры = Новый Структура("Заголовки", Заголовки);
+//	ЭтотОбъект.MockServerResponse = КоннекторHTTP.Put(URL + "/mockserver/expectation", JSON(), ДополнительныеПараметры);
+//	
+//	Если НЕ КодОтветаHTTP.isCreated(ЭтотОбъект.MockServerResponse.КодСостояния) Тогда
+//		
+//		ВызватьИсключение "MockServer: can't create Expectation.";
+//		
+//	КонецЕсли;
+//	
+EndProcedure
+
+#EndRegion
 
 #Region RequestMatchers
 
@@ -104,7 +145,7 @@ Function Сервер( Val Url ) Export
 	
 EndFunction
 
-Function Когда( Val Запрос ) Export
+Function Когда( Запрос ) Export
 	
 	Return When( Запрос );
 	
@@ -113,6 +154,12 @@ EndFunction
 Function Запрос() Export
 	
 	Return Request();
+	
+EndFunction
+
+Function Ответ() Export
+	
+	Return Response();
 	
 EndFunction
 

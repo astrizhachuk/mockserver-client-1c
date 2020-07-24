@@ -54,4 +54,6 @@
   <commonModules>CommonModule.Tests_Request</commonModules>
   <commonModules>CommonModule.Tests_RequestMatchers</commonModules>
   <commonModules>CommonModule.Tests_Integration</commonModules>
+  <commonModules>CommonModule.Tests_Response</commonModules>
+  <commonModules>CommonModule.Tests_Respond</commonModules>
 </mdclass:Configuration>

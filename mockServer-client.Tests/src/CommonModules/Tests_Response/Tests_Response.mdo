@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="50552aae-b617-4eb6-b073-dcad2ce1493e">
+  <name>Tests_Response</name>
+  <synonym>
+    <key>en</key>
+    <value>Response</value>
+  </synonym>
+  <server>true</server>
+</mdclass:CommonModule>

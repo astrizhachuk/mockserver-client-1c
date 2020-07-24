@@ -14,11 +14,6 @@ Scenario: MockServerDockerUp
 	| 'Tests_Integration.MockServerDockerUp(Context());' |
 
 @OnServer
-Scenario: Reset
-	And I execute 1C:Enterprise script at server
-	| 'Tests_Integration.Reset(Context());' |
-
-@OnServer
 Scenario: RespondResponse
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Integration.RespondResponse(Context());' |

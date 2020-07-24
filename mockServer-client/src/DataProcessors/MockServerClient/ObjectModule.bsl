@@ -9,16 +9,23 @@
 Function Server( Val URL, Val Port = Undefined, Val Reset = false ) Export
 	
 	If ( Port <> Undefined ) Then
+
 		URL = URL + ":" + Port;
+		
 	EndIf;
 	
 	ThisObject.URL = URL;
 	
 	If ( Reset ) Then
+		
 		Reset();
+		
 		If ( HTTPStatusCode.isOk(ThisObject.MockServerResponse.КодСостояния) ) Then
+			
 			ThisObject.MockServerResponse = Undefined;
+			
 		EndIf;
+		
 	EndIf;
 	
 	Return ThisObject;
@@ -28,7 +35,9 @@ EndFunction
 Function When( Val What ) Export
 	
 	If ( TypeOf(What) = Type("String") ) Then
+		
 		ThisObject.Json = What;
+		
 	EndIf;
 	
 	Return ThisObject;
@@ -82,8 +91,16 @@ EndFunction
 #Region Terminal
 
 Procedure Reset() Export
-
-	ThisObject.MockServerResponse = HTTPConnector.Put( ThisObject.URL + "/mockserver/reset" );
+	
+	Try
+		
+		ThisObject.MockServerResponse = HTTPConnector.Put( ThisObject.URL + "/mockserver/reset" );
+		
+	Except
+		
+		ThisObject.MockServerResponse = MockServerError( DetailErrorDescription(ErrorInfo()) );
+		
+	EndTry;
 	
 КонецПроцедуры
 
@@ -186,6 +203,12 @@ Function Сервер( URL, Port = Undefined ) Export
 	
 EndFunction
 
+Procedure Сбросить() Export
+	
+	Reset();
+	
+EndProcedure
+
 Function Когда( Запрос ) Export
 	
 	Return When( Запрос );
@@ -260,6 +283,18 @@ EndFunction
 	
 КонецФункции
 
+Function MockServerError( DetailErrorDescription )
+	
+	Var Result;
+	
+	Result = New Structure();
+	Result.Insert( "КодСостояния", HTTPStatusCode.НайтиКодПоИдентификатору("INTERNAL_SERVER_ERROR") );
+	Result.Insert( "ТекстОшибки", DetailErrorDescription );
+	
+	Return Result;
+	
+EndFunction
+
 Function RuntimeError( Message = "" )
     
     Return "[RuntimeError]" + Chars.LF + Message;
@@ -273,6 +308,5 @@ EndFunction
 ThisObject.URL = "localhost:1080";
 
 #EndRegion
-
 
 #EndIf

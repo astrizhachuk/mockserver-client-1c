@@ -56,4 +56,5 @@
   <commonModules>CommonModule.Tests_Integration</commonModules>
   <commonModules>CommonModule.Tests_Response</commonModules>
   <commonModules>CommonModule.Tests_Respond</commonModules>
+  <commonModules>CommonModule.Tests_Reset</commonModules>
 </mdclass:Configuration>

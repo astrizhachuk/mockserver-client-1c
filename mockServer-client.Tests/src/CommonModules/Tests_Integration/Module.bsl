@@ -7,16 +7,6 @@ Procedure MockServerDockerUp(Context) Export
 	
 EndProcedure
 
-// @unit-test:dev
-Procedure Reset(Context) Export
-	
-	// given
-	Mock = DataProcessors.MockServerClient.Create();
-	// when
-	Mock.Reset();
-	// then
-		
-EndProcedure
 
 // @unit-test:dev
 Procedure RespondResponse(Context) Export

@@ -8,6 +8,9 @@ Procedure ResponseUndefinedConstructor(Context) Export
 	// when
 	Result = Mock.Response();
 	// then
+	Assert.IsTrue(IsBlankString(Result.Json));
+	Assert.IsTrue(IsBlankString(Result.RequestBodyJson));
+	Assert.IsTrue(IsBlankString(Result.ResponseBodyJson));
 	Assert.IsInstanceOfType("Map", Result.Constructor);
 	Assert.AreEqual(Result.Constructor.Count(), 1);
 	Assert.IsInstanceOfType("Map", Result.Constructor["httpResponse"]);
@@ -16,7 +19,7 @@ Procedure ResponseUndefinedConstructor(Context) Export
 EndProcedure
 
 // @unit-test
-Procedure ResponseWrongConstructor(Context) Export
+Procedure ResponseReInitWrongConstructor(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
@@ -24,6 +27,9 @@ Procedure ResponseWrongConstructor(Context) Export
 	// when
 	Result = Mock.Response();
 	// then
+	Assert.IsTrue(IsBlankString(Result.Json));
+	Assert.IsTrue(IsBlankString(Result.RequestBodyJson));
+	Assert.IsTrue(IsBlankString(Result.ResponseBodyJson));
 	Assert.IsInstanceOfType("Map", Result.Constructor);
 	Assert.AreEqual(Result.Constructor.Count(), 1);
 	Assert.IsInstanceOfType("Map", Result.Constructor["httpResponse"]);
@@ -41,6 +47,9 @@ Procedure ResponseRequestExists(Context) Export
 	// when
 	Result = Mock.Response();
 	// then
+	Assert.IsTrue(IsBlankString(Result.Json));
+	Assert.IsTrue(IsBlankString(Result.RequestBodyJson));
+	Assert.IsTrue(IsBlankString(Result.ResponseBodyJson));
 	Assert.IsInstanceOfType("Map", Result.Constructor);
 	Assert.AreEqual(Result.Constructor.Count(), 2);
 	Assert.IsNotUndefined(Result.Constructor["httpRequest"]);
@@ -50,18 +59,33 @@ Procedure ResponseRequestExists(Context) Export
 EndProcedure
 
 // @unit-test
+Procedure ResponseStringJson(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Result = Mock.Response("""statusCode"": 200 ");
+	// then
+	Assert.IsTrue(IsBlankString(Result.Json));
+	Assert.IsTrue(IsBlankString(Result.RequestBodyJson));
+	Assert.IsFalse(IsBlankString(Result.ResponseBodyJson));		
+	Assert.IsUndefined(Result.Constructor);
+
+EndProcedure
+
+// @unit-test
 Procedure CallResponseRu(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
 	// when
-	Result = Mock.Ответ();
+	Result = Mock.Ответ("""statusCode"": 200 ");
 	// then
-	Assert.IsInstanceOfType("Map", Result.Constructor);
-	Assert.AreEqual(Result.Constructor.Count(), 1);
-	Assert.IsInstanceOfType("Map", Result.Constructor["httpResponse"]);
-	Assert.AreCollectionEmpty(Result.Constructor["httpResponse"]);
-
+	Assert.IsTrue(IsBlankString(Result.Json));
+	Assert.IsTrue(IsBlankString(Result.RequestBodyJson));
+	Assert.IsFalse(IsBlankString(Result.ResponseBodyJson));		
+	Assert.IsUndefined(Result.Constructor);
+	
 EndProcedure
 
 #EndRegion

@@ -19,9 +19,9 @@ Scenario: WhenRequest
 	| 'Tests_When.WhenRequest(Context());' |
 
 @OnServer
-Scenario: WhenWrongType
+Scenario: WhenSomethingWrong
 	And I execute 1C:Enterprise script at server
-	| 'Tests_When.WhenWrongType(Context());' |
+	| 'Tests_When.WhenSomethingWrong(Context());' |
 
 @OnServer
 Scenario: CallWhenRu

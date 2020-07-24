@@ -14,11 +14,9 @@ Procedure RespondResponse(Context) Export
 	Mock = DataProcessors.MockServerClient.Create();
 	Mock.URL = "http://localhost:1080";
 	// when
-	Mock.When( """method"":""GET""" ).Respond( """statusCode"": 404"  );
+	Mock.When( Mock.Request("""method"":""GET""") ).Respond( Mock.Response("""statusCode"": 404") );
 	// then
-//	Assert.IsTrue(IsBlankString(Result.RequestJson));
-//	Assert.IsInstanceOfType("Map", Result.Constructor["httpRequest"]);
-//	Assert.AreCollectionEmpty(Result.Constructor["httpRequest"]);
+
 
 EndProcedure
 

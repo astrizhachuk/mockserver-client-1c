@@ -6,6 +6,6 @@ services:
     image: mockserver/mockserver
     command: -logLevel DEBUG -serverPort 1080
     ports:
-      - "1090:1080"
+      - "1080:1080"
     # volumes:
     #   - ./api-receiver.yaml:/tmp/receiver.yaml

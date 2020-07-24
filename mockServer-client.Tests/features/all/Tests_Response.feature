@@ -14,14 +14,19 @@ Scenario: ResponseUndefinedConstructor
 	| 'Tests_Response.ResponseUndefinedConstructor(Context());' |
 
 @OnServer
-Scenario: ResponseWrongConstructor
+Scenario: ResponseReInitWrongConstructor
 	And I execute 1C:Enterprise script at server
-	| 'Tests_Response.ResponseWrongConstructor(Context());' |
+	| 'Tests_Response.ResponseReInitWrongConstructor(Context());' |
 
 @OnServer
 Scenario: ResponseRequestExists
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Response.ResponseRequestExists(Context());' |
+
+@OnServer
+Scenario: ResponseStringJson
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Response.ResponseStringJson(Context());' |
 
 @OnServer
 Scenario: CallResponseRu

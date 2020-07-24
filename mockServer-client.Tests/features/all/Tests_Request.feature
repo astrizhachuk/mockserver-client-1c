@@ -14,9 +14,14 @@ Scenario: RequestUndefinedConstructor
 	| 'Tests_Request.RequestUndefinedConstructor(Context());' |
 
 @OnServer
-Scenario: RequestWrongConstructor
+Scenario: RequestReInitWrongConstructor
 	And I execute 1C:Enterprise script at server
-	| 'Tests_Request.RequestWrongConstructor(Context());' |
+	| 'Tests_Request.RequestReInitWrongConstructor(Context());' |
+
+@OnServer
+Scenario: RequestStringJson
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Request.RequestStringJson(Context());' |
 
 @OnServer
 Scenario: CallRequestRu

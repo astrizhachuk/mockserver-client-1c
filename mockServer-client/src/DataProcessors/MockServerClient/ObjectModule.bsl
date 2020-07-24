@@ -13,43 +13,54 @@ Function Server( Val Url ) Export
 	
 EndFunction
 
-Function When( Json ) Export
+Function When( Val What ) Export
 	
-	If ( TypeOf(Json) = Type("String") ) Then
-		ThisObject.Json = Json;
+	If ( TypeOf(What) = Type("String") ) Then
+		ThisObject.Json = What;
 	EndIf;
 	
 	Return ThisObject;
 	
 EndFunction
 
-Function Request() Export
+Function Request( Val RequestBodyJson = Undefined ) Export
 	
-	// TODO extract
-	If ( ThisObject.Constructor = Undefined
-		Or TypeOf(ThisObject.Constructor) <> Type("Map")) Then
-			
-			ThisObject.Constructor = New Map();
-			
+	If ( TypeOf(RequestBodyJson) = Type("String") ) Then
+		ThisObject.RequestBodyJson = RequestBodyJson;
+	Else
+		// TODO extract
+		If ( ThisObject.Constructor = Undefined
+			Or TypeOf(ThisObject.Constructor) <> Type("Map")) Then
+				
+				ThisObject.Constructor = New Map();
+				
+		EndIf;
+		
+		ThisObject.Constructor.Insert( "httpRequest", New Map() );
+		
 	EndIf;
-	
-	ThisObject.Constructor.Insert( "httpRequest", New Map() );
 	
 	Return ThisObject;
 	
 EndFunction
 
-Function Response() Export
-	// TODO extract
-	If ( ThisObject.Constructor = Undefined
-		Or TypeOf(ThisObject.Constructor) <> Type("Map")) Then
-			
-			ThisObject.Constructor = New Map();
-			
+Function Response( Val ResponseBodyJson = Undefined  ) Export
+	
+	If ( TypeOf(ResponseBodyJson) = Type("String") ) Then
+		ThisObject.ResponseBodyJson = ResponseBodyJson;
+	Else
+		// TODO extract
+		If ( ThisObject.Constructor = Undefined
+			Or TypeOf(ThisObject.Constructor) <> Type("Map")) Then
+				
+				ThisObject.Constructor = New Map();
+				
+		EndIf;
+		
+		ThisObject.Constructor.Insert( "httpResponse", New Map() );
+	
 	EndIf;
-	
-	ThisObject.Constructor.Insert( "httpResponse", New Map() );
-	
+		
 	Return ThisObject;
 	
 EndFunction
@@ -58,17 +69,19 @@ EndFunction
 
 #Region Terminal
 
-Procedure Respond( Response ) Export
+Procedure Respond( Val Response = Undefined ) Export
 	
-	If ( TypeOf(Response) = Type("String") ) Then
-		ThisObject.ResponseBodyJson = Response;
-	EndIf;
-
+	If ThisObject.Constructor = Undefined Then
+		JSON = JSON();
+	Else
+		JSON = HTTPConnector.ОбъектВJson(ThisObject.Constructor);
+	Endif;
+	
 	Headers = New Map();
 	Headers.Insert( "Content-Type", "application/json; charset=utf-8" );
 	Params = New Structure( "Заголовки", Headers );
 	Action = URL + "/mockserver/expectation";
-	ThisObject.MockServerResponse = HTTPConnector.Put(Action, JSON(), Params);
+	ThisObject.MockServerResponse = HTTPConnector.Put(Action, JSON, Params);
 
 	If Not HTTPStatusCode.isCreated(ThisObject.MockServerResponse.КодСостояния) Then
 		
@@ -149,7 +162,7 @@ EndFunction
 
 #Region Ru
 
-Function Сервер( Val Url ) Export
+Function Сервер( Url ) Export
 	
 	Return Server( Url );
 	
@@ -161,15 +174,15 @@ Function Когда( Запрос ) Export
 	
 EndFunction
 
-Function Запрос() Export
+Function Запрос( ЗапросJson = Неопределено ) Export
 	
-	Return Request();
+	Return Request( ЗапросJson );
 	
 EndFunction
 
-Function Ответ() Export
+Function Ответ( ОтветJson = Неопределено ) Export
 	
-	Return Response();
+	Return Response( ОтветJson );
 	
 EndFunction
 

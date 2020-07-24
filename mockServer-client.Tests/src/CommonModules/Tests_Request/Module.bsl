@@ -8,6 +8,9 @@ Procedure RequestUndefinedConstructor(Context) Export
 	// when
 	Result = Mock.Request();
 	// then
+	Assert.IsTrue(IsBlankString(Result.Json));
+	Assert.IsTrue(IsBlankString(Result.RequestBodyJson));
+	Assert.IsTrue(IsBlankString(Result.ResponseBodyJson));
 	Assert.IsInstanceOfType("Map", Result.Constructor);
 	Assert.AreEqual(Result.Constructor.Count(), 1);
 	Assert.IsInstanceOfType("Map", Result.Constructor["httpRequest"]);
@@ -16,7 +19,7 @@ Procedure RequestUndefinedConstructor(Context) Export
 EndProcedure
 
 // @unit-test
-Procedure RequestWrongConstructor(Context) Export
+Procedure RequestReInitWrongConstructor(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
@@ -24,10 +27,28 @@ Procedure RequestWrongConstructor(Context) Export
 	// when
 	Result = Mock.Request();
 	// then
+	Assert.IsTrue(IsBlankString(Result.Json));
+	Assert.IsTrue(IsBlankString(Result.RequestBodyJson));
+	Assert.IsTrue(IsBlankString(Result.ResponseBodyJson));
 	Assert.IsInstanceOfType("Map", Result.Constructor);
 	Assert.AreEqual(Result.Constructor.Count(), 1);
 	Assert.IsInstanceOfType("Map", Result.Constructor["httpRequest"]);
 	Assert.AreCollectionEmpty(Result.Constructor["httpRequest"]);
+
+EndProcedure
+
+// @unit-test
+Procedure RequestStringJson(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Result = Mock.Request("""method"": ""GET""");
+	// then
+	Assert.IsTrue(IsBlankString(Result.Json));
+	Assert.IsFalse(IsBlankString(Result.RequestBodyJson));
+	Assert.IsTrue(IsBlankString(Result.ResponseBodyJson));		
+	Assert.IsUndefined(Result.Constructor);
 
 EndProcedure
 
@@ -37,12 +58,12 @@ Procedure CallRequestRu(Context) Export
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
 	// when
-	Result = Mock.Запрос();
+	Result = Mock.Запрос("""method"": ""GET""");
 	// then
-	Assert.IsInstanceOfType("Map", Result.Constructor);
-	Assert.AreEqual(Result.Constructor.Count(), 1);
-	Assert.IsInstanceOfType("Map", Result.Constructor["httpRequest"]);
-	Assert.AreCollectionEmpty(Result.Constructor["httpRequest"]);
+	Assert.IsTrue(IsBlankString(Result.Json));
+	Assert.IsFalse(IsBlankString(Result.RequestBodyJson));
+	Assert.IsTrue(IsBlankString(Result.ResponseBodyJson));		
+	Assert.IsUndefined(Result.Constructor);
 
 EndProcedure
 

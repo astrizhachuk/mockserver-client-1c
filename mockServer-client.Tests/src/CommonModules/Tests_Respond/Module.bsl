@@ -1,12 +1,12 @@
 #Region Internal
 
-// @unit-test
-Procedure RespondString(Context) Export
+// @unit-test:dev
+Procedure RespondXXXXXXXXXXX(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
 	// when
-	Mock.Respond("""statusCode"": 404");
+	Mock.Respond();
 	// then
 	Assert.IsUndefined(Mock.Constructor);
 	Assert.AreEqual(Mock.ResponseJson, """statusCode"": 404");

@@ -32,7 +32,7 @@ Procedure WhenRequest(Context) Export
 EndProcedure
 
 // @unit-test
-Procedure WhenWrongType(Context) Export
+Procedure WhenSomethingWrong(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();

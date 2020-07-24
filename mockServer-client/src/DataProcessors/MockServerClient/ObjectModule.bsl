@@ -4,11 +4,22 @@
 
 #Region En
 	
-#Region intermediate
+#Region Intermediate
 
-Function Server( Val Url ) Export
+Function Server( Val URL, Val Port = Undefined, Val Reset = false ) Export
+	
+	If ( Port <> Undefined ) Then
+		URL = URL + ":" + Port;
+	EndIf;
 	
 	ThisObject.URL = URL;
+	
+	If ( Reset ) Then
+		Reset();
+		If ( HTTPStatusCode.isOk(ThisObject.MockServerResponse.КодСостояния) ) Then
+			ThisObject.MockServerResponse = Undefined;
+		EndIf;
+	EndIf;
 	
 	Return ThisObject;
 	
@@ -69,6 +80,12 @@ EndFunction
 #EndRegion
 
 #Region Terminal
+
+Procedure Reset() Export
+
+	ThisObject.MockServerResponse = HTTPConnector.Put( ThisObject.URL + "/mockserver/reset" );
+	
+КонецПроцедуры
 
 Procedure Respond( Val Response = Undefined ) Export
 	
@@ -163,9 +180,9 @@ EndFunction
 
 #Region Ru
 
-Function Сервер( Url ) Export
+Function Сервер( URL, Port = Undefined ) Export
 	
-	Return Server( Url );
+	Return Server( URL, Port );
 	
 EndFunction
 
@@ -175,25 +192,25 @@ Function Когда( Запрос ) Export
 	
 EndFunction
 
-Function Запрос( ЗапросJson = Неопределено ) Export
+Function Запрос( ЗапросJson = Undefined ) Export
 	
 	Return Request( ЗапросJson );
 	
 EndFunction
 
-Function Ответ( ОтветJson = Неопределено ) Export
+Function Ответ( ОтветJson = Undefined ) Export
 	
 	Return Response( ОтветJson );
 	
 EndFunction
 
-Function Метод( Val Метод = "" ) Export
+Function Метод( Метод = "" ) Export
 	
 	Return WithMethod( Метод );
 	
 EndFunction
 
-Function Путь( Val Путь = "" ) Export
+Function Путь( Путь = "" ) Export
 	
 	Return WithPath( Путь );
 	
@@ -251,6 +268,11 @@ EndFunction
 
 #EndRegion
 
+#Region Init
+
 ThisObject.URL = "localhost:1080";
+
+#EndRegion
+
 
 #EndIf

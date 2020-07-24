@@ -1,6 +1,6 @@
 #Region Internal
 
-// @unit-test:dev
+// @unit-test
 Procedure ResponseUndefinedConstructor(Context) Export
 	
 	// given
@@ -15,7 +15,7 @@ Procedure ResponseUndefinedConstructor(Context) Export
 
 EndProcedure
 
-// @unit-test:dev
+// @unit-test
 Procedure ResponseWrongConstructor(Context) Export
 	
 	// given
@@ -31,7 +31,7 @@ Procedure ResponseWrongConstructor(Context) Export
 
 EndProcedure
 
-// @unit-test:dev
+// @unit-test
 Procedure ResponseRequestExists(Context) Export
 	
 	// given
@@ -49,7 +49,7 @@ Procedure ResponseRequestExists(Context) Export
 
 EndProcedure
 
-// @unit-test:dev
+// @unit-test
 Procedure CallResponseRu(Context) Export
 	
 	// given

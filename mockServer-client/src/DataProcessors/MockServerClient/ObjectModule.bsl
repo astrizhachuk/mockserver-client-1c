@@ -4,6 +4,8 @@
 
 #Region En
 	
+#Region intermediate
+
 Function Server( Val Url ) Export
 	
 	ThisObject.URL = URL;
@@ -11,10 +13,10 @@ Function Server( Val Url ) Export
 	
 EndFunction
 
-Function When( Request ) Export
+Function When( Json ) Export
 	
-	If ( TypeOf(Request) = Type("String") ) Then
-		ThisObject.RequestJson = Request;
+	If ( TypeOf(Json) = Type("String") ) Then
+		ThisObject.Json = Json;
 	EndIf;
 	
 	Return ThisObject;
@@ -52,27 +54,35 @@ Function Response() Export
 	
 EndFunction
 
+#EndRegion
+
 #Region Terminal
 
 Procedure Respond( Response ) Export
 	
 	If ( TypeOf(Response) = Type("String") ) Then
-		ThisObject.ResponseJson = Response;
+		ThisObject.ResponseBodyJson = Response;
 	EndIf;
-//	
-//	ЭтотОбъект.Ответ = Ответ;
-//	
-//	Заголовки = Новый Соответствие;
-//	Заголовки.Вставить("Content-Type", "application/json; charset=utf-8");
-//	ДополнительныеПараметры = Новый Структура("Заголовки", Заголовки);
-//	ЭтотОбъект.MockServerResponse = КоннекторHTTP.Put(URL + "/mockserver/expectation", JSON(), ДополнительныеПараметры);
-//	
-//	Если НЕ КодОтветаHTTP.isCreated(ЭтотОбъект.MockServerResponse.КодСостояния) Тогда
-//		
-//		ВызватьИсключение "MockServer: can't create Expectation.";
-//		
-//	КонецЕсли;
-//	
+
+	Headers = New Map();
+	Headers.Insert( "Content-Type", "application/json; charset=utf-8" );
+	Params = New Structure( "Заголовки", Headers );
+	Action = URL + "/mockserver/expectation";
+	ThisObject.MockServerResponse = HTTPConnector.Put(Action, JSON(), Params);
+
+	If Not HTTPStatusCode.isCreated(ThisObject.MockServerResponse.КодСостояния) Then
+		
+		Message = NStr("en = '[MockServer]: can't create Action (Expectation).';
+		         |ru = '[MockServer]: не могу создать Expectation.'");
+		
+		If (HTTPStatusCode.isBadRequest(ThisObject.MockServerResponse.КодСостояния)) Then
+			Message = Message + Chars.LF + HTTPConnector.КакТекст(ThisObject.MockServerResponse);
+		EndIf;
+		
+		Raise RuntimeError( Message );		
+		
+	EndIf;
+
 EndProcedure
 
 #EndRegion
@@ -180,6 +190,44 @@ EndFunction
 #EndRegion
 
 #Region Private
+
+Функция JSON()
+	
+	Перем JSON;
+	
+	JSON = "{";
+	
+	Если ( ТипЗнч(RequestBodyJson) = Тип("String") И НЕ ПустаяСтрока(RequestBodyJson) ) Тогда
+		
+		JSON = JSON + "
+			|    ""httpRequest"": {";
+		JSON = JSON + RequestBodyJson;
+		Если ResponseBodyJson = Неопределено Тогда
+			JSON = JSON + "
+				|    }";
+		Иначе
+			JSON = JSON + "
+				|    },";			
+		КонецЕсли;
+		
+	КонецЕсли;
+	
+	Если ( ТипЗнч(ResponseBodyJson) = Тип("String") И НЕ ПустаяСтрока(ResponseBodyJson) ) Тогда
+		
+		JSON = JSON + "
+			|    ""httpResponse"": {";
+		JSON = JSON + ResponseBodyJson;
+		JSON = JSON + "
+			|    }";
+
+	КонецЕсли;
+	
+	JSON = JSON + "
+			|}";
+	
+	Возврат JSON;
+	
+КонецФункции
 
 Function RuntimeError( Message = "" )
     

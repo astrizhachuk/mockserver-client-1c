@@ -9,11 +9,6 @@ Feature: mockServer-client.Tests.Tests_Integration
 	That I can guarantee the execution of the method
 
 @OnServer
-Scenario: MockServerDockerUp
-	And I execute 1C:Enterprise script at server
-	| 'Tests_Integration.MockServerDockerUp(Context());' |
-
-@OnServer
 Scenario: RespondResponse
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Integration.RespondResponse(Context());' |

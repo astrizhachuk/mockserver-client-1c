@@ -6,10 +6,12 @@ Procedure WhenString(Context) Export
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
 	// when
-	Result = Mock.When("""method"": ""GET""");
+	Result = Mock.When("{""sample"": ""any""}");
 	// then
 	Assert.IsUndefined(Result.Constructor);
-	Assert.AreEqual(Result.RequestJson, """method"": ""GET""");
+	Assert.IsTrue(IsBlankString(Result.RequestBodyJson));
+	Assert.IsTrue(IsBlankString(Result.ResponseBodyJson));
+	Assert.AreEqual(Result.Json, "{""sample"": ""any""}");
 
 EndProcedure
 
@@ -21,7 +23,9 @@ Procedure WhenRequest(Context) Export
 	// when
 	Result = Mock.When( Mock.Request() );
 	// then
-	Assert.IsTrue(IsBlankString(Result.RequestJson));
+	Assert.IsTrue(IsBlankString(Result.Json));
+	Assert.IsTrue(IsBlankString(Result.RequestBodyJson));
+	Assert.IsTrue(IsBlankString(Result.ResponseBodyJson));
 	Assert.IsInstanceOfType("Map", Result.Constructor["httpRequest"]);
 	Assert.AreCollectionEmpty(Result.Constructor["httpRequest"]);
 
@@ -35,7 +39,9 @@ Procedure WhenWrongType(Context) Export
 	// when
 	Result = Mock.When( new Array() );
 	// then
-	Assert.IsTrue(IsBlankString(Result.RequestJson));
+	Assert.IsTrue(IsBlankString(Result.Json));
+	Assert.IsTrue(IsBlankString(Result.RequestBodyJson));
+	Assert.IsTrue(IsBlankString(Result.ResponseBodyJson));
 	Assert.IsUndefined(Result.Constructor);
 
 EndProcedure
@@ -46,10 +52,12 @@ Procedure CallWhenRu(Context) Export
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
 	// when
-	Result = Mock.Когда("""method"": ""GET""");
+	Result = Mock.Когда("{""sample"": ""any""}");
 	// then
 	Assert.IsUndefined(Result.Constructor);
-	Assert.AreEqual(Result.RequestJson, """method"": ""GET""");
+	Assert.AreEqual(Result.Json, "{""sample"": ""any""}");
+	Assert.IsTrue(IsBlankString(Result.RequestBodyJson));
+	Assert.IsTrue(IsBlankString(Result.ResponseBodyJson));
 
 EndProcedure
 

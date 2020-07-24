@@ -31,21 +31,42 @@
       <types>Arbitrary</types>
     </type>
   </attributes>
-  <attributes uuid="93054b63-e2c2-4c70-9ce3-f4fc6df6c31b">
-    <name>RequestJson</name>
+  <attributes uuid="259a239b-f688-498e-a6c4-c4ffd50dffb8">
+    <name>Json</name>
     <synonym>
       <key>ru</key>
-      <value>Request json</value>
+      <value>Json</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers/>
+    </type>
+  </attributes>
+  <attributes uuid="93054b63-e2c2-4c70-9ce3-f4fc6df6c31b">
+    <name>RequestBodyJson</name>
+    <synonym>
+      <key>ru</key>
+      <value>Request body json</value>
     </synonym>
     <type>
       <types>Arbitrary</types>
     </type>
   </attributes>
   <attributes uuid="13d4cea9-38f2-4636-8968-451eec4057dc">
-    <name>ResponseJson</name>
+    <name>ResponseBodyJson</name>
     <synonym>
       <key>ru</key>
-      <value>Response json</value>
+      <value>Response body json</value>
+    </synonym>
+    <type>
+      <types>Arbitrary</types>
+    </type>
+  </attributes>
+  <attributes uuid="bad92865-714e-4d0e-a61f-010843636ea9">
+    <name>MockServerResponse</name>
+    <synonym>
+      <key>ru</key>
+      <value>MockServer response</value>
     </synonym>
     <type>
       <types>Arbitrary</types>

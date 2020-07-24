@@ -94,7 +94,7 @@ Procedure WithMethodRewrite(Context) Export
 EndProcedure	
 
 // @unit-test
-Procedure RuCallMethods(Context) Export
+Procedure CallMethodsRu(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();

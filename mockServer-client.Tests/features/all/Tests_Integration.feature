@@ -3,7 +3,7 @@
 @tree
 @classname=ModuleExceptionPath
 
-Feature: mockServer-client.Tests.Tests_MockServerClient
+Feature: mockServer-client.Tests.Tests_Integration
 	As Developer
 	I want the returns value to be equal to expected value
 	That I can guarantee the execution of the method
@@ -11,4 +11,4 @@ Feature: mockServer-client.Tests.Tests_MockServerClient
 @OnServer
 Scenario: MockServerDockerUp
 	And I execute 1C:Enterprise script at server
-	| 'Tests_MockServerClient.MockServerDockerUp(Context());' |
+	| 'Tests_Integration.MockServerDockerUp(Context());' |

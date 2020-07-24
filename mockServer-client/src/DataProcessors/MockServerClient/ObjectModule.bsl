@@ -11,19 +11,23 @@ Function Server( Val Url ) Export
 	
 EndFunction
 
-//Function When( Val When ) Export
-//	
-//	ThisObject.Запрос = Запрос;
-//	
-//	Return ThisObject;
-//	
-//КонецФункции
+Function When( Val Request ) Export
+	
+	If ( TypeOf(Request) = Type("String") ) Then
+		ThisObject.RequestJson = Request;
+	EndIf;
+	
+	Return ThisObject;
+	
+EndFunction
 
 Function Request() Export
 	
 	If ( ThisObject.Constructor = Undefined
 		Or TypeOf(ThisObject.Constructor) <> Type("Map")) Then
-		ThisObject.Constructor = New Map();
+			
+			ThisObject.Constructor = New Map();
+			
 	EndIf;
 	
 	ThisObject.Constructor.Insert( "httpRequest", New Map() );
@@ -97,6 +101,12 @@ EndFunction
 Function Сервер( Val Url ) Export
 	
 	Return Server( Url );
+	
+EndFunction
+
+Function Когда( Val Запрос ) Export
+	
+	Return When( Запрос );
 	
 EndFunction
 

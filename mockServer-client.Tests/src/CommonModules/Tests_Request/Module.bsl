@@ -32,7 +32,7 @@ Procedure RequestWrongConstructor(Context) Export
 EndProcedure
 
 // @unit-test
-Procedure RuCallRequest(Context) Export
+Procedure CallRequestRu(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();

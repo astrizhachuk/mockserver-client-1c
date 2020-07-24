@@ -50,6 +50,8 @@
   </languages>
   <commonModules>CommonModule.Assert</commonModules>
   <commonModules>CommonModule.Tests_MockServerClient</commonModules>
+  <commonModules>CommonModule.Tests_When</commonModules>
   <commonModules>CommonModule.Tests_Request</commonModules>
   <commonModules>CommonModule.Tests_RequestMatchers</commonModules>
+  <commonModules>CommonModule.Tests_Integration</commonModules>
 </mdclass:Configuration>

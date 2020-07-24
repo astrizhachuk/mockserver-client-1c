@@ -39,6 +39,6 @@ Scenario: WithMethodRewrite
 	| 'Tests_RequestMatchers.WithMethodRewrite(Context());' |
 
 @OnServer
-Scenario: RuCallMethods
+Scenario: CallMethodsRu
 	And I execute 1C:Enterprise script at server
-	| 'Tests_RequestMatchers.RuCallMethods(Context());' |
+	| 'Tests_RequestMatchers.CallMethodsRu(Context());' |

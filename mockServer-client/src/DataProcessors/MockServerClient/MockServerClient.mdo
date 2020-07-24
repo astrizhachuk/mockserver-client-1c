@@ -32,20 +32,20 @@
     </type>
   </attributes>
   <attributes uuid="93054b63-e2c2-4c70-9ce3-f4fc6df6c31b">
-    <name>Request</name>
+    <name>RequestJson</name>
     <synonym>
       <key>ru</key>
-      <value>Request</value>
+      <value>Request json</value>
     </synonym>
     <type>
       <types>Arbitrary</types>
     </type>
   </attributes>
   <attributes uuid="13d4cea9-38f2-4636-8968-451eec4057dc">
-    <name>Response</name>
+    <name>ResponseJson</name>
     <synonym>
       <key>ru</key>
-      <value>Response</value>
+      <value>Response json</value>
     </synonym>
     <type>
       <types>Arbitrary</types>

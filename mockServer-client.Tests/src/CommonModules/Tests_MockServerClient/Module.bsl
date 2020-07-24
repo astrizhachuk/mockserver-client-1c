@@ -1,14 +1,6 @@
 #Region Internal
 
-// @unit-test:fast
-Procedure MockServerDockerUp(Context) Export
-	
-	Raise "Fail";
-	
-EndProcedure
-
 // @unit-test
-
 Procedure InitServer(Context) Export
 	
 	// given

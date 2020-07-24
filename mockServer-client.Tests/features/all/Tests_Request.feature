@@ -19,6 +19,6 @@ Scenario: RequestWrongConstructor
 	| 'Tests_Request.RequestWrongConstructor(Context());' |
 
 @OnServer
-Scenario: RuCallRequest
+Scenario: CallRequestRu
 	And I execute 1C:Enterprise script at server
-	| 'Tests_Request.RuCallRequest(Context());' |
+	| 'Tests_Request.CallRequestRu(Context());' |

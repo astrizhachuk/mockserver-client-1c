@@ -9,8 +9,8 @@ Procedure ResponseUndefinedConstructor(Context) Export
 	Result = Mock.Response();
 	// then
 	Assert.IsTrue(IsBlankString(Result.Json));
-	Assert.IsTrue(IsBlankString(Result.RequestBodyJson));
-	Assert.IsTrue(IsBlankString(Result.ResponseBodyJson));
+	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
+	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
 	Assert.IsInstanceOfType("Map", Result.Constructor);
 	Assert.AreEqual(Result.Constructor.Count(), 1);
 	Assert.IsInstanceOfType("Map", Result.Constructor["httpResponse"]);
@@ -28,8 +28,8 @@ Procedure ResponseReInitWrongConstructor(Context) Export
 	Result = Mock.Response();
 	// then
 	Assert.IsTrue(IsBlankString(Result.Json));
-	Assert.IsTrue(IsBlankString(Result.RequestBodyJson));
-	Assert.IsTrue(IsBlankString(Result.ResponseBodyJson));
+	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
+	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
 	Assert.IsInstanceOfType("Map", Result.Constructor);
 	Assert.AreEqual(Result.Constructor.Count(), 1);
 	Assert.IsInstanceOfType("Map", Result.Constructor["httpResponse"]);
@@ -48,8 +48,8 @@ Procedure ResponseRequestExists(Context) Export
 	Result = Mock.Response();
 	// then
 	Assert.IsTrue(IsBlankString(Result.Json));
-	Assert.IsTrue(IsBlankString(Result.RequestBodyJson));
-	Assert.IsTrue(IsBlankString(Result.ResponseBodyJson));
+	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
+	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
 	Assert.IsInstanceOfType("Map", Result.Constructor);
 	Assert.AreEqual(Result.Constructor.Count(), 2);
 	Assert.IsNotUndefined(Result.Constructor["httpRequest"]);
@@ -67,8 +67,8 @@ Procedure ResponseStringJson(Context) Export
 	Result = Mock.Response("""statusCode"": 200 ");
 	// then
 	Assert.IsTrue(IsBlankString(Result.Json));
-	Assert.IsTrue(IsBlankString(Result.RequestBodyJson));
-	Assert.IsFalse(IsBlankString(Result.ResponseBodyJson));		
+	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
+	Assert.IsFalse(IsBlankString(Result.HttpResponseJson));		
 	Assert.IsUndefined(Result.Constructor);
 
 EndProcedure
@@ -82,8 +82,8 @@ Procedure CallResponseRu(Context) Export
 	Result = Mock.Ответ("""statusCode"": 200 ");
 	// then
 	Assert.IsTrue(IsBlankString(Result.Json));
-	Assert.IsTrue(IsBlankString(Result.RequestBodyJson));
-	Assert.IsFalse(IsBlankString(Result.ResponseBodyJson));		
+	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
+	Assert.IsFalse(IsBlankString(Result.HttpResponseJson));		
 	Assert.IsUndefined(Result.Constructor);
 	
 EndProcedure

@@ -44,44 +44,18 @@ Function When( Val What ) Export
 	
 EndFunction
 
-Function Request( Val RequestBodyJson = Undefined ) Export
+Function Request( Val HttpRequestJson = Undefined ) Export
 	
-	If ( TypeOf(RequestBodyJson) = Type("String") ) Then
-		ThisObject.RequestBodyJson = RequestBodyJson;
-	Else
-		// TODO extract
-		If ( ThisObject.Constructor = Undefined
-			Or TypeOf(ThisObject.Constructor) <> Type("Map")) Then
-				
-				ThisObject.Constructor = New Map();
-				
-		EndIf;
-		
-		ThisObject.Constructor.Insert( "httpRequest", New Map() );
-		
-	EndIf;
-	
+	FillPropertyByValue( "httpRequest", HttpRequestJson );
+
 	Return ThisObject;
 	
 EndFunction
 
-Function Response( Val ResponseBodyJson = Undefined  ) Export
+Function Response( Val HttpResponseJson = Undefined  ) Export
 	
-	If ( TypeOf(ResponseBodyJson) = Type("String") ) Then
-		ThisObject.ResponseBodyJson = ResponseBodyJson;
-	Else
-		// TODO extract
-		If ( ThisObject.Constructor = Undefined
-			Or TypeOf(ThisObject.Constructor) <> Type("Map")) Then
-				
-				ThisObject.Constructor = New Map();
-				
-		EndIf;
-		
-		ThisObject.Constructor.Insert( "httpResponse", New Map() );
+	FillPropertyByValue( "httpResponse", HttpResponseJson );
 	
-	EndIf;
-		
 	Return ThisObject;
 	
 EndFunction
@@ -93,7 +67,7 @@ EndFunction
 Procedure Reset() Export
 	
 	Try
-		
+
 		ThisObject.MockServerResponse = HTTPConnector.Put( ThisObject.URL + "/mockserver/reset" );
 		
 	Except
@@ -245,18 +219,42 @@ EndFunction
 
 #Region Private
 
+Procedure InitConstructor()
+	
+	If ( ThisObject.Constructor = Undefined
+		Or TypeOf(ThisObject.Constructor) <> Type("Map")) Then
+			
+			ThisObject.Constructor = New Map();
+			
+	EndIf;
+	
+EndProcedure
+
+Procedure FillPropertyByValue( JsonProperty, Value )
+	
+	If ( TypeOf(Value) = Type("String") ) Then
+		ThisObject[ JsonProperty + "Json" ] = Value;
+	Else
+
+		InitConstructor();
+		ThisObject.Constructor.Insert( JsonProperty, New Map() );
+		
+	EndIf;
+	
+EndProcedure
+
 Функция JSON()
 	
 	Перем JSON;
 	
 	JSON = "{";
 	
-	Если ( ТипЗнч(RequestBodyJson) = Тип("String") И НЕ ПустаяСтрока(RequestBodyJson) ) Тогда
+	Если ( ТипЗнч(HttpRequestJson) = Тип("String") И НЕ ПустаяСтрока(HttpRequestJson) ) Тогда
 		
 		JSON = JSON + "
 			|    ""httpRequest"": {";
-		JSON = JSON + RequestBodyJson;
-		Если ResponseBodyJson = Неопределено Тогда
+		JSON = JSON + HttpRequestJson;
+		Если HttpResponseJson = Неопределено Тогда
 			JSON = JSON + "
 				|    }";
 		Иначе
@@ -266,11 +264,11 @@ EndFunction
 		
 	КонецЕсли;
 	
-	Если ( ТипЗнч(ResponseBodyJson) = Тип("String") И НЕ ПустаяСтрока(ResponseBodyJson) ) Тогда
+	Если ( ТипЗнч(HttpResponseJson) = Тип("String") И НЕ ПустаяСтрока(HttpResponseJson) ) Тогда
 		
 		JSON = JSON + "
 			|    ""httpResponse"": {";
-		JSON = JSON + ResponseBodyJson;
+		JSON = JSON + HttpResponseJson;
 		JSON = JSON + "
 			|    }";
 

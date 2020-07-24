@@ -9,8 +9,8 @@ Procedure WhenString(Context) Export
 	Result = Mock.When("{""sample"": ""any""}");
 	// then
 	Assert.IsUndefined(Result.Constructor);
-	Assert.IsTrue(IsBlankString(Result.RequestBodyJson));
-	Assert.IsTrue(IsBlankString(Result.ResponseBodyJson));
+	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
+	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
 	Assert.AreEqual(Result.Json, "{""sample"": ""any""}");
 
 EndProcedure
@@ -24,8 +24,8 @@ Procedure WhenRequest(Context) Export
 	Result = Mock.When( Mock.Request() );
 	// then
 	Assert.IsTrue(IsBlankString(Result.Json));
-	Assert.IsTrue(IsBlankString(Result.RequestBodyJson));
-	Assert.IsTrue(IsBlankString(Result.ResponseBodyJson));
+	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
+	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
 	Assert.IsInstanceOfType("Map", Result.Constructor["httpRequest"]);
 	Assert.AreCollectionEmpty(Result.Constructor["httpRequest"]);
 
@@ -40,8 +40,8 @@ Procedure WhenSomethingWrong(Context) Export
 	Result = Mock.When( new Array() );
 	// then
 	Assert.IsTrue(IsBlankString(Result.Json));
-	Assert.IsTrue(IsBlankString(Result.RequestBodyJson));
-	Assert.IsTrue(IsBlankString(Result.ResponseBodyJson));
+	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
+	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
 	Assert.IsUndefined(Result.Constructor);
 
 EndProcedure
@@ -56,8 +56,8 @@ Procedure CallWhenRu(Context) Export
 	// then
 	Assert.IsUndefined(Result.Constructor);
 	Assert.AreEqual(Result.Json, "{""sample"": ""any""}");
-	Assert.IsTrue(IsBlankString(Result.RequestBodyJson));
-	Assert.IsTrue(IsBlankString(Result.ResponseBodyJson));
+	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
+	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
 
 EndProcedure
 

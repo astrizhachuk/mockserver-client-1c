@@ -9,6 +9,11 @@ Feature: mockServer-client.Tests.Tests_RequestMatchers
 	That I can guarantee the execution of the method
 
 @OnServer
+Scenario: PropertyByStage
+	And I execute 1C:Enterprise script at server
+	| 'Tests_RequestMatchers.PropertyByStage(Context());' |
+
+@OnServer
 Scenario: WithMethodNotEmpty
 	And I execute 1C:Enterprise script at server
 	| 'Tests_RequestMatchers.WithMethodNotEmpty(Context());' |
@@ -19,6 +24,16 @@ Scenario: WithMethodRewrite
 	| 'Tests_RequestMatchers.WithMethodRewrite(Context());' |
 
 @OnServer
-Scenario: CallMethodsRu
+Scenario: WithPathNotEmpty
 	And I execute 1C:Enterprise script at server
-	| 'Tests_RequestMatchers.CallMethodsRu(Context());' |
+	| 'Tests_RequestMatchers.WithPathNotEmpty(Context());' |
+
+@OnServer
+Scenario: CallWithMethodRu
+	And I execute 1C:Enterprise script at server
+	| 'Tests_RequestMatchers.CallWithMethodRu(Context());' |
+
+@OnServer
+Scenario: CallWithPathRu
+	And I execute 1C:Enterprise script at server
+	| 'Tests_RequestMatchers.CallWithPathRu(Context());' |

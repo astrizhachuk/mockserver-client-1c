@@ -5,8 +5,6 @@ Procedure WithStatusCodeNotEmpty(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
-	Mock.Constructor = New Map();
-	Mock.Constructor.Insert("httpResponse", New Map());
 	// when
 	Mock.Respond(Mock.Response().WithStatusCode(404));
 	// then
@@ -20,8 +18,6 @@ Procedure WithStatusCodeRewrite(Context) Export
 
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
-	Mock.Constructor = New Map();
-	Mock.Constructor.Insert("httpResponse", New Map());
 	// when
 	Mock.Respond(Mock.Response().WithStatusCode(404));
 	Mock.Respond(Mock.Response().WithStatusCode(400));
@@ -33,12 +29,10 @@ Procedure WithStatusCodeRewrite(Context) Export
 EndProcedure	
 
 // @unit-test
-Procedure CallStatusCodeRu(Context) Export
+Procedure CallWithStatusCodeRu(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
-	Mock.Constructor = New Map();
-	Mock.Constructor.Insert("httpResponse", New Map());
 	// when
 	Mock.Respond(Mock.Response().КодОтвета(404));
 	// then

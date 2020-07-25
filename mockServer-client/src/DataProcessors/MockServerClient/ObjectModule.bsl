@@ -130,15 +130,15 @@ Function WithMethod( Val Method ) Export
 	
 EndFunction
 
-Function WithPath( Val Path = "" ) Export
+Function WithPath( Val Path ) Export
 	
-	Var Result;
+	Var ConstructorProperty;
 	
 	RaiseIfCurrentStageEmpty();
 	RaiseIfConstructorUndefined();
 	
-	Result = ThisObject.Constructor[ "httpRequest" ];
-	Result.Insert( "path", Path );
+	ConstructorProperty = ConstructorPropertyByStage( ThisObject.CurrentStage );
+	ConstructorProperty.Insert( "path", Path );
 	
 	Return ThisObject;
 	

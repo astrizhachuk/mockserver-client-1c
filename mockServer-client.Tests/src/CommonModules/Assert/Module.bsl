@@ -4,11 +4,11 @@
 #Region Public
 
 Procedure AreEqual(Expected, Actual, Message = "") Export
-    
+
     If Expected <> Actual Then
         Raise AssertError(Expected, Actual, Message);
     EndIf;
-    
+
 EndProcedure
 
 Procedure AreNotEqual(NotExpected, Actual, Message = "") Export

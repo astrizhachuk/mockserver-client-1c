@@ -7,7 +7,7 @@ Procedure WithMethodUndefinedConstructorException(Context) Export
 	Mock = DataProcessors.MockServerClient.Create();
 	Try
 		// when
-		Result = Mock.WithMethod();
+		Result = Mock.WithMethod("GET");
 	Except
 		// then
 		Assert.IsLegalException("[RuntimeError]", ErrorInfo());
@@ -23,7 +23,7 @@ Procedure WithMethodEmptyMapException(Context) Export
 	Mock.Constructor = New Map();
 	Try
 		// when
-		Result = Mock.WithMethod();
+		Result = Mock.WithMethod("GET");
 	Except
 		// then
 		Assert.IsLegalException("[RuntimeError]", ErrorInfo());
@@ -40,7 +40,7 @@ Procedure WithMethodEmptyRequestException(Context) Export
 	Mock.Constructor.Insert("httpRequest", "");
 	Try
 		// when
-		Result = Mock.WithMethod();
+		Result = Mock.WithMethod("GET");
 	Except
 		// then
 		Assert.IsLegalException("[RuntimeError]", ErrorInfo());
@@ -48,20 +48,6 @@ Procedure WithMethodEmptyRequestException(Context) Export
 
 EndProcedure
 
-// @unit-test
-Procedure WithMethodEmpty(Context) Export
-	
-	// given
-	Mock = DataProcessors.MockServerClient.Create();
-	Mock.Constructor = New Map();
-	Mock.Constructor.Insert("httpRequest", New Map());
-	// when
-	Result = Mock.WithMethod();
-	// then
-	Assert.AreEqual(Mock.Constructor["httpRequest"]["method"], "");
-	
-EndProcedure
-	
 // @unit-test
 Procedure WithMethodNotEmpty(Context) Export
 	
@@ -101,9 +87,9 @@ Procedure CallMethodsRu(Context) Export
 	Mock.Constructor = New Map();
 	Mock.Constructor.Insert("httpRequest", New Map());
 	// when
-	Result = Mock.Метод();
+	Result = Mock.Метод("GET");
 	// then
-	Assert.AreEqual(Mock.Constructor["httpRequest"]["method"], "");
+	Assert.AreEqual(Mock.Constructor["httpRequest"]["method"], "GET");
 
 EndProcedure
 

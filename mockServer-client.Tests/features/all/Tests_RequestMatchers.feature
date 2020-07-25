@@ -24,11 +24,6 @@ Scenario: WithMethodEmptyRequestException
 	| 'Tests_RequestMatchers.WithMethodEmptyRequestException(Context());' |
 
 @OnServer
-Scenario: WithMethodEmpty
-	And I execute 1C:Enterprise script at server
-	| 'Tests_RequestMatchers.WithMethodEmpty(Context());' |
-
-@OnServer
 Scenario: WithMethodNotEmpty
 	And I execute 1C:Enterprise script at server
 	| 'Tests_RequestMatchers.WithMethodNotEmpty(Context());' |

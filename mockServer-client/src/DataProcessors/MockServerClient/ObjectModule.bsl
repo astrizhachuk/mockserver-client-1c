@@ -108,7 +108,7 @@ EndProcedure
 
 #Region RequestMatchers
 
-Function WithMethod( Val Method = "" ) Export
+Function WithMethod( Val Method ) Export
 	
 	Var Result;
 	
@@ -188,7 +188,7 @@ Function Ответ( ОтветJson = Undefined ) Export
 	
 EndFunction
 
-Function Метод( Метод = "" ) Export
+Function Метод( Метод ) Export
 	
 	Return WithMethod( Метод );
 	
@@ -230,40 +230,44 @@ Procedure FillPropertyByValue( JsonProperty, Value )
 	
 EndProcedure
 
-Функция JoinProperiesJson()
+Функция JoinJsonProperties()
 	
 	Перем JSON;
-	
 
-	JSON = "{";
+	JSON = "{" + Chars.LF;
 	
 	Если ( ТипЗнч(HttpRequestJson) = Тип("String") И НЕ ПустаяСтрока(HttpRequestJson) ) Тогда
 		
-		JSON = JSON + "
-			|    ""httpRequest"": {";
-		JSON = JSON + HttpRequestJson;
 		Если HttpResponseJson = Неопределено Тогда
-			JSON = JSON + "
-				|    }";
+			JSON = JSON + StrTemplate(
+		        " ""httpRequest"": {
+		        |%1
+		        | }",
+		        HttpRequestJson
+	    	);
 		Иначе
-			JSON = JSON + "
-				|    },";			
+			JSON = JSON + StrTemplate(
+		        " ""httpRequest"": {
+		        |%1
+		        | },",
+		        HttpRequestJson
+	    	);		
 		КонецЕсли;
 		
 	КонецЕсли;
 	
 	Если ( ТипЗнч(HttpResponseJson) = Тип("String") И НЕ ПустаяСтрока(HttpResponseJson) ) Тогда
 		
-		JSON = JSON + "
-			|    ""httpResponse"": {";
-		JSON = JSON + HttpResponseJson;
-		JSON = JSON + "
-			|    }";
+			JSON = JSON + StrTemplate(
+		        " ""httpResponse"": {
+		        |%1
+		        | }",
+		        HttpResponseJson
+	    	);
 
 	КонецЕсли;
 	
-	JSON = JSON + "
-			|}";
+	JSON = JSON + Chars.LF + "}";
 	
 	Возврат JSON;
 	
@@ -279,11 +283,15 @@ Procedure GenerateJson()
 	
 	If ( ThisObject.Constructor = Undefined ) Then
 		
-		ThisObject.Json = JoinProperiesJson();
+		ThisObject.Json = JoinJsonProperties();
 
 	Else
 		
-		ThisObject.Json = HTTPConnector.ОбъектВJson( ThisObject.Constructor );
+		JsonWriterOptions = New Structure();
+		JsonWriterOptions.Insert( "ПереносСтрок", JsonLineBreak.Unix );
+		JsonWriterOptions.Insert( "СимволыОтступа", " " );
+		
+		ThisObject.Json = HTTPConnector.ОбъектВJson( ThisObject.Constructor, , JsonWriterOptions );
 		
 	Endif;
 	

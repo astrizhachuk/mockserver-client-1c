@@ -24,6 +24,21 @@ Scenario: RespondWhenRequestJson
 	| 'Tests_Respond.RespondWhenRequestJson(Context());' |
 
 @OnServer
+Scenario: RespondWhenRequestMap
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Respond.RespondWhenRequestMap(Context());' |
+
+@OnServer
+Scenario: RespondWhenRespondJson
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Respond.RespondWhenRespondJson(Context());' |
+
+@OnServer
+Scenario: RespondWhenResponseJson
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Respond.RespondWhenResponseJson(Context());' |
+
+@OnServer
 Scenario: CallRespondRu
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Respond.CallRespondRu(Context());' |

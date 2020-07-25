@@ -17,8 +17,3 @@ Scenario: ResetIntermediateException
 Scenario: ResetTerminalException
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Reset.ResetTerminalException(Context());' |
-
-@OnServer
-Scenario: CallResetRu
-	And I execute 1C:Enterprise script at server
-	| 'Tests_Reset.CallResetRu(Context());' |

@@ -80,16 +80,4 @@ Procedure CreateClientAndResetAfter(Context) Export
 		
 EndProcedure
 
-// @unit-test
-Procedure CallServerRu(Context) Export
-	
-	// given
-	Mock = DataProcessors.MockServerClient.Create();
-	// when
-	Result = Mock.Сервер("example.org", "1090");
-	// then	
-	Assert.AreEqual(Result.URL, "example.org:1090");
-
-EndProcedure
-
 #EndRegion

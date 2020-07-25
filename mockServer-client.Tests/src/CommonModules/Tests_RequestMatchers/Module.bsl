@@ -54,28 +54,4 @@ Procedure WithPathNotEmpty(Context) Export
 
 EndProcedure	
 
-// @unit-test
-Procedure CallWithMethodRu(Context) Export
-	
-	// given
-	Mock = DataProcessors.MockServerClient.Create();
-	// when
-	Mock.When(Mock.Request().Метод("GET")).Respond();
-	// then
-	Assert.AreEqual(Mock.Constructor["httpRequest"]["method"], "GET");
-
-EndProcedure
-
-// @unit-test
-Procedure CallWithPathRu(Context) Export
-	
-	// given
-	Mock = DataProcessors.MockServerClient.Create();
-	// when
-	Mock.When(Mock.Request().Путь("/фуу/foo")).Respond();
-	// then
-	Assert.AreEqual(Mock.Constructor["httpRequest"]["path"], "/фуу/foo");
-
-EndProcedure
-
 #EndRegion

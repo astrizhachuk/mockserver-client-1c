@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="a66e35c3-c4c2-446f-88c6-d201ef15d3a4">
+  <name>Tests_CallWrapperRu</name>
+  <synonym>
+    <key>en</key>
+    <value>Russian</value>
+  </synonym>
+  <server>true</server>
+</mdclass:CommonModule>

@@ -22,8 +22,3 @@ Scenario: WhenParamsRequestAction
 Scenario: WhenWrongParams
 	And I execute 1C:Enterprise script at server
 	| 'Tests_When.WhenWrongParams(Context());' |
-
-@OnServer
-Scenario: CallWhenRu
-	And I execute 1C:Enterprise script at server
-	| 'Tests_When.CallWhenRu(Context());' |

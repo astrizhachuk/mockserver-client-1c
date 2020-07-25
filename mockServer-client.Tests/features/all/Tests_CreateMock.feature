@@ -37,8 +37,3 @@ Scenario: CreateClientServerNameAndPort
 Scenario: CreateClientAndResetAfter
 	And I execute 1C:Enterprise script at server
 	| 'Tests_CreateMock.CreateClientAndResetAfter(Context());' |
-
-@OnServer
-Scenario: CallServerRu
-	And I execute 1C:Enterprise script at server
-	| 'Tests_CreateMock.CallServerRu(Context());' |

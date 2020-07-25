@@ -77,19 +77,4 @@ Procedure ResponseStringJson(Context) Export
 
 EndProcedure
 
-// @unit-test
-Procedure CallResponseRu(Context) Export
-	
-	// given
-	Mock = DataProcessors.MockServerClient.Create();
-	// when
-	Result = Mock.Ответ("""statusCode"": 200 ");
-	// then
-	Assert.IsTrue(IsBlankString(Result.Json));
-	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
-	Assert.IsFalse(IsBlankString(Result.HttpResponseJson));		
-	Assert.IsUndefined(Result.Constructor);
-	
-EndProcedure
-
 #EndRegion

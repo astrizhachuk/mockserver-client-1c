@@ -17,8 +17,3 @@ Scenario: WithStatusCodeNotEmpty
 Scenario: WithStatusCodeRewrite
 	And I execute 1C:Enterprise script at server
 	| 'Tests_ResponseAction.WithStatusCodeRewrite(Context());' |
-
-@OnServer
-Scenario: CallWithStatusCodeRu
-	And I execute 1C:Enterprise script at server
-	| 'Tests_ResponseAction.CallWithStatusCodeRu(Context());' |

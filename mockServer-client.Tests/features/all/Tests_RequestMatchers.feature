@@ -27,13 +27,3 @@ Scenario: WithMethodRewrite
 Scenario: WithPathNotEmpty
 	And I execute 1C:Enterprise script at server
 	| 'Tests_RequestMatchers.WithPathNotEmpty(Context());' |
-
-@OnServer
-Scenario: CallWithMethodRu
-	And I execute 1C:Enterprise script at server
-	| 'Tests_RequestMatchers.CallWithMethodRu(Context());' |
-
-@OnServer
-Scenario: CallWithPathRu
-	And I execute 1C:Enterprise script at server
-	| 'Tests_RequestMatchers.CallWithPathRu(Context());' |

@@ -55,19 +55,4 @@ Procedure RequestStringJson(Context) Export
 
 EndProcedure
 
-// @unit-test
-Procedure CallRequestRu(Context) Export
-	
-	// given
-	Mock = DataProcessors.MockServerClient.Create();
-	// when
-	Result = Mock.Запрос("""method"": ""GET""");
-	// then
-	Assert.IsTrue(IsBlankString(Result.Json));
-	Assert.IsFalse(IsBlankString(Result.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));		
-	Assert.IsUndefined(Result.Constructor);
-
-EndProcedure
-
 #EndRegion

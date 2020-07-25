@@ -28,18 +28,4 @@ Procedure ResetTerminalException(Context) Export
 		
 EndProcedure
 
-// @unit-test
-Procedure CallResetRu(Context) Export
-	
-	// given
-	Mock = DataProcessors.MockServerClient.Create();
-	Mock.Server("this.is.error.url", "1080");
-	// when
-	Mock.Сбросить();
-	// then
-	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
-	Assert.IsFalse(IsBlankString(Mock.MockServerResponse.ТекстОшибки));
-	
-EndProcedure
-
 #EndRegion

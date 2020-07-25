@@ -22,8 +22,3 @@ Scenario: RequestReInitWrongConstructor
 Scenario: RequestStringJson
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Request.RequestStringJson(Context());' |
-
-@OnServer
-Scenario: CallRequestRu
-	And I execute 1C:Enterprise script at server
-	| 'Tests_Request.CallRequestRu(Context());' |

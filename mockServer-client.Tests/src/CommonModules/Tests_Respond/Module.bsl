@@ -147,18 +147,4 @@ EndProcedure
 //
 //EndProcedure
 
-// @unit-test:dev
-Procedure CallRespondRu(Context) Export
-	
-	// given
-	Mock = DataProcessors.MockServerClient.Create();
-	Mock.Server("this.is.error.url", "1080");
-	// when
-	Mock.When("{""name"":""value""}").Ответить();
-	// then
-	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
-	Assert.AreEqual(Mock.Json, "{""name"":""value""}");
-
-EndProcedure
-
 #EndRegion

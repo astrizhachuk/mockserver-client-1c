@@ -49,19 +49,4 @@ Procedure WhenWrongParams(Context) Export
 
 EndProcedure
 
-// @unit-test
-Procedure CallWhenRu(Context) Export
-	
-	// given
-	Mock = DataProcessors.MockServerClient.Create();
-	// when
-	Result = Mock.Когда("{""sample"": ""any""}");
-	// then
-	Assert.IsUndefined(Result.Constructor);
-	Assert.AreEqual(Result.Json, "{""sample"": ""any""}");
-	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
-
-EndProcedure
-
 #EndRegion

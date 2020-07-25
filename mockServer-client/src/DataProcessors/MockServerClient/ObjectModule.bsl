@@ -76,34 +76,31 @@ Procedure Reset() Export
 		
 	EndTry;
 	
-КонецПроцедуры
+EndProcedure
 
-Procedure Respond( Val Response = Undefined ) Export
+Procedure Respond( Val Action = Undefined ) Export
 	
-	If ThisObject.Constructor = Undefined Then
-		JSON = JSON();
-	Else
-		JSON = HTTPConnector.ОбъектВJson(ThisObject.Constructor);
-	Endif;
+	// TODO add Action (time, httpOverrideForwardedRequest, httpForward, errors etc)
 	
-	Headers = New Map();
-	Headers.Insert( "Content-Type", "application/json; charset=utf-8" );
-	Params = New Structure( "Заголовки", Headers );
-	Action = URL + "/mockserver/expectation";
-	ThisObject.MockServerResponse = HTTPConnector.Put(Action, JSON, Params);
+	Try
 
-	If Not HTTPStatusCode.isCreated(ThisObject.MockServerResponse.КодСостояния) Then
+		GenerateJson();
 		
-		Message = NStr("en = '[MockServer]: can't create Action (Expectation).';
-		         |ru = '[MockServer]: не могу создать Expectation.'");
+		ThisObject.MockServerResponse = HTTPConnector.Put( ThisObject.Url + "/mockserver/expectation",
+															ThisObject.Json,
+															ContentTypeJsonHeaders() );
 		
-		If (HTTPStatusCode.isBadRequest(ThisObject.MockServerResponse.КодСостояния)) Then
-			Message = Message + Chars.LF + HTTPConnector.КакТекст(ThisObject.MockServerResponse);
+		If ( NOT HTTPStatusCode.isCreated(ThisObject.MockServerResponse.КодСостояния) ) Then
+		
+			Raise HTTPConnector.КакТекст( ThisObject.MockServerResponse );		
+		
 		EndIf;
 		
-		Raise RuntimeError( Message );		
+	Except
 		
-	EndIf;
+		ThisObject.MockServerResponse = MockServerError( DetailErrorDescription(ErrorInfo()) );
+		
+	EndTry;		
 
 EndProcedure
 
@@ -151,22 +148,6 @@ EndFunction
 	
 #EndRegion
 
-
-/////////////////////
-
-
-//Функция Ответ() Экспорт
-//
-//	Если ЭтотОбъект.Конструктор = Неопределено Тогда
-//		ЭтотОбъект.Конструктор = Новый Соответствие();
-//	КонецЕсли;
-//	ЭтотОбъект.Конструктор.Вставить("httpResponse", Новый Соответствие());
-//	
-//	Возврат ЭтотОбъект;
-//	
-//КонецФункции
-///////////////////////////
-
 #EndRegion
 
 #Region Ru
@@ -180,6 +161,12 @@ EndFunction
 Procedure Сбросить() Export
 	
 	Reset();
+	
+EndProcedure
+
+Procedure Ответить( Ожидание = Undefined ) Export
+	
+	Respond( Ожидание );
 	
 EndProcedure
 
@@ -243,10 +230,11 @@ Procedure FillPropertyByValue( JsonProperty, Value )
 	
 EndProcedure
 
-Функция JSON()
+Функция JoinProperiesJson()
 	
 	Перем JSON;
 	
+
 	JSON = "{";
 	
 	Если ( ТипЗнч(HttpRequestJson) = Тип("String") И НЕ ПустаяСтрока(HttpRequestJson) ) Тогда
@@ -280,6 +268,37 @@ EndProcedure
 	Возврат JSON;
 	
 КонецФункции
+
+Procedure GenerateJson()
+	
+	If (Not IsBlankString(ThisObject.Json)) Then
+		
+		Return;
+		
+	EndIf;
+	
+	If ( ThisObject.Constructor = Undefined ) Then
+		
+		ThisObject.Json = JoinProperiesJson();
+
+	Else
+		
+		ThisObject.Json = HTTPConnector.ОбъектВJson( ThisObject.Constructor );
+		
+	Endif;
+	
+EndProcedure
+
+Function ContentTypeJsonHeaders()
+	
+	Var Headers;
+	
+	Headers = New Map();
+	Headers.Insert( "Content-Type", "application/json; charset=utf-8" );
+	
+	Return New Structure( "Заголовки", Headers );
+	
+EndFunction
 
 Function MockServerError( DetailErrorDescription )
 	

@@ -11,10 +11,10 @@
   </synonym>
   <useStandardCommands>true</useStandardCommands>
   <attributes uuid="b364f2cc-edd3-4a22-a989-1b1e6ba8e619">
-    <name>URL</name>
+    <name>Url</name>
     <synonym>
       <key>ru</key>
-      <value>URL</value>
+      <value>Url</value>
     </synonym>
     <type>
       <types>String</types>

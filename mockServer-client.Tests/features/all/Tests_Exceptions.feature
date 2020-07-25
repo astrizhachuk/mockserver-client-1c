@@ -32,3 +32,8 @@ Scenario: RequestBlankException
 Scenario: ResponseBlankException
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Exceptions.ResponseBlankException(Context());' |
+
+@OnServer
+Scenario: ConstructorPropertyByStageException
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Exceptions.ConstructorPropertyByStageException(Context());' |

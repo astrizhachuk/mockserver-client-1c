@@ -86,4 +86,21 @@ Procedure ResponseBlankException(Context) Export
 
 EndProcedure
 
+// @unit-test
+Procedure ConstructorPropertyByStageException(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Try
+		// when
+		Result = Mock.Response();
+		Mock.CurrentStage = "foo";
+		Result = Result.КодОтвета(404);
+	Except
+		// then
+		Assert.IsLegalException("[RuntimeError]", ErrorInfo());
+	EndTry;	
+
+EndProcedure
+
 #EndRegion

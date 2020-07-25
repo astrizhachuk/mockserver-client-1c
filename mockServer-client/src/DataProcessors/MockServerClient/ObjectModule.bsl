@@ -118,22 +118,13 @@ EndProcedure
 
 Function WithMethod( Val Method ) Export
 	
-	Var Result;
+	Var ConstructorProperty;
 	
 	RaiseIfCurrentStageEmpty();
 	RaiseIfConstructorUndefined();
 	
-	// TODO extract from extract?
-	Result = ThisObject.Constructor.Get("httpRequest");
-	If ( TypeOf(Result) <> Type("Map") ) Then
-		Raise RuntimeError(
-		    NStr("en = 'Request constructor is not correct.';
-		         |ru = 'Некорректный конструктор запроса.'")
-		);
-	EndIf;
-	//
-	
-	Result.Insert( "method", Method );
+	ConstructorProperty = ConstructorPropertyByStage( ThisObject.CurrentStage );
+	ConstructorProperty.Insert( "method", Method );
 	
 	Return ThisObject;
 	
@@ -159,29 +150,17 @@ EndFunction
 
 Function WithStatusCode( Val StatusCode ) Export
 	
-	Var Result;
+	Var ConstructorProperty;
 
 	RaiseIfCurrentStageEmpty();	
 	RaiseIfConstructorUndefined();
-	// TODO extract from extract?
-	Result = ThisObject.Constructor.Get("httpResponse");
-	If ( TypeOf(Result) <> Type("Map") ) Then
-		Raise RuntimeError(
-		    NStr("en = 'Request constructor is not correct.';
-		         |ru = 'Некорректный конструктор запроса.'")
-		);
-	EndIf;
-	//
-	
-	Result.Insert( "statusCode", StatusCode );
+
+	ConstructorProperty = ConstructorPropertyByStage( ThisObject.CurrentStage );
+	ConstructorProperty.Insert( "statusCode", StatusCode );
 	
 	Return ThisObject;
 	
 EndFunction
-
-
-
-
 
 #EndRegion
 
@@ -281,6 +260,21 @@ Procedure InitConstructor()
 	EndIf;
 	
 EndProcedure
+
+Function ConstructorPropertyByStage( Val Stage )
+	
+	Result = ThisObject.Constructor.Get( Stage );
+	
+	If ( TypeOf(Result) <> Type("Map") ) Then
+		Raise RuntimeError(
+		    NStr("en = 'The constructor contains no action for current method.';
+		         |ru = 'Для текущего метода конструктор не содержит действия.'")
+		);
+	EndIf;
+	
+	Return Result;
+	
+EndFunction
 
 Procedure FillPropertyByValue( JsonProperty, Value )
 	

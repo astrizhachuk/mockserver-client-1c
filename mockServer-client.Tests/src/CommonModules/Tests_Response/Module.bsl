@@ -8,6 +8,7 @@ Procedure ResponseUndefinedConstructor(Context) Export
 	// when
 	Result = Mock.Response();
 	// then
+	Assert.AreEqual(Mock.CurrentStage, "httpResponse");
 	Assert.IsTrue(IsBlankString(Result.Json));
 	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
 	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
@@ -27,6 +28,7 @@ Procedure ResponseReInitWrongConstructor(Context) Export
 	// when
 	Result = Mock.Response();
 	// then
+	Assert.AreEqual(Mock.CurrentStage, "httpResponse");
 	Assert.IsTrue(IsBlankString(Result.Json));
 	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
 	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
@@ -47,6 +49,7 @@ Procedure ResponseRequestExists(Context) Export
 	// when
 	Result = Mock.Response();
 	// then
+	Assert.AreEqual(Mock.CurrentStage, "httpResponse");
 	Assert.IsTrue(IsBlankString(Result.Json));
 	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
 	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
@@ -66,6 +69,7 @@ Procedure ResponseStringJson(Context) Export
 	// when
 	Result = Mock.Response("""statusCode"": 200 ");
 	// then
+	Assert.AreEqual(Mock.CurrentStage, "httpResponse");
 	Assert.IsTrue(IsBlankString(Result.Json));
 	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
 	Assert.IsFalse(IsBlankString(Result.HttpResponseJson));		

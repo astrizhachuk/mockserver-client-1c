@@ -54,7 +54,9 @@
   <commonModules>CommonModule.Tests_When</commonModules>
   <commonModules>CommonModule.Tests_Request</commonModules>
   <commonModules>CommonModule.Tests_RequestMatchers</commonModules>
+  <commonModules>CommonModule.Tests_ResponseAction</commonModules>
   <commonModules>CommonModule.Tests_Response</commonModules>
   <commonModules>CommonModule.Tests_Respond</commonModules>
   <commonModules>CommonModule.Tests_Reset</commonModules>
+  <commonModules>CommonModule.Tests_Exceptions</commonModules>
 </mdclass:Configuration>

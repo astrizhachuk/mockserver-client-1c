@@ -1,54 +1,6 @@
 #Region Internal
 
 // @unit-test
-Procedure WithMethodUndefinedConstructorException(Context) Export
-	
-	// given
-	Mock = DataProcessors.MockServerClient.Create();
-	Try
-		// when
-		Result = Mock.WithMethod("GET");
-	Except
-		// then
-		Assert.IsLegalException("[RuntimeError]", ErrorInfo());
-	EndTry;
-
-EndProcedure
-	
-// @unit-test
-Procedure WithMethodEmptyMapException(Context) Export
-	
-	// given
-	Mock = DataProcessors.MockServerClient.Create();
-	Mock.Constructor = New Map();
-	Try
-		// when
-		Result = Mock.WithMethod("GET");
-	Except
-		// then
-		Assert.IsLegalException("[RuntimeError]", ErrorInfo());
-	EndTry;
-	
-EndProcedure
-
-// @unit-test
-Procedure WithMethodEmptyRequestException(Context) Export
-	
-	// given
-	Mock = DataProcessors.MockServerClient.Create();
-	Mock.Constructor = New Map();
-	Mock.Constructor.Insert("httpRequest", "");
-	Try
-		// when
-		Result = Mock.WithMethod("GET");
-	Except
-		// then
-		Assert.IsLegalException("[RuntimeError]", ErrorInfo());
-	EndTry;	
-
-EndProcedure
-
-// @unit-test
 Procedure WithMethodNotEmpty(Context) Export
 	
 	// given
@@ -56,8 +8,9 @@ Procedure WithMethodNotEmpty(Context) Export
 	Mock.Constructor = New Map();
 	Mock.Constructor.Insert("httpRequest", New Map());
 	// when
-	Result = Mock.WithMethod("GET");
+	Mock.When(Mock.Request().WithMethod("GET")).Respond();
 	// then
+	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpRequest"]["method"], "GET");
 
 EndProcedure
@@ -70,10 +23,10 @@ Procedure WithMethodRewrite(Context) Export
 	Mock.Constructor = New Map();
 	Mock.Constructor.Insert("httpRequest", New Map());
 	// when
-	Result = Mock.WithMethod("");
-	Result = Mock.WithMethod("GET");
-	Result = Mock.WithMethod("POST");
+	Mock.When(Mock.Request().WithMethod("GET")).Respond();
+	Mock.When(Mock.Request().WithMethod("POST")).Respond();
 	// then
+	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpRequest"].Count(), 1);
 	Assert.AreEqual(Mock.Constructor["httpRequest"]["method"], "POST");	
 	
@@ -87,7 +40,7 @@ Procedure CallMethodsRu(Context) Export
 	Mock.Constructor = New Map();
 	Mock.Constructor.Insert("httpRequest", New Map());
 	// when
-	Result = Mock.Метод("GET");
+	Mock.When(Mock.Request().Метод("GET")).Respond();
 	// then
 	Assert.AreEqual(Mock.Constructor["httpRequest"]["method"], "GET");
 

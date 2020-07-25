@@ -8,6 +8,7 @@ Procedure RequestUndefinedConstructor(Context) Export
 	// when
 	Result = Mock.Request();
 	// then
+	Assert.AreEqual(Mock.CurrentStage, "httpRequest");
 	Assert.IsTrue(IsBlankString(Result.Json));
 	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
 	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
@@ -27,6 +28,7 @@ Procedure RequestReInitWrongConstructor(Context) Export
 	// when
 	Result = Mock.Request();
 	// then
+	Assert.AreEqual(Mock.CurrentStage, "httpRequest");
 	Assert.IsTrue(IsBlankString(Result.Json));
 	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
 	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
@@ -45,6 +47,7 @@ Procedure RequestStringJson(Context) Export
 	// when
 	Result = Mock.Request("""method"": ""GET""");
 	// then
+	Assert.AreEqual(Mock.CurrentStage, "httpRequest");
 	Assert.IsTrue(IsBlankString(Result.Json));
 	Assert.IsFalse(IsBlankString(Result.HttpRequestJson));
 	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));		

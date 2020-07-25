@@ -1,6 +1,6 @@
 #Region Internal
 
-// @unit-test:dev
+// @unit-test
 Procedure RespondUrlException(Context) Export
 	
 	// given
@@ -9,12 +9,13 @@ Procedure RespondUrlException(Context) Export
 	// when
 	Mock.Respond();
 	// then
+	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.IsFalse(IsBlankString(Mock.MockServerResponse.ТекстОшибки));
 		
 EndProcedure
 
-// @unit-test:dev
+// @unit-test
 Procedure RespondWhenFullJson(Context) Export
 	
 	// given
@@ -24,7 +25,8 @@ Procedure RespondWhenFullJson(Context) Export
 	Mock.When("{""name"":""value""}").Respond();
 	// then
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
-	
+
+	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.IsUndefined(Mock.Constructor);
 	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
 	Assert.IsTrue(IsBlankString(Mock.HttpResponseJson));
@@ -32,7 +34,7 @@ Procedure RespondWhenFullJson(Context) Export
 		
 EndProcedure
 
-// @unit-test:dev
+// @unit-test
 Procedure RespondWhenRequestJson(Context) Export
 	
 	// given
@@ -43,6 +45,7 @@ Procedure RespondWhenRequestJson(Context) Export
 	// then
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	
+	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.IsUndefined(Mock.Constructor);
 	Assert.AreEqual(Mock.Json, "{
 							   | ""httpRequest"": {
@@ -54,7 +57,7 @@ Procedure RespondWhenRequestJson(Context) Export
 
 EndProcedure
 
-// @unit-test:dev
+// @unit-test
 Procedure RespondWhenRequestMap(Context) Export
 	
 	// given
@@ -65,6 +68,7 @@ Procedure RespondWhenRequestMap(Context) Export
 	// then
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	
+	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.IsNotUndefined(Mock.Constructor);
 	Assert.AreEqual(Mock.Json, "{
 								| ""httpRequest"": {
@@ -77,7 +81,7 @@ Procedure RespondWhenRequestMap(Context) Export
 
 EndProcedure
 
-// @unit-test:dev
+// @unit-test
 Procedure RespondWhenRespondJson(Context) Export
 	
 	// given
@@ -87,7 +91,8 @@ Procedure RespondWhenRespondJson(Context) Export
 	Mock.Respond("{""name"":""value""}");
 	// then
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
-	
+
+	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.IsUndefined(Mock.Constructor);
 	Assert.AreEqual(Mock.Json, "{
 								|
@@ -97,7 +102,7 @@ Procedure RespondWhenRespondJson(Context) Export
 
 EndProcedure
 
-// @unit-test:dev
+// @unit-test
 Procedure RespondWhenResponseJson(Context) Export
 	
 	// given
@@ -108,6 +113,7 @@ Procedure RespondWhenResponseJson(Context) Export
 	// then
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	
+	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.IsUndefined(Mock.Constructor);
 	Assert.AreEqual(Mock.Json, "{
 							   | ""httpResponse"": {

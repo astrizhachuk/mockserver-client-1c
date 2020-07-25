@@ -34,6 +34,8 @@ EndFunction
 
 Function When( Val What ) Export
 	
+	ThisObject.CurrentStage = "";
+	
 	If ( TypeOf(What) = Type("String") ) Then
 		
 		ThisObject.Json = What;
@@ -46,6 +48,7 @@ EndFunction
 
 Function Request( Val HttpRequestJson = Undefined ) Export
 	
+	ThisObject.CurrentStage = "httpRequest";
 	FillPropertyByValue( "httpRequest", HttpRequestJson );
 
 	Return ThisObject;
@@ -54,6 +57,7 @@ EndFunction
 
 Function Response( Val HttpResponseJson = Undefined  ) Export
 	
+	ThisObject.CurrentStage = "httpResponse";
 	FillPropertyByValue( "httpResponse", HttpResponseJson );
 	
 	Return ThisObject;
@@ -65,6 +69,8 @@ EndFunction
 #Region Terminal
 
 Procedure Reset() Export
+	
+	ThisObject.CurrentStage = "";
 	
 	Try
 
@@ -78,7 +84,9 @@ Procedure Reset() Export
 	
 EndProcedure
 
-Procedure Respond( Val Action = Undefined ) Export
+Procedure Respond( Val Object = Undefined ) Export
+	
+	ThisObject.CurrentStage = "";
 	
 	// TODO add Action (time, httpOverrideForwardedRequest, httpForward, errors etc)
 	
@@ -112,13 +120,9 @@ Function WithMethod( Val Method ) Export
 	
 	Var Result;
 	
-	// TODO extract
-	If ( ThisObject.Constructor = Undefined ) Then
-		Raise RuntimeError(
-		    NStr("en = 'Constructor not initialized.';
-		         |ru = 'Конструктор не был инициализирован.'")
-		);
-	EndIf;
+	RaiseIfCurrentStageEmpty();
+	RaiseIfConstructorUndefined();
+	
 	// TODO extract from extract?
 	Result = ThisObject.Constructor.Get("httpRequest");
 	If ( TypeOf(Result) <> Type("Map") ) Then
@@ -139,6 +143,9 @@ Function WithPath( Val Path = "" ) Export
 	
 	Var Result;
 	
+	RaiseIfCurrentStageEmpty();
+	RaiseIfConstructorUndefined();
+	
 	Result = ThisObject.Constructor[ "httpRequest" ];
 	Result.Insert( "path", Path );
 	
@@ -153,16 +160,11 @@ EndFunction
 Function WithStatusCode( Val StatusCode ) Export
 	
 	Var Result;
-	
-	// TODO extract
-	If ( ThisObject.Constructor = Undefined ) Then
-		Raise RuntimeError(
-		    NStr("en = 'Constructor not initialized.';
-		         |ru = 'Конструктор не был инициализирован.'")
-		);
-	EndIf;
+
+	RaiseIfCurrentStageEmpty();	
+	RaiseIfConstructorUndefined();
 	// TODO extract from extract?
-	Result = ThisObject.Constructor.Get("httpRequest");
+	Result = ThisObject.Constructor.Get("httpResponse");
 	If ( TypeOf(Result) <> Type("Map") ) Then
 		Raise RuntimeError(
 		    NStr("en = 'Request constructor is not correct.';
@@ -176,6 +178,10 @@ Function WithStatusCode( Val StatusCode ) Export
 	Return ThisObject;
 	
 EndFunction
+
+
+
+
 
 #EndRegion
 
@@ -225,9 +231,15 @@ Function Метод( Метод ) Export
 	
 EndFunction
 
-Function Путь( Путь = "" ) Export
+Function Путь( Путь ) Export
 	
 	Return WithPath( Путь );
+	
+EndFunction
+
+Function КодОтвета( КодОтвета ) Export
+	
+	Return WithStatusCode( КодОтвета );
 	
 EndFunction
 
@@ -236,6 +248,28 @@ EndFunction
 #EndRegion
 
 #Region Private
+
+Procedure RaiseIfCurrentStageEmpty()
+	
+	If ( IsBlankString(ThisObject.CurrentStage) ) Then
+		Raise RuntimeError(
+		    NStr("en = 'The action needs to be initialized first.';
+		         |ru = 'Сначала необходимо инициализировать действие.'")
+		);
+	EndIf;
+	
+EndProcedure
+
+Procedure RaiseIfConstructorUndefined()
+	
+	If ( ThisObject.Constructor = Undefined ) Then
+		Raise RuntimeError(
+		    NStr("en = 'Constructor not initialized.';
+		         |ru = 'Конструктор не был инициализирован.'")
+		);
+	EndIf;
+	
+EndProcedure
 
 Procedure InitConstructor()
 	

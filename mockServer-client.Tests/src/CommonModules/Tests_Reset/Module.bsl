@@ -22,6 +22,7 @@ Procedure ResetTerminalException(Context) Export
 	// when
 	Mock.Reset();
 	// then
+	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.IsFalse(IsBlankString(Mock.MockServerResponse.ТекстОшибки));
 		

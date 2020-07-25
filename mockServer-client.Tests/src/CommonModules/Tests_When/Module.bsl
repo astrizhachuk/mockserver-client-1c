@@ -1,13 +1,14 @@
 #Region Internal
 
 // @unit-test
-Procedure WhenString(Context) Export
+Procedure WhenParamsString(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
 	// when
 	Result = Mock.When("{""sample"": ""any""}");
 	// then
+	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.IsUndefined(Result.Constructor);
 	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
 	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
@@ -16,13 +17,14 @@ Procedure WhenString(Context) Export
 EndProcedure
 
 // @unit-test
-Procedure WhenRequest(Context) Export
+Procedure WhenParamsRequestAction(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
 	// when
 	Result = Mock.When( Mock.Request() );
 	// then
+	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.IsTrue(IsBlankString(Result.Json));
 	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
 	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
@@ -32,13 +34,14 @@ Procedure WhenRequest(Context) Export
 EndProcedure
 
 // @unit-test
-Procedure WhenSomethingWrong(Context) Export
+Procedure WhenWrongParams(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
 	// when
 	Result = Mock.When( new Array() );
 	// then
+	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.IsTrue(IsBlankString(Result.Json));
 	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
 	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));

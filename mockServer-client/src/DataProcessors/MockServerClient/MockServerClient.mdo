@@ -21,6 +21,17 @@
       <stringQualifiers/>
     </type>
   </attributes>
+  <attributes uuid="8127d4aa-a9cc-4389-8358-8ad59a321c7e">
+    <name>CurrentStage</name>
+    <synonym>
+      <key>ru</key>
+      <value>Current stage</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers/>
+    </type>
+  </attributes>
   <attributes uuid="8612dc00-2353-43b5-90a8-6a245653e621">
     <name>Constructor</name>
     <synonym>

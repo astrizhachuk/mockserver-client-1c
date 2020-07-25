@@ -3,22 +3,22 @@
 @tree
 @classname=ModuleExceptionPath
 
-Feature: mockServer-client.Tests.Tests_RequestMatchers
+Feature: mockServer-client.Tests.Tests_ResponseAction
 	As Developer
 	I want the returns value to be equal to expected value
 	That I can guarantee the execution of the method
 
 @OnServer
-Scenario: WithMethodNotEmpty
+Scenario: WithStatusCodeNotEmpty
 	And I execute 1C:Enterprise script at server
-	| 'Tests_RequestMatchers.WithMethodNotEmpty(Context());' |
+	| 'Tests_ResponseAction.WithStatusCodeNotEmpty(Context());' |
 
 @OnServer
-Scenario: WithMethodRewrite
+Scenario: WithStatusCodeRewrite
 	And I execute 1C:Enterprise script at server
-	| 'Tests_RequestMatchers.WithMethodRewrite(Context());' |
+	| 'Tests_ResponseAction.WithStatusCodeRewrite(Context());' |
 
 @OnServer
-Scenario: CallMethodsRu
+Scenario: CallStatusCodeRu
 	And I execute 1C:Enterprise script at server
-	| 'Tests_RequestMatchers.CallMethodsRu(Context());' |
+	| 'Tests_ResponseAction.CallStatusCodeRu(Context());' |

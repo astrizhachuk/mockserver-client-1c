@@ -9,19 +9,19 @@ Feature: mockServer-client.Tests.Tests_When
 	That I can guarantee the execution of the method
 
 @OnServer
-Scenario: WhenString
+Scenario: WhenParamsString
 	And I execute 1C:Enterprise script at server
-	| 'Tests_When.WhenString(Context());' |
+	| 'Tests_When.WhenParamsString(Context());' |
 
 @OnServer
-Scenario: WhenRequest
+Scenario: WhenParamsRequestAction
 	And I execute 1C:Enterprise script at server
-	| 'Tests_When.WhenRequest(Context());' |
+	| 'Tests_When.WhenParamsRequestAction(Context());' |
 
 @OnServer
-Scenario: WhenSomethingWrong
+Scenario: WhenWrongParams
 	And I execute 1C:Enterprise script at server
-	| 'Tests_When.WhenSomethingWrong(Context());' |
+	| 'Tests_When.WhenWrongParams(Context());' |
 
 @OnServer
 Scenario: CallWhenRu

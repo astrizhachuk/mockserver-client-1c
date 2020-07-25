@@ -148,6 +148,37 @@ EndFunction
 	
 #EndRegion
 
+#Region Actions
+
+Function WithStatusCode( Val StatusCode ) Export
+	
+	Var Result;
+	
+	// TODO extract
+	If ( ThisObject.Constructor = Undefined ) Then
+		Raise RuntimeError(
+		    NStr("en = 'Constructor not initialized.';
+		         |ru = 'Конструктор не был инициализирован.'")
+		);
+	EndIf;
+	// TODO extract from extract?
+	Result = ThisObject.Constructor.Get("httpRequest");
+	If ( TypeOf(Result) <> Type("Map") ) Then
+		Raise RuntimeError(
+		    NStr("en = 'Request constructor is not correct.';
+		         |ru = 'Некорректный конструктор запроса.'")
+		);
+	EndIf;
+	//
+	
+	Result.Insert( "statusCode", StatusCode );
+	
+	Return ThisObject;
+	
+EndFunction
+
+#EndRegion
+
 #EndRegion
 
 #Region Ru

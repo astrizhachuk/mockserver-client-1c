@@ -125,6 +125,7 @@ EndFunction
 Function Request( Val HttpRequestJson = Undefined ) Export
 	
 	ThisObject.CurrentStage = "httpRequest";
+	
 	FillPropertyByValue( "httpRequest", HttpRequestJson );
 
 	Return ThisObject;
@@ -134,6 +135,7 @@ EndFunction
 Function Response( Val HttpResponseJson = Undefined  ) Export
 	
 	ThisObject.CurrentStage = "httpResponse";
+	
 	FillPropertyByValue( "httpResponse", HttpResponseJson );
 	
 	Return ThisObject;
@@ -194,12 +196,9 @@ EndProcedure
 
 Function WithMethod( Val Method ) Export
 	
-	Var ConstructorProperty;
-	
 	CheckObjectPropertiesForMethod();
 	
-	ConstructorProperty = ConstructorPropertyByStage( ThisObject.CurrentStage );
-	ConstructorProperty.Insert( "method", Method );
+	ConstructorPropertyByStage( ThisObject.CurrentStage ).Insert( "method", Method );
 	
 	Return ThisObject;
 	
@@ -207,12 +206,9 @@ EndFunction
 
 Function WithPath( Val Path ) Export
 	
-	Var ConstructorProperty;
-	
 	CheckObjectPropertiesForMethod();
 	
-	ConstructorProperty = ConstructorPropertyByStage( ThisObject.CurrentStage );
-	ConstructorProperty.Insert( "path", Path );
+	ConstructorPropertyByStage( ThisObject.CurrentStage ).Insert( "path", Path );
 	
 	Return ThisObject;
 	
@@ -222,11 +218,7 @@ Function Headers( Val Headers = Undefined ) Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	If ( Headers = Undefined ) Then
-		
-		Headers = New Map();
-		
-	EndIf;
+	Headers = ?( (Headers = Undefined), New Map(), Headers );
 	
 	FillPropertyByValue( "headers", Headers, ThisObject.CurrentStage );
 
@@ -235,40 +227,21 @@ Function Headers( Val Headers = Undefined ) Export
 EndFunction
 
 Function WithHeader( Val Key, Val Value ) Export
-	
-	Var ConstructorProperty;
-	Var Values;
-	Var Header;
+
+	Var CurrentHeaders;
+	Var NewHeader;
 	
 	CheckObjectPropertiesForMethod();
-	
-	Header = New Map();
-	
-	If ( TypeOf(Value) = Type("String") ) Then
-		
-		Values = New Array();
-		Values.Add( Value );
-		Header.Insert( Key, Values );		
-		
-	Else
-		
-		Header.Insert( Key, Value );
-		
-	EndIf;
-	
-	ConstructorProperty = ConstructorPropertyByStage( ThisObject.CurrentStage );
-	Headers = ConstructorProperty.Get("headers");
-	
-	If Headers = Undefined Тогда
-		ConstructorProperty.Insert("headers", New Map());
-		Headers = ConstructorProperty.Get("headers");
-	EndIf;
 
-	Для Каждого KeyValue Из Header Цикл
-		Headers.Insert(KeyValue.Key, KeyValue.Value);
+	CurrentHeaders = StageHeaders( ThisObject.CurrentStage );
+	NewHeader = MapByDifferentTypeValues( Key, Value );
+
+	Для Каждого KeyValue Из NewHeader Цикл
+		
+		CurrentHeaders.Insert( KeyValue.Key, KeyValue.Value );
+		
 	КонецЦикла;
 
-	
 	Return ThisObject;
 	
 EndFunction
@@ -281,25 +254,19 @@ EndFunction
 
 Function WithBody( Val Body ) Export
 	
-	Var ConstructorProperty;
-
 	CheckObjectPropertiesForMethod();
 
-	ConstructorProperty = ConstructorPropertyByStage( ThisObject.CurrentStage );
-	ConstructorProperty.Insert( "body", Body );
-	
+	ConstructorPropertyByStage( ThisObject.CurrentStage ).Insert( "body", Body );
+
 	Return ThisObject;
 	
 EndFunction
 
 Function WithStatusCode( Val StatusCode ) Export
 	
-	Var ConstructorProperty;
-
 	CheckObjectPropertiesForMethod();
 
-	ConstructorProperty = ConstructorPropertyByStage( ThisObject.CurrentStage );
-	ConstructorProperty.Insert( "statusCode", StatusCode );
+	ConstructorPropertyByStage( ThisObject.CurrentStage ).Insert( "statusCode", StatusCode );
 	
 	Return ThisObject;
 	
@@ -344,14 +311,19 @@ Procedure RaiseIfConstructorUndefined()
 	
 EndProcedure
 
-Procedure InitConstructor()
+Procedure InitMapValue( Value )
 	
-	If ( ThisObject.Constructor = Undefined
-		Or TypeOf(ThisObject.Constructor) <> Type("Map")) Then
+	If ( (Value = Undefined) OR (TypeOf(Value) <> Type("Map")) ) Then
 			
-			ThisObject.Constructor = New Map();
+			Value = New Map();
 			
 	EndIf;
+	
+EndProcedure
+
+Procedure InitConstructor()
+	
+	InitMapValue( ThisObject.Constructor );
 	
 EndProcedure
 
@@ -386,8 +358,7 @@ Procedure FillPropertyByValue( Property, Value, Stage = "" )
 			
 		Else
 			
-			ConstructorProperty = ConstructorPropertyByStage( Stage );
-			ConstructorProperty.Insert( Property, Value );
+			ConstructorPropertyByStage( Stage ).Insert( Property, Value );
 			
 		EndIf;
 		
@@ -395,35 +366,81 @@ Procedure FillPropertyByValue( Property, Value, Stage = "" )
 	
 EndProcedure
 
+Function StageHeaders( Val Stage )
+	
+	Var PropertyCurrentStage;
+	Var Result;
+	
+	PropertyCurrentStage = ConstructorPropertyByStage( Stage );
+	
+	Result = PropertyCurrentStage.Get("headers");
+	
+	If ( Result = Undefined ) Then
+		
+		PropertyCurrentStage.Insert( "headers", New Map() );
+		Result = PropertyCurrentStage.Get( "headers" );
+		
+	EndIf;
+	
+	Return Result;
+
+EndFunction
+
+Function MapByDifferentTypeValues( Val Key, Val Value )
+	
+	Var Result;
+	
+	Result = New Map();
+	
+	If ( TypeOf(Value) = Type("String") ) Then
+		
+		NewValue = New Array();
+		NewValue.Add( Value );
+	
+	Else
+		NewValue = Value;
+	
+	EndIf;
+	
+	Result.Insert( Key, NewValue );
+	
+	Return Result;
+	
+EndFunction
+
 Функция JoinJsonProperties()
 	
-	Перем JSON;
+	Перем Result;
 
-	JSON = "{" + Chars.LF;
+	Result = "{" + Chars.LF;
 	
 	Если ( ТипЗнч(HttpRequestJson) = Тип("String") И НЕ ПустаяСтрока(HttpRequestJson) ) Тогда
 		
-		Если HttpResponseJson = Неопределено Тогда
-			JSON = JSON + StrTemplate(
+		Если ( HttpResponseJson = Неопределено ) Тогда
+			
+			Result = Result + StrTemplate(
 		        " ""httpRequest"": {
 		        |%1
 		        | }",
 		        HttpRequestJson
 	    	);
+	    	
 		Иначе
-			JSON = JSON + StrTemplate(
+			
+			Result = Result + StrTemplate(
 		        " ""httpRequest"": {
 		        |%1
 		        | },",
 		        HttpRequestJson
-	    	);		
+	    	);
+	    			
 		КонецЕсли;
 		
 	КонецЕсли;
 	
 	Если ( ТипЗнч(HttpResponseJson) = Тип("String") И НЕ ПустаяСтрока(HttpResponseJson) ) Тогда
 		
-			JSON = JSON + StrTemplate(
+			Result = Result + StrTemplate(
 		        " ""httpResponse"": {
 		        |%1
 		        | }",
@@ -432,9 +449,9 @@ EndProcedure
 
 	КонецЕсли;
 	
-	JSON = JSON + Chars.LF + "}";
+	Result = Result + Chars.LF + "}";
 	
-	Возврат JSON;
+	Возврат Result;
 	
 КонецФункции
 

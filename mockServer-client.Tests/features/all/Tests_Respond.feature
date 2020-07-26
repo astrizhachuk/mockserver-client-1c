@@ -37,3 +37,8 @@ Scenario: RespondWhenRespondJson
 Scenario: RespondWhenResponseJson
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Respond.RespondWhenResponseJson(Context());' |
+
+@OnServer
+Scenario: RespondWhenResponseMap
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Respond.RespondWhenResponseMap(Context());' |

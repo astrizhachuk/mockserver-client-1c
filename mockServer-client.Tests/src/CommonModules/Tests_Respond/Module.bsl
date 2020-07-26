@@ -9,8 +9,8 @@ Procedure RespondUrlException(Context) Export
 	// when
 	Mock.Respond();
 	// then
-	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
+	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.IsFalse(IsBlankString(Mock.MockServerResponse.ТекстОшибки));
 		
 EndProcedure
@@ -25,7 +25,6 @@ Procedure RespondWhenFullJson(Context) Export
 	Mock.When("{""name"":""value""}").Respond();
 	// then
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
-
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.IsUndefined(Mock.Constructor);
 	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
@@ -44,7 +43,6 @@ Procedure RespondWhenRequestJson(Context) Export
 	Mock.When( Mock.Request("""name"":""value""") ).Respond();
 	// then
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
-	
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.IsUndefined(Mock.Constructor);
 	Assert.AreEqual(Mock.Json, "{
@@ -67,7 +65,6 @@ Procedure RespondWhenRequestMap(Context) Export
 	Mock.When( Mock.Request().WithMethod("GET") ).Respond();
 	// then
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
-	
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.IsNotUndefined(Mock.Constructor);
 	Assert.AreEqual(Mock.Json, "{
@@ -112,7 +109,6 @@ Procedure RespondWhenResponseJson(Context) Export
 	Mock.Respond( Mock.Response("""statusCode"":404") );
 	// then
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
-	
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.IsUndefined(Mock.Constructor);
 	Assert.AreEqual(Mock.Json, "{
@@ -125,26 +121,25 @@ Procedure RespondWhenResponseJson(Context) Export
 
 EndProcedure
 
-//// @unit-test:dev
-//Procedure RespondWhenResponseMap(Context) Export
-//	
-//	// given
-//	Mock = DataProcessors.MockServerClient.Create();
-//	Mock.Server("this.is.error.url", "1080");
-//	// when
-//	Mock.Respond( Mock.Response().StatusCode() );
-//	// then
-//	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
-//	
-//	Assert.IsUndefined(Mock.Constructor);
-//	Assert.AreEqual(Mock.Json, "{
-//							   | ""httpResponse"": {
-//							   |""statusCode"":404
-//							   | }
-//							   |}");
-//	Assert.AreEqual(Mock.HttpResponseJson, """statusCode"":404");
-//	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
-//
-//EndProcedure
+// @unit-test:dev
+Procedure RespondWhenResponseMap(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("this.is.error.url", "1080");
+	// when
+	Mock.Respond( Mock.Response().WithStatusCode(404) );
+	// then
+	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
+	Assert.IsUndefined(Mock.Constructor);
+	Assert.AreEqual(Mock.Json, "{
+							   | ""httpResponse"": {
+							   |""statusCode"":404
+							   | }
+							   |}");
+	Assert.AreEqual(Mock.HttpResponseJson, """statusCode"":404");
+	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
+
+EndProcedure
 
 #EndRegion

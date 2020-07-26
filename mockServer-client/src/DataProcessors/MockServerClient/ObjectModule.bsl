@@ -186,7 +186,7 @@ Procedure Respond( Val Object = Undefined ) Export
 		
 		ThisObject.MockServerResponse = MockServerError( DetailErrorDescription(ErrorInfo()) );
 		
-	EndTry;		
+	EndTry;
 
 EndProcedure
 

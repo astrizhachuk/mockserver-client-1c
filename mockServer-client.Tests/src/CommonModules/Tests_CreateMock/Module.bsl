@@ -73,10 +73,10 @@ Procedure CreateClientAndResetAfter(Context) Export
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
 	// when
-	Result = Mock.Server("localhost", "1080", true);
+	Result = Mock.Server("this.is.error.url", "1080", true);
 	// then	
-	Assert.AreEqual(Result.URL, "localhost:1080");
-	Assert.IsUndefined(Result.MockServerResponse);
+	Assert.AreEqual(Result.URL, "this.is.error.url:1080");
+	Assert.AreEqual(Result.MockServerResponse.КодСостояния, 500);
 		
 EndProcedure
 

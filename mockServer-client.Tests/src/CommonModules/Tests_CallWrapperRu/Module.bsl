@@ -61,12 +61,19 @@ Procedure Headers(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("this.is.error.url", "1080");
 	// when
 	Mock.When(Mock.Request().Заголовки()).Respond();
 	// then
+	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpRequest"].Count(), 1);
 	Assert.IsInstanceOfType("Map", Mock.Constructor["httpRequest"]["headers"]);
+	Assert.AreEqual(Mock.Json, "{
+							   | ""httpRequest"": {
+							   |  ""headers"": {}
+							   | }
+							   |}");
 
 EndProcedure
 
@@ -75,9 +82,11 @@ Procedure WithHeader(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("this.is.error.url", "1080");
 	// when
 	Mock.When(Mock.Request().Headers().Заголовок("key", "value")).Respond();
 	// then
+	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpRequest"]["headers"]["key"][0], "value");
 	Assert.AreEqual(Mock.Json, "{
@@ -97,10 +106,18 @@ Procedure WithMethod(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("this.is.error.url", "1080");
 	// when
 	Mock.When(Mock.Request().Метод("GET")).Respond();
 	// then
+	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
+	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpRequest"]["method"], "GET");
+	Assert.AreEqual(Mock.Json, "{
+							   | ""httpRequest"": {
+							   |  ""method"": ""GET""
+							   | }
+							   |}");
 
 EndProcedure
 
@@ -109,10 +126,18 @@ Procedure WithPath(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("this.is.error.url", "1080");
 	// when
 	Mock.When(Mock.Request().Путь("/фуу/foo")).Respond();
 	// then
+	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
+	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpRequest"]["path"], "/фуу/foo");
+	Assert.AreEqual(Mock.Json, "{
+							   | ""httpRequest"": {
+							   |  ""path"": ""/фуу/foo""
+							   | }
+							   |}");
 
 EndProcedure
 
@@ -136,11 +161,18 @@ Procedure WithStatusCode(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("this.is.error.url", "1080");
 	// when
 	Mock.Respond(Mock.Response().КодОтвета(404));
 	// then
+	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpResponse"]["statusCode"], 404);
+	Assert.AreEqual(Mock.Json, "{
+								| ""httpResponse"": {
+								|  ""statusCode"": 404
+								| }
+								|}");
 
 EndProcedure
 
@@ -154,6 +186,10 @@ Procedure Respond(Context) Export
 	Mock.When("{""name"":""value""}").Ответить();
 	// then
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
+	Assert.AreEqual(Mock.CurrentStage, "");
+	Assert.IsUndefined(Mock.Constructor);
+	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
+	Assert.IsTrue(IsBlankString(Mock.HttpResponseJson));
 	Assert.AreEqual(Mock.Json, "{""name"":""value""}");
 
 EndProcedure

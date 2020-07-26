@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:DataProcessor xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="f81a7f83-5fb6-44bf-8637-4e6f4114d126">
+<mdclass:DataProcessor xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="92683be9-0a1f-4468-acbd-d59fdef421fb">
   <producedTypes>
-    <objectType typeId="8170d29b-c271-44d3-a753-4623a5366451" valueTypeId="133b1473-7a26-4a16-8d24-51dbcfc053c9"/>
-    <managerType typeId="5f2dd923-7a41-4ea3-9d20-0922bea2cbe6" valueTypeId="a5a6f507-9c6c-4c4c-881d-5d6b1942218e"/>
+    <objectType typeId="0ccbdfca-5550-4e8a-bffa-4e747b5a18d1" valueTypeId="0cda4530-3d6d-4cef-a504-6c44940360de"/>
+    <managerType typeId="1a11e5ab-6238-4111-90c6-333bbd7378e9" valueTypeId="2c7e6596-bcca-4825-bab3-5d7d0cc469d9"/>
   </producedTypes>
   <name>MockServerClient</name>
+  <synonym>
+    <key>en</key>
+    <value>MockServer-client</value>
+  </synonym>
   <synonym>
     <key>ru</key>
     <value>MockServer-client</value>
@@ -12,6 +16,10 @@
   <useStandardCommands>true</useStandardCommands>
   <attributes uuid="b364f2cc-edd3-4a22-a989-1b1e6ba8e619">
     <name>Url</name>
+    <synonym>
+      <key>en</key>
+      <value>Url</value>
+    </synonym>
     <synonym>
       <key>ru</key>
       <value>Url</value>
@@ -24,6 +32,10 @@
   <attributes uuid="8127d4aa-a9cc-4389-8358-8ad59a321c7e">
     <name>CurrentStage</name>
     <synonym>
+      <key>en</key>
+      <value>Current stage</value>
+    </synonym>
+    <synonym>
       <key>ru</key>
       <value>Current stage</value>
     </synonym>
@@ -35,6 +47,10 @@
   <attributes uuid="8612dc00-2353-43b5-90a8-6a245653e621">
     <name>Constructor</name>
     <synonym>
+      <key>en</key>
+      <value>Constructor</value>
+    </synonym>
+    <synonym>
       <key>ru</key>
       <value>Constructor</value>
     </synonym>
@@ -44,6 +60,10 @@
   </attributes>
   <attributes uuid="259a239b-f688-498e-a6c4-c4ffd50dffb8">
     <name>Json</name>
+    <synonym>
+      <key>en</key>
+      <value>Json</value>
+    </synonym>
     <synonym>
       <key>ru</key>
       <value>Json</value>
@@ -56,8 +76,12 @@
   <attributes uuid="93054b63-e2c2-4c70-9ce3-f4fc6df6c31b">
     <name>HttpRequestJson</name>
     <synonym>
+      <key>en</key>
+      <value>HttpRequestJson</value>
+    </synonym>
+    <synonym>
       <key>ru</key>
-      <value>Http request json</value>
+      <value>HttpRequestJson</value>
     </synonym>
     <type>
       <types>Arbitrary</types>
@@ -66,8 +90,12 @@
   <attributes uuid="13d4cea9-38f2-4636-8968-451eec4057dc">
     <name>HttpResponseJson</name>
     <synonym>
+      <key>en</key>
+      <value>HttpResponseJson</value>
+    </synonym>
+    <synonym>
       <key>ru</key>
-      <value>Response body json</value>
+      <value>HttpResponseJson</value>
     </synonym>
     <type>
       <types>Arbitrary</types>
@@ -76,8 +104,12 @@
   <attributes uuid="bad92865-714e-4d0e-a61f-010843636ea9">
     <name>MockServerResponse</name>
     <synonym>
+      <key>en</key>
+      <value>MockServerResponse</value>
+    </synonym>
+    <synonym>
       <key>ru</key>
-      <value>MockServer response</value>
+      <value>MockServerResponse</value>
     </synonym>
     <type>
       <types>Arbitrary</types>

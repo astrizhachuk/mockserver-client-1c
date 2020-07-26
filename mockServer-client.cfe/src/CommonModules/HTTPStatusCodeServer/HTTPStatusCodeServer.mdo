@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="ae9362a9-ca6e-49c9-ac7a-2cd7fc6e24c2">
+  <name>HTTPStatusCodeServer</name>
+  <synonym>
+    <key>en</key>
+    <value>HTTPStatusCodeServer</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>HTTPStatusCodeServer</value>
+  </synonym>
+  <server>true</server>
+  <serverCall>true</serverCall>
+</mdclass:CommonModule>

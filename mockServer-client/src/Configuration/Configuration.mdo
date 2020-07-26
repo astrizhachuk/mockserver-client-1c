@@ -37,9 +37,4 @@
     </synonym>
     <languageCode>en</languageCode>
   </languages>
-  <commonModules>CommonModule.HTTPConnector</commonModules>
-  <commonModules>CommonModule.HTTPStatusCode</commonModules>
-  <commonModules>CommonModule.HTTPStatusCodeCached</commonModules>
-  <commonModules>CommonModule.HTTPStatusCodeServer</commonModules>
-  <dataProcessors>DataProcessor.MockServerClient</dataProcessors>
 </mdclass:Configuration>

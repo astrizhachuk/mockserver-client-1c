@@ -2,6 +2,76 @@
 
 #Region Public
 
+#Region Ru
+
+Function Сервер( URL, Port = Undefined ) Export
+	
+	Return Server( URL, Port );
+	
+EndFunction
+
+Procedure Сбросить() Export
+	
+	Reset();
+	
+EndProcedure
+
+Procedure Ответить( Ожидание = Undefined ) Export
+	
+	Respond( Ожидание );
+	
+EndProcedure
+
+Function Когда( Запрос ) Export
+	
+	Return When( Запрос );
+	
+EndFunction
+
+Function Запрос( ЗапросJson = Undefined ) Export
+	
+	Return Request( ЗапросJson );
+	
+EndFunction
+
+Function Ответ( ОтветJson = Undefined ) Export
+	
+	Return Response( ОтветJson );
+	
+EndFunction
+
+Function Заголовки( Заголовки = Undefined ) Export
+	
+	Return Headers( Заголовки );
+	
+EndFunction
+
+Function Метод( Метод ) Export
+	
+	Return WithMethod( Метод );
+	
+EndFunction
+
+Function Путь( Путь ) Export
+	
+	Return WithPath( Путь );
+	
+EndFunction
+
+Function Тело( Тело ) Export
+	
+	Return WithBody( Тело );
+	
+EndFunction
+
+Function КодОтвета( КодОтвета ) Export
+	
+	Return WithStatusCode( КодОтвета );
+	
+EndFunction
+
+#EndRegion
+
 #Region En
 	
 #Region Intermediate
@@ -120,8 +190,7 @@ Function WithMethod( Val Method ) Export
 	
 	Var ConstructorProperty;
 	
-	RaiseIfCurrentStageEmpty();
-	RaiseIfConstructorUndefined();
+	CheckObjectPropertiesForMethod();
 	
 	ConstructorProperty = ConstructorPropertyByStage( ThisObject.CurrentStage );
 	ConstructorProperty.Insert( "method", Method );
@@ -134,12 +203,27 @@ Function WithPath( Val Path ) Export
 	
 	Var ConstructorProperty;
 	
-	RaiseIfCurrentStageEmpty();
-	RaiseIfConstructorUndefined();
+	CheckObjectPropertiesForMethod();
 	
 	ConstructorProperty = ConstructorPropertyByStage( ThisObject.CurrentStage );
 	ConstructorProperty.Insert( "path", Path );
 	
+	Return ThisObject;
+	
+EndFunction
+
+Function Headers( Val Headers = Undefined ) Export
+	
+	CheckObjectPropertiesForMethod();
+	
+	If ( Headers = Undefined ) Then
+		
+		Headers = New Map();
+		
+	EndIf;
+	
+	FillPropertyByValue( "headers", Headers, ThisObject.CurrentStage );
+
 	Return ThisObject;
 	
 EndFunction
@@ -148,12 +232,26 @@ EndFunction
 
 #Region Actions
 
+#Region ResponseAction
+
+Function WithBody( Val Body ) Export
+	
+	Var ConstructorProperty;
+
+	CheckObjectPropertiesForMethod();
+
+	ConstructorProperty = ConstructorPropertyByStage( ThisObject.CurrentStage );
+	ConstructorProperty.Insert( "body", Body );
+	
+	Return ThisObject;
+	
+EndFunction
+
 Function WithStatusCode( Val StatusCode ) Export
 	
 	Var ConstructorProperty;
 
-	RaiseIfCurrentStageEmpty();	
-	RaiseIfConstructorUndefined();
+	CheckObjectPropertiesForMethod();
 
 	ConstructorProperty = ConstructorPropertyByStage( ThisObject.CurrentStage );
 	ConstructorProperty.Insert( "statusCode", StatusCode );
@@ -166,67 +264,18 @@ EndFunction
 
 #EndRegion
 
-#Region Ru
-
-Function Сервер( URL, Port = Undefined ) Export
-	
-	Return Server( URL, Port );
-	
-EndFunction
-
-Procedure Сбросить() Export
-	
-	Reset();
-	
-EndProcedure
-
-Procedure Ответить( Ожидание = Undefined ) Export
-	
-	Respond( Ожидание );
-	
-EndProcedure
-
-Function Когда( Запрос ) Export
-	
-	Return When( Запрос );
-	
-EndFunction
-
-Function Запрос( ЗапросJson = Undefined ) Export
-	
-	Return Request( ЗапросJson );
-	
-EndFunction
-
-Function Ответ( ОтветJson = Undefined ) Export
-	
-	Return Response( ОтветJson );
-	
-EndFunction
-
-Function Метод( Метод ) Export
-	
-	Return WithMethod( Метод );
-	
-EndFunction
-
-Function Путь( Путь ) Export
-	
-	Return WithPath( Путь );
-	
-EndFunction
-
-Function КодОтвета( КодОтвета ) Export
-	
-	Return WithStatusCode( КодОтвета );
-	
-EndFunction
-
 #EndRegion
 
 #EndRegion
 
 #Region Private
+
+Процедура CheckObjectPropertiesForMethod()
+	
+	RaiseIfCurrentStageEmpty();
+	RaiseIfConstructorUndefined();
+	
+КонецПроцедуры
 
 Procedure RaiseIfCurrentStageEmpty()
 	
@@ -267,8 +316,8 @@ Function ConstructorPropertyByStage( Val Stage )
 	
 	If ( TypeOf(Result) <> Type("Map") ) Then
 		Raise RuntimeError(
-		    NStr("en = 'The constructor contains no action for current method.';
-		         |ru = 'Для текущего метода конструктор не содержит действия.'")
+		    NStr("en = 'Constructor does not contain action scope.';
+		         |ru = 'Конструктор не содержит область применения метода.'")
 		);
 	EndIf;
 	
@@ -276,14 +325,26 @@ Function ConstructorPropertyByStage( Val Stage )
 	
 EndFunction
 
-Procedure FillPropertyByValue( JsonProperty, Value )
+Procedure FillPropertyByValue( Property, Value, Stage = "" )
 	
 	If ( TypeOf(Value) = Type("String") ) Then
-		ThisObject[ JsonProperty + "Json" ] = Value;
+		
+		ThisObject[ Property + "Json" ] = Value;
+		
 	Else
 
 		InitConstructor();
-		ThisObject.Constructor.Insert( JsonProperty, New Map() );
+		
+		If ( IsBlankString(Stage) ) Then
+			
+			ThisObject.Constructor.Insert( Property, New Map() );
+			
+		Else
+			
+			ConstructorProperty = ConstructorPropertyByStage( Stage );
+			ConstructorProperty.Insert( Property, Value );
+			
+		EndIf;
 		
 	EndIf;
 	

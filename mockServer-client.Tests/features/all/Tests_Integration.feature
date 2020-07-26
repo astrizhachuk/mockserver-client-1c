@@ -14,6 +14,6 @@ Scenario: MockServerDockerUp
 	| 'Tests_Integration.MockServerDockerUp(Context());' |
 
 @OnServer
-Scenario: RespondResponse
+Scenario: MatchRequestByPath
 	And I execute 1C:Enterprise script at server
-	| 'Tests_Integration.RespondResponse(Context());' |
+	| 'Tests_Integration.MatchRequestByPath(Context());' |

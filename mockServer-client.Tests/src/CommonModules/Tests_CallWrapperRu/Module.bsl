@@ -57,6 +57,20 @@ Procedure Request(Context) Export
 EndProcedure
 
 // @unit-test
+Procedure Headers(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Mock.When(Mock.Request().Заголовки()).Respond();
+	// then
+	Assert.AreEqual(Mock.CurrentStage, "");
+	Assert.AreEqual(Mock.Constructor["httpRequest"].Count(), 1);
+	Assert.IsInstanceOfType("Map", Mock.Constructor["httpRequest"]["headers"]);
+
+EndProcedure
+
+// @unit-test
 Procedure WithMethod(Context) Export
 	
 	// given

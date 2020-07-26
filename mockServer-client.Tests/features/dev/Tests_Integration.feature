@@ -9,6 +9,6 @@ Feature: mockServer-client.Tests.Tests_Integration
 	That I can guarantee the execution of the method
 
 @OnServer
-Scenario: RespondResponse
+Scenario: MatchRequestByPath
 	And I execute 1C:Enterprise script at server
-	| 'Tests_Integration.RespondResponse(Context());' |
+	| 'Tests_Integration.MatchRequestByPath(Context());' |

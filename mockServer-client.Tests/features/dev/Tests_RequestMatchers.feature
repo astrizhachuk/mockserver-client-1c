@@ -9,6 +9,16 @@ Feature: mockServer-client.Tests.Tests_RequestMatchers
 	That I can guarantee the execution of the method
 
 @OnServer
-Scenario: PropertyByStage
+Scenario: HeadersWithoutParams
 	And I execute 1C:Enterprise script at server
-	| 'Tests_RequestMatchers.PropertyByStage(Context());' |
+	| 'Tests_RequestMatchers.HeadersWithoutParams(Context());' |
+
+@OnServer
+Scenario: HeadersWithParams
+	And I execute 1C:Enterprise script at server
+	| 'Tests_RequestMatchers.HeadersWithParams(Context());' |
+
+@OnServer
+Scenario: HeadersByStage
+	And I execute 1C:Enterprise script at server
+	| 'Tests_RequestMatchers.HeadersByStage(Context());' |

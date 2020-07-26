@@ -14,6 +14,21 @@ Scenario: PropertyByStage
 	| 'Tests_RequestMatchers.PropertyByStage(Context());' |
 
 @OnServer
+Scenario: HeadersWithoutParams
+	And I execute 1C:Enterprise script at server
+	| 'Tests_RequestMatchers.HeadersWithoutParams(Context());' |
+
+@OnServer
+Scenario: HeadersWithParams
+	And I execute 1C:Enterprise script at server
+	| 'Tests_RequestMatchers.HeadersWithParams(Context());' |
+
+@OnServer
+Scenario: HeadersByStage
+	And I execute 1C:Enterprise script at server
+	| 'Tests_RequestMatchers.HeadersByStage(Context());' |
+
+@OnServer
 Scenario: WithMethodNotEmpty
 	And I execute 1C:Enterprise script at server
 	| 'Tests_RequestMatchers.WithMethodNotEmpty(Context());' |

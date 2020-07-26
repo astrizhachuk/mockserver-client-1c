@@ -9,11 +9,16 @@ Feature: mockServer-client.Tests.Tests_ResponseAction
 	That I can guarantee the execution of the method
 
 @OnServer
-Scenario: WithStatusCodeNotEmpty
+Scenario: WithStatusCode
 	And I execute 1C:Enterprise script at server
-	| 'Tests_ResponseAction.WithStatusCodeNotEmpty(Context());' |
+	| 'Tests_ResponseAction.WithStatusCode(Context());' |
 
 @OnServer
 Scenario: WithStatusCodeRewrite
 	And I execute 1C:Enterprise script at server
 	| 'Tests_ResponseAction.WithStatusCodeRewrite(Context());' |
+
+@OnServer
+Scenario: WithBody
+	And I execute 1C:Enterprise script at server
+	| 'Tests_ResponseAction.WithBody(Context());' |

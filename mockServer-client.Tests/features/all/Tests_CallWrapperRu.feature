@@ -29,6 +29,11 @@ Scenario: Request
 	| 'Tests_CallWrapperRu.Request(Context());' |
 
 @OnServer
+Scenario: Headers
+	And I execute 1C:Enterprise script at server
+	| 'Tests_CallWrapperRu.Headers(Context());' |
+
+@OnServer
 Scenario: WithMethod
 	And I execute 1C:Enterprise script at server
 	| 'Tests_CallWrapperRu.WithMethod(Context());' |

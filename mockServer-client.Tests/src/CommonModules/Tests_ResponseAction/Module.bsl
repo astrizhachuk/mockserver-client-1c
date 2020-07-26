@@ -1,7 +1,7 @@
 #Region Internal
 
-// @unit-test:dev
-Procedure WithStatusCodeNotEmpty(Context) Export
+// @unit-test
+Procedure WithStatusCode(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
@@ -13,7 +13,7 @@ Procedure WithStatusCodeNotEmpty(Context) Export
 
 EndProcedure
 
-// @unit-test:dev
+// @unit-test
 Procedure WithStatusCodeRewrite(Context) Export
 
 	// given
@@ -27,5 +27,18 @@ Procedure WithStatusCodeRewrite(Context) Export
 	Assert.AreEqual(Mock.Constructor["httpResponse"]["statusCode"], 400);	
 	
 EndProcedure	
+
+// @unit-test
+Procedure WithBody(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Mock.Respond(Mock.Response().WithBody("some body"));
+	// then
+	Assert.AreEqual(Mock.CurrentStage, "");
+	Assert.AreEqual(Mock.Constructor["httpResponse"]["body"], "some body");
+
+EndProcedure
 
 #EndRegion

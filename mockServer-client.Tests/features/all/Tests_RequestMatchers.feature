@@ -29,6 +29,26 @@ Scenario: HeadersByStage
 	| 'Tests_RequestMatchers.HeadersByStage(Context());' |
 
 @OnServer
+Scenario: WithHeader
+	And I execute 1C:Enterprise script at server
+	| 'Tests_RequestMatchers.WithHeader(Context());' |
+
+@OnServer
+Scenario: WithHeaderArrayValue
+	And I execute 1C:Enterprise script at server
+	| 'Tests_RequestMatchers.WithHeaderArrayValue(Context());' |
+
+@OnServer
+Scenario: WithHeaderWithoutHeaders
+	And I execute 1C:Enterprise script at server
+	| 'Tests_RequestMatchers.WithHeaderWithoutHeaders(Context());' |
+
+@OnServer
+Scenario: WithHeaderTwoHeader
+	And I execute 1C:Enterprise script at server
+	| 'Tests_RequestMatchers.WithHeaderTwoHeader(Context());' |
+
+@OnServer
 Scenario: WithMethodNotEmpty
 	And I execute 1C:Enterprise script at server
 	| 'Tests_RequestMatchers.WithMethodNotEmpty(Context());' |

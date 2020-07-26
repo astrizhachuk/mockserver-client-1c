@@ -71,6 +71,28 @@ Procedure Headers(Context) Export
 EndProcedure
 
 // @unit-test
+Procedure WithHeader(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Mock.When(Mock.Request().Headers().Заголовок("key", "value")).Respond();
+	// then
+	Assert.AreEqual(Mock.CurrentStage, "");
+	Assert.AreEqual(Mock.Constructor["httpRequest"]["headers"]["key"][0], "value");
+	Assert.AreEqual(Mock.Json, "{
+							   | ""httpRequest"": {
+							   |  ""headers"": {
+							   |   ""key"": [
+							   |    ""value""
+							   |   ]
+							   |  }
+							   | }
+							   |}" );
+
+EndProcedure
+
+// @unit-test
 Procedure WithMethod(Context) Export
 	
 	// given
@@ -122,7 +144,7 @@ Procedure WithStatusCode(Context) Export
 
 EndProcedure
 
-// @unit-test:dev
+// @unit-test
 Procedure Respond(Context) Export
 	
 	// given

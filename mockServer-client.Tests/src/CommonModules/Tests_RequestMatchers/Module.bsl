@@ -80,6 +80,101 @@ Procedure HeadersByStage(Context) Export
 
 EndProcedure
 
+// @unit-test:dev
+Procedure WithHeader(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Mock.When(Mock.Request().Headers().WithHeader("key", "value")).Respond();
+	// then
+	Assert.AreEqual(Mock.CurrentStage, "");
+	Assert.AreEqual(Mock.Constructor["httpRequest"]["headers"]["key"][0], "value");
+	Assert.AreEqual(Mock.Json, "{
+							   | ""httpRequest"": {
+							   |  ""headers"": {
+							   |   ""key"": [
+							   |    ""value""
+							   |   ]
+							   |  }
+							   | }
+							   |}" );
+
+EndProcedure
+
+// @unit-test:dev
+Procedure WithHeaderArrayValue(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Array = New Array();
+	Array.Add("value1");
+	Array.Add("value2");
+	// when
+	Mock.When(Mock.Request().Headers().WithHeader("key", Array)).Respond();
+	// then
+	Assert.AreEqual(Mock.CurrentStage, "");
+	Assert.AreEqual(Mock.Constructor["httpRequest"]["headers"]["key"][0], "value1");
+	Assert.AreEqual(Mock.Json, "{
+							   | ""httpRequest"": {
+							   |  ""headers"": {
+							   |   ""key"": [
+							   |    ""value1"",
+							   |    ""value2""
+							   |   ]
+							   |  }
+							   | }
+							   |}" );
+
+EndProcedure
+
+// @unit-test:dev
+Procedure WithHeaderWithoutHeaders(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Mock.When(Mock.Request().WithHeader("key", "value")).Respond();
+	// then
+	Assert.AreEqual(Mock.CurrentStage, "");
+	Assert.AreEqual(Mock.Constructor["httpRequest"]["headers"]["key"][0], "value");
+	Assert.AreEqual(Mock.Json, "{
+							   | ""httpRequest"": {
+							   |  ""headers"": {
+							   |   ""key"": [
+							   |    ""value""
+							   |   ]
+							   |  }
+							   | }
+							   |}" );
+
+EndProcedure
+
+// @unit-test:dev
+Procedure WithHeaderTwoHeader(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Mock.When(Mock.Request().Headers().WithHeader("key1", "value1").WithHeader("key2", "value2")).Respond();
+	// then
+	Assert.AreEqual(Mock.CurrentStage, "");
+	Assert.AreEqual(Mock.Constructor["httpRequest"]["headers"]["key1"][0], "value1");
+	Assert.AreEqual(Mock.Json, "{
+							   | ""httpRequest"": {
+							   |  ""headers"": {
+							   |   ""key1"": [
+							   |    ""value1""
+							   |   ],
+							   |   ""key2"": [
+							   |    ""value2""
+							   |   ]
+							   |  }
+							   | }
+							   |}" );
+
+EndProcedure
+
 // @unit-test
 Procedure WithMethodNotEmpty(Context) Export
 	

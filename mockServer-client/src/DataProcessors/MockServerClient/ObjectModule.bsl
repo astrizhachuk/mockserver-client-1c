@@ -46,6 +46,12 @@ Function Заголовки( Заголовки = Undefined ) Export
 	
 EndFunction
 
+Function Заголовок( Ключ, Значение ) Export
+	
+	Return WithHeader( Ключ, Значение );
+	
+EndFunction
+
 Function Метод( Метод ) Export
 	
 	Return WithMethod( Метод );
@@ -227,7 +233,46 @@ Function Headers( Val Headers = Undefined ) Export
 	Return ThisObject;
 	
 EndFunction
+
+Function WithHeader( Val Key, Val Value ) Export
 	
+	Var ConstructorProperty;
+	Var Values;
+	Var Header;
+	
+	CheckObjectPropertiesForMethod();
+	
+	Header = New Map();
+	
+	If ( TypeOf(Value) = Type("String") ) Then
+		
+		Values = New Array();
+		Values.Add( Value );
+		Header.Insert( Key, Values );		
+		
+	Else
+		
+		Header.Insert( Key, Value );
+		
+	EndIf;
+	
+	ConstructorProperty = ConstructorPropertyByStage( ThisObject.CurrentStage );
+	Headers = ConstructorProperty.Get("headers");
+	
+	If Headers = Undefined Тогда
+		ConstructorProperty.Insert("headers", New Map());
+		Headers = ConstructorProperty.Get("headers");
+	EndIf;
+
+	Для Каждого KeyValue Из Header Цикл
+		Headers.Insert(KeyValue.Key, KeyValue.Value);
+	КонецЦикла;
+
+	
+	Return ThisObject;
+	
+EndFunction
+
 #EndRegion
 
 #Region Actions

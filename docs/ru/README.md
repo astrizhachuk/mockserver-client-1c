@@ -1,4 +1,4 @@
-# MockServer rклиент для 1C:Предприятие 8
+# MockServer клиент для 1C:Предприятие 8
 
 [![Quality Gate Status](https://sonar.openbsl.ru/api/project_badges/measure?project=mockServer-client-1c&metric=alert_status)](https://sonar.openbsl.ru/dashboard?id=mockServer-client-1c)
 [![Maintainability Rating](https://sonar.openbsl.ru/api/project_badges/measure?project=mockServer-client-1c&metric=sqale_rating)](https://sonar.openbsl.ru/dashboard?id=mockServer-client-1c)

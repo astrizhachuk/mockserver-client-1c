@@ -19,6 +19,6 @@ Scenario: MatchRequestByPath
 	| 'Tests_Integration.MatchRequestByPath(Context());' |
 
 @OnServer
-Scenario: dfghdgfhdgfhdfghdfghdfgh
+Scenario: TODO
 	And I execute 1C:Enterprise script at server
-	| 'Tests_Integration.dfghdgfhdgfhdfghdfghdfgh(Context());' |
+	| 'Tests_Integration.TODO(Context());' |

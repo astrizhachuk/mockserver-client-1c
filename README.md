@@ -16,7 +16,8 @@
    Mock.Request()
     .WithMetod("GET")
     .WithPath("/some/path")
-    .WithHeader("foo", "boo")
+    .Headers()
+      .WithHeader("foo", "boo")
   ).Respond(
    Mock.Response()
     .WithStatusCode(200)

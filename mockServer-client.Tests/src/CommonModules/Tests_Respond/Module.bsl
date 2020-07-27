@@ -131,13 +131,14 @@ Procedure RespondWhenResponseMap(Context) Export
 	Mock.Respond( Mock.Response().WithStatusCode(404) );
 	// then
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
+	Assert.IsUndefined(Mock.Constructor);
 	Assert.AreEqual(Mock.Json, "{
 							   | ""httpResponse"": {
-							   |  ""statusCode"": 404
+							   |""statusCode"":404
 							   | }
 							   |}");
+	Assert.AreEqual(Mock.HttpResponseJson, """statusCode"":404");
 	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Mock.HttpResponseJson));
 
 EndProcedure
 

@@ -9,14 +9,15 @@
 
 ## How it works
 
-```bash
+```text
  Mock = DataProcessors.MockServerClient.Create();
  Mock.Server("localhost", "1080")
   .When(
    Mock.Request()
     .WithMetod("GET")
     .WithPath("/some/path")
-    .WithHeader("foo", "boo")
+    .Headers()
+      .WithHeader("foo", "boo")
   ).Respond(
    Mock.Response()
     .WithStatusCode(200)

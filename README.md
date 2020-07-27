@@ -9,7 +9,7 @@
 
 ## How it works
 
-```bash
+```text
  Mock = DataProcessors.MockServerClient.Create();
  Mock.Server("localhost", "1080")
   .When(

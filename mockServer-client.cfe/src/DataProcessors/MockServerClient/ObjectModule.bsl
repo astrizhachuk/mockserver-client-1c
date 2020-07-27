@@ -109,7 +109,8 @@ Function Server( Val URL, Val Port = Undefined, Val Reset = false ) Export
 EndFunction
 
 Function When( Val What ) Export
-	
+
+	ThisObject.Json = "";	
 	ThisObject.CurrentStage = "";
 	
 	If ( TypeOf(What) = Type("String") ) Then
@@ -123,7 +124,8 @@ Function When( Val What ) Export
 EndFunction
 
 Function Request( Val HttpRequestJson = Undefined ) Export
-	
+
+	ThisObject.Json = "";
 	ThisObject.CurrentStage = "httpRequest";
 	
 	FillPropertyByValue( "httpRequest", HttpRequestJson );
@@ -134,6 +136,7 @@ EndFunction
 
 Function Response( Val HttpResponseJson = Undefined  ) Export
 	
+	ThisObject.Json = "";
 	ThisObject.CurrentStage = "httpResponse";
 	
 	FillPropertyByValue( "httpResponse", HttpResponseJson );
@@ -148,6 +151,7 @@ EndFunction
 
 Procedure Reset() Export
 	
+	ThisObject.Json = "";
 	ThisObject.CurrentStage = "";
 	
 	Try

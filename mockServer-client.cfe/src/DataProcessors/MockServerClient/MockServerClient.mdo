@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:DataProcessor xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="92683be9-0a1f-4468-acbd-d59fdef421fb">
+  <producedTypes>
+    <objectType typeId="0ccbdfca-5550-4e8a-bffa-4e747b5a18d1" valueTypeId="0cda4530-3d6d-4cef-a504-6c44940360de"/>
+    <managerType typeId="1a11e5ab-6238-4111-90c6-333bbd7378e9" valueTypeId="2c7e6596-bcca-4825-bab3-5d7d0cc469d9"/>
+  </producedTypes>
+  <name>MockServerClient</name>
+  <synonym>
+    <key>en</key>
+    <value>MockServer-client</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>MockServer-client</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <attributes uuid="b364f2cc-edd3-4a22-a989-1b1e6ba8e619">
+    <name>Url</name>
+    <synonym>
+      <key>en</key>
+      <value>Url</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Url</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers/>
+    </type>
+  </attributes>
+  <attributes uuid="8127d4aa-a9cc-4389-8358-8ad59a321c7e">
+    <name>CurrentStage</name>
+    <synonym>
+      <key>en</key>
+      <value>Current stage</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Current stage</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers/>
+    </type>
+  </attributes>
+  <attributes uuid="8612dc00-2353-43b5-90a8-6a245653e621">
+    <name>Constructor</name>
+    <synonym>
+      <key>en</key>
+      <value>Constructor</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Constructor</value>
+    </synonym>
+    <type>
+      <types>Arbitrary</types>
+    </type>
+  </attributes>
+  <attributes uuid="259a239b-f688-498e-a6c4-c4ffd50dffb8">
+    <name>Json</name>
+    <synonym>
+      <key>en</key>
+      <value>Json</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Json</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers/>
+    </type>
+  </attributes>
+  <attributes uuid="93054b63-e2c2-4c70-9ce3-f4fc6df6c31b">
+    <name>HttpRequestJson</name>
+    <synonym>
+      <key>en</key>
+      <value>HttpRequestJson</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>HttpRequestJson</value>
+    </synonym>
+    <type>
+      <types>Arbitrary</types>
+    </type>
+  </attributes>
+  <attributes uuid="13d4cea9-38f2-4636-8968-451eec4057dc">
+    <name>HttpResponseJson</name>
+    <synonym>
+      <key>en</key>
+      <value>HttpResponseJson</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>HttpResponseJson</value>
+    </synonym>
+    <type>
+      <types>Arbitrary</types>
+    </type>
+  </attributes>
+  <attributes uuid="bad92865-714e-4d0e-a61f-010843636ea9">
+    <name>MockServerResponse</name>
+    <synonym>
+      <key>en</key>
+      <value>MockServerResponse</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>MockServerResponse</value>
+    </synonym>
+    <type>
+      <types>Arbitrary</types>
+    </type>
+  </attributes>
+</mdclass:DataProcessor>

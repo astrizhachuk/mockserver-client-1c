@@ -3,17 +3,17 @@
 @tree
 @classname=ModuleExceptionPath
 
-Feature: mockServer-client.Tests.Tests_MockServerClient
+Feature: mockServer-client.Tests.Tests_Reset
 	As Developer
 	I want the returns value to be equal to expected value
 	That I can guarantee the execution of the method
 
 @OnServer
-Scenario: MockServerDockerUp
+Scenario: ResetIntermediateException
 	And I execute 1C:Enterprise script at server
-	| 'Tests_MockServerClient.MockServerDockerUp(Context());' |
+	| 'Tests_Reset.ResetIntermediateException(Context());' |
 
 @OnServer
-Scenario: InitServer
+Scenario: ResetTerminalException
 	And I execute 1C:Enterprise script at server
-	| 'Tests_MockServerClient.InitServer(Context());' |
+	| 'Tests_Reset.ResetTerminalException(Context());' |

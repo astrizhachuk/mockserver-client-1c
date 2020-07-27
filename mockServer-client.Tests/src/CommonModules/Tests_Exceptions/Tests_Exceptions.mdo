@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="e4eae863-568f-4ed8-8c6f-d23efcfe4967">
+  <name>Tests_Exceptions</name>
+  <synonym>
+    <key>en</key>
+    <value>Constructor</value>
+  </synonym>
+  <server>true</server>
+</mdclass:CommonModule>

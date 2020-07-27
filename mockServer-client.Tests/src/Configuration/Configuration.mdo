@@ -29,7 +29,7 @@
   <configurationExtensionPurpose>Customization</configurationExtensionPurpose>
   <defaultRunMode>ManagedApplication</defaultRunMode>
   <usePurposes>PersonalComputer</usePurposes>
-  <version>0.0.1</version>
+  <version>1.0.0</version>
   <defaultLanguage>Language.English</defaultLanguage>
   <dataLockControlMode>Managed</dataLockControlMode>
   <objectAutonumerationMode>NotAutoFree</objectAutonumerationMode>
@@ -48,5 +48,16 @@
     </extension>
     <languageCode>en</languageCode>
   </languages>
-  <commonModules>CommonModule.Tests_MockServerClient</commonModules>
+  <commonModules>CommonModule.Assert</commonModules>
+  <commonModules>CommonModule.Tests_Integration</commonModules>
+  <commonModules>CommonModule.Tests_CreateMock</commonModules>
+  <commonModules>CommonModule.Tests_When</commonModules>
+  <commonModules>CommonModule.Tests_Request</commonModules>
+  <commonModules>CommonModule.Tests_RequestMatchers</commonModules>
+  <commonModules>CommonModule.Tests_Response</commonModules>
+  <commonModules>CommonModule.Tests_ResponseAction</commonModules>
+  <commonModules>CommonModule.Tests_Respond</commonModules>
+  <commonModules>CommonModule.Tests_Reset</commonModules>
+  <commonModules>CommonModule.Tests_Exceptions</commonModules>
+  <commonModules>CommonModule.Tests_CallWrapperRu</commonModules>
 </mdclass:Configuration>

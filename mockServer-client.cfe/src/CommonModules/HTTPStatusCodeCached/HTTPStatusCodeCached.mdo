@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="5a18a7b1-56e7-4d7a-a99e-22fbb885fd82">
+  <name>HTTPStatusCodeCached</name>
+  <synonym>
+    <key>en</key>
+    <value>HTTPStatusCodeCached</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>HTTPStatusCodeCached</value>
+  </synonym>
+  <clientManagedApplication>true</clientManagedApplication>
+  <server>true</server>
+  <clientOrdinaryApplication>true</clientOrdinaryApplication>
+  <returnValuesReuse>DuringSession</returnValuesReuse>
+</mdclass:CommonModule>

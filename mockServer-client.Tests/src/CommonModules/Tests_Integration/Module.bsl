@@ -42,7 +42,7 @@ Procedure MatchRequestByQueryParameterWithRegexValue(Context) Export
 			Mock.Request()
 				.WithPath("/some/path")
 				.WithQueryStringParameters("cartId", "[A-Z0-9\\-]+")
-				.WithQueryStringParameters("param", "[A-Z0-9\\-]+")
+				.WithQueryStringParameters("anotherId", "[A-Z0-9\\-]+")
 		).Respond(
 			Mock.Response()
 				.WithBody("some_response_body")

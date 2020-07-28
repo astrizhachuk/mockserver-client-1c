@@ -218,7 +218,7 @@ Function WithPath( Val Path ) Export
 	
 EndFunction
 
-Function WithQueryStringParameters( Val Key, Val Value ) Export
+Function WithQueryStringParameters( Val Key, Val Value )
 	
 	Var NewQueryParameters;
 	

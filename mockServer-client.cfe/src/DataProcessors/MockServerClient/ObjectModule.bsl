@@ -202,7 +202,7 @@ Function WithMethod( Val Method ) Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	ConstructorRootProperty( ThisObject.CurrentStage ).Insert( "method", Method );
+	AddConstructorStageProperty( "method", Method );
 	
 	Return ThisObject;
 	
@@ -212,7 +212,7 @@ Function WithPath( Val Path ) Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	ConstructorRootProperty( ThisObject.CurrentStage ).Insert( "path", Path );
+	AddConstructorStageProperty( "path", Path );
 	
 	Return ThisObject;
 	
@@ -220,20 +220,15 @@ EndFunction
 
 Function WithQueryStringParameters( Val Key, Val Value ) Export
 	
+	Var NewQueryParameters;
 	
 	CheckObjectPropertiesForMethod();
-
-	CurrentQueryStringParameters = ConstructorStagePropertyOrInitMapIfAsent( ThisObject.CurrentStage, "queryStringParameters" );
-	NewQueryStringParameters = MapStringValueToArray( Key, Value );
-
-	For Each KeyValue In NewQueryStringParameters Do
-		
-		CurrentQueryStringParameters.Insert( KeyValue.Key, KeyValue.Value );
-		
-	EndDo;
 	
+	NewQueryParameters = MapStringValueToArray( Key, Value );
+	InsertConstructorStageProperty( "queryStringParameters", NewQueryParameters );
+
 	Return ThisObject;
-	
+
 EndFunction
 
 Function Headers( Val Headers = Undefined ) Export
@@ -250,19 +245,12 @@ EndFunction
 
 Function WithHeader( Val Key, Val Value ) Export
 
-	Var CurrentHeaders;
 	Var NewHeader;
 	
 	CheckObjectPropertiesForMethod();
-
-	CurrentHeaders = ConstructorStagePropertyOrInitMapIfAsent( ThisObject.CurrentStage, "headers" );
+	
 	NewHeader = MapStringValueToArray( Key, Value );
-
-	For Each KeyValue In NewHeader Do
-		
-		CurrentHeaders.Insert( KeyValue.Key, KeyValue.Value );
-		
-	EndDo;
+	InsertConstructorStageProperty( "headers", NewHeader );
 
 	Return ThisObject;
 	
@@ -277,8 +265,8 @@ EndFunction
 Function WithBody( Val Body ) Export
 	
 	CheckObjectPropertiesForMethod();
-
-	ConstructorRootProperty( ThisObject.CurrentStage ).Insert( "body", Body );
+	
+	AddConstructorStageProperty( "body", Body );
 
 	Return ThisObject;
 	
@@ -287,9 +275,9 @@ EndFunction
 Function WithStatusCode( Val StatusCode ) Export
 	
 	CheckObjectPropertiesForMethod();
-
-	ConstructorRootProperty( ThisObject.CurrentStage ).Insert( "statusCode", StatusCode );
 	
+	AddConstructorStageProperty( "statusCode", StatusCode );
+
 	Return ThisObject;
 	
 EndFunction
@@ -364,11 +352,35 @@ Function ConstructorRootProperty( Val Key )
 	
 EndFunction
 
-Procedure FillPropertyByValue( Property, Value, Stage = "" )
+Procedure AddConstructorStageProperty( Val Key, Val Value )
+	
+	Var ConstructorRootProperty;
+	
+	ConstructorRootProperty = ConstructorRootProperty( ThisObject.CurrentStage );
+	ConstructorRootProperty.Insert( Key, Value );
+	
+EndProcedure
+
+Процедура InsertConstructorStageProperty( Val Key, Val Value )
+	
+	Var Result;
+	
+	Result = ConstructorStagePropertyOrInitMapIfAbsent( ThisObject.CurrentStage, Key );
+
+	For Each KeyValue In Value Do
+		
+		Result.Insert( KeyValue.Key, KeyValue.Value );
+		
+	EndDo;
+	
+КонецПроцедуры
+
+// TODO refactoring, bad idea
+Procedure FillPropertyByValue( Key, Value, Stage = "" )
 	
 	If ( TypeOf(Value) = Type("String") ) Then
 		
-		ThisObject[ Property + "Json" ] = Value;
+		ThisObject[ Key + "Json" ] = Value;
 		
 	Else
 
@@ -376,11 +388,11 @@ Procedure FillPropertyByValue( Property, Value, Stage = "" )
 		
 		If ( IsBlankString(Stage) ) Then
 			
-			ThisObject.Constructor.Insert( Property, New Map() );
+			ThisObject.Constructor.Insert( Key, New Map() );
 			
 		Else
 			
-			ConstructorRootProperty( Stage ).Insert( Property, Value );
+			ConstructorRootProperty( Stage ).Insert( Key, Value );
 			
 		EndIf;
 		
@@ -388,7 +400,7 @@ Procedure FillPropertyByValue( Property, Value, Stage = "" )
 	
 EndProcedure
 
-Function ConstructorStagePropertyOrInitMapIfAsent( Val Stage, Val Key )
+Function ConstructorStagePropertyOrInitMapIfAbsent( Val Stage, Val Key )
 	
 	Var StageProperty;
 	Var Result;

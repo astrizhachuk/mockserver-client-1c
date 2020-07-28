@@ -9,9 +9,9 @@ Feature: mockServer-client.Tests.Tests_Integration
 	That I can guarantee the execution of the method
 
 @OnServer
-Scenario: MatchRequestByPath
+Scenario: MatchRequestByQueryParameterWithRegexValue
 	And I execute 1C:Enterprise script at server
-	| 'Tests_Integration.MatchRequestByPath(Context());' |
+	| 'Tests_Integration.MatchRequestByQueryParameterWithRegexValue(Context());' |
 
 @OnServer
 Scenario: TODO

@@ -9,7 +9,7 @@ EndProcedure
 
 // match request by path
 // 
-// @unit-test:dev
+// @unit-test
 Procedure MatchRequestByPath(Context) Export
 
 	// given
@@ -19,6 +19,30 @@ Procedure MatchRequestByPath(Context) Export
 		.When(
 			Mock.Request()
 				.WithPath("/some/path")
+		).Respond(
+			Mock.Response()
+				.WithBody("some_response_body")
+		);
+	// then
+	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 201);
+	Assert.AreEqual(Mock.MockServerResponse.URL, "http://localhost:1080/mockserver/expectation");
+
+EndProcedure
+
+// match request by query parameter with regex value
+// 
+// @unit-test:dev
+Procedure MatchRequestByQueryParameterWithRegexValue(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Mock.Server("localhost", "1080")
+		.When(
+			Mock.Request()
+				.WithPath("/some/path")
+				.WithQueryStringParameters("cartId", "[A-Z0-9\\-]+")
+				.WithQueryStringParameters("param", "[A-Z0-9\\-]+")
 		).Respond(
 			Mock.Response()
 				.WithBody("some_response_body")

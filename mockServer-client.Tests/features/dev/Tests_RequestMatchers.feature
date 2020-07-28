@@ -12,3 +12,8 @@ Feature: mockServer-client.Tests.Tests_RequestMatchers
 Scenario: WithMethodRewrite
 	And I execute 1C:Enterprise script at server
 	| 'Tests_RequestMatchers.WithMethodRewrite(Context());' |
+
+@OnServer
+Scenario: WithQueryStringParametersNotEmpty
+	And I execute 1C:Enterprise script at server
+	| 'Tests_RequestMatchers.WithQueryStringParametersNotEmpty(Context());' |

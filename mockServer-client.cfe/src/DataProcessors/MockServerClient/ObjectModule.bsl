@@ -202,7 +202,7 @@ Function WithMethod( Val Method ) Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	ConstructorPropertyByStage( ThisObject.CurrentStage ).Insert( "method", Method );
+	ConstructorRootProperty( ThisObject.CurrentStage ).Insert( "method", Method );
 	
 	Return ThisObject;
 	
@@ -212,7 +212,25 @@ Function WithPath( Val Path ) Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	ConstructorPropertyByStage( ThisObject.CurrentStage ).Insert( "path", Path );
+	ConstructorRootProperty( ThisObject.CurrentStage ).Insert( "path", Path );
+	
+	Return ThisObject;
+	
+EndFunction
+
+Function WithQueryStringParameters( Val Key, Val Value ) Export
+	
+	
+	CheckObjectPropertiesForMethod();
+
+	CurrentQueryStringParameters = ConstructorStagePropertyOrInitMapIfAsent( ThisObject.CurrentStage, "queryStringParameters" );
+	NewQueryStringParameters = MapStringValueToArray( Key, Value );
+
+	For Each KeyValue In NewQueryStringParameters Do
+		
+		CurrentQueryStringParameters.Insert( KeyValue.Key, KeyValue.Value );
+		
+	EndDo;
 	
 	Return ThisObject;
 	
@@ -237,14 +255,14 @@ Function WithHeader( Val Key, Val Value ) Export
 	
 	CheckObjectPropertiesForMethod();
 
-	CurrentHeaders = StageHeaders( ThisObject.CurrentStage );
-	NewHeader = MapByDifferentTypeValues( Key, Value );
+	CurrentHeaders = ConstructorStagePropertyOrInitMapIfAsent( ThisObject.CurrentStage, "headers" );
+	NewHeader = MapStringValueToArray( Key, Value );
 
-	Для Каждого KeyValue Из NewHeader Цикл
+	For Each KeyValue In NewHeader Do
 		
 		CurrentHeaders.Insert( KeyValue.Key, KeyValue.Value );
 		
-	КонецЦикла;
+	EndDo;
 
 	Return ThisObject;
 	
@@ -260,7 +278,7 @@ Function WithBody( Val Body ) Export
 	
 	CheckObjectPropertiesForMethod();
 
-	ConstructorPropertyByStage( ThisObject.CurrentStage ).Insert( "body", Body );
+	ConstructorRootProperty( ThisObject.CurrentStage ).Insert( "body", Body );
 
 	Return ThisObject;
 	
@@ -270,7 +288,7 @@ Function WithStatusCode( Val StatusCode ) Export
 	
 	CheckObjectPropertiesForMethod();
 
-	ConstructorPropertyByStage( ThisObject.CurrentStage ).Insert( "statusCode", StatusCode );
+	ConstructorRootProperty( ThisObject.CurrentStage ).Insert( "statusCode", StatusCode );
 	
 	Return ThisObject;
 	
@@ -331,9 +349,9 @@ Procedure InitConstructor()
 	
 EndProcedure
 
-Function ConstructorPropertyByStage( Val Stage )
+Function ConstructorRootProperty( Val Key )
 	
-	Result = ThisObject.Constructor.Get( Stage );
+	Result = ThisObject.Constructor.Get( Key );
 	
 	If ( TypeOf(Result) <> Type("Map") ) Then
 		Raise RuntimeError(
@@ -362,7 +380,7 @@ Procedure FillPropertyByValue( Property, Value, Stage = "" )
 			
 		Else
 			
-			ConstructorPropertyByStage( Stage ).Insert( Property, Value );
+			ConstructorRootProperty( Stage ).Insert( Property, Value );
 			
 		EndIf;
 		
@@ -370,19 +388,19 @@ Procedure FillPropertyByValue( Property, Value, Stage = "" )
 	
 EndProcedure
 
-Function StageHeaders( Val Stage )
+Function ConstructorStagePropertyOrInitMapIfAsent( Val Stage, Val Key )
 	
-	Var PropertyCurrentStage;
+	Var StageProperty;
 	Var Result;
 	
-	PropertyCurrentStage = ConstructorPropertyByStage( Stage );
-	
-	Result = PropertyCurrentStage.Get("headers");
+	StageProperty = ConstructorRootProperty( Stage );
+
+	Result = StageProperty.Get( Key );
 	
 	If ( Result = Undefined ) Then
 		
-		PropertyCurrentStage.Insert( "headers", New Map() );
-		Result = PropertyCurrentStage.Get( "headers" );
+		StageProperty.Insert( Key, New Map() );
+		Result = StageProperty.Get( Key );
 		
 	EndIf;
 	
@@ -390,7 +408,7 @@ Function StageHeaders( Val Stage )
 
 EndFunction
 
-Function MapByDifferentTypeValues( Val Key, Val Value )
+Function MapStringValueToArray( Val Key, Val Value )
 	
 	Var Result;
 	
@@ -402,6 +420,7 @@ Function MapByDifferentTypeValues( Val Key, Val Value )
 		NewValue.Add( Value );
 	
 	Else
+		
 		NewValue = Value;
 	
 	EndIf;

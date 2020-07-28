@@ -62,3 +62,8 @@ Scenario: WithMethodRewrite
 Scenario: WithPathNotEmpty
 	And I execute 1C:Enterprise script at server
 	| 'Tests_RequestMatchers.WithPathNotEmpty(Context());' |
+
+@OnServer
+Scenario: WithQueryStringParametersNotEmpty
+	And I execute 1C:Enterprise script at server
+	| 'Tests_RequestMatchers.WithQueryStringParametersNotEmpty(Context());' |

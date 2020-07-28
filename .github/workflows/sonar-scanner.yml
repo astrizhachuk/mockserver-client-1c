@@ -27,7 +27,6 @@ jobs:
     - name: Run SonarQube on pull request
       if: github.event_name == 'pull_request'
       run: sonar-scanner
-        -X 
         -Dsonar.login=${{ secrets.SONAR_TOKEN }}
         -Dsonar.host.url=https://sonar.openbsl.ru
         -Dsonar.projectVersion=$(grep -oPm1 "(?<=<version>)[^<]+" mockServer-client/src/Configuration/Configuration.mdo)

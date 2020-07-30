@@ -96,7 +96,7 @@ Function Server( Val URL, Val Port = Undefined, Val Reset = false ) Export
 		
 		Reset();
 		
-		If ( HTTPStatusCode.isOk(ThisObject.MockServerResponse.КодСостояния) ) Then
+		If ( HTTPStatusCodesClientServerCached.isOk(ThisObject.MockServerResponse.КодСостояния) ) Then
 			
 			ThisObject.MockServerResponse = Undefined;
 			
@@ -180,7 +180,7 @@ Procedure Respond( Val Object = Undefined ) Export
 															ThisObject.Json,
 															ContentTypeJsonHeaders() );
 		
-		If ( NOT HTTPStatusCode.isCreated(ThisObject.MockServerResponse.КодСостояния) ) Then
+		If ( NOT HTTPStatusCodesClientServerCached.isCreated(ThisObject.MockServerResponse.КодСостояния) ) Then
 		
 			Raise HTTPConnector.КакТекст( ThisObject.MockServerResponse );		
 		
@@ -218,7 +218,7 @@ Function WithPath( Val Path ) Export
 	
 EndFunction
 
-Function WithQueryStringParameters( Val Key, Val Value )
+Function WithQueryStringParameters( Val Key, Val Value ) Export
 	
 	Var NewQueryParameters;
 	
@@ -530,7 +530,7 @@ Function MockServerError( DetailErrorDescription )
 	Var Result;
 	
 	Result = New Structure();
-	Result.Insert( "КодСостояния", HTTPStatusCode.НайтиКодПоИдентификатору("INTERNAL_SERVER_ERROR") );
+	Result.Insert( "КодСостояния", HTTPStatusCodesClientServerCached.FindCodeById("INTERNAL_SERVER_ERROR") );
 	Result.Insert( "ТекстОшибки", DetailErrorDescription );
 	
 	Return Result;

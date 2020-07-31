@@ -1,15 +1,28 @@
 #Region Internal
 
-// @unit-test:inegration
+// @unit-test:integration
 Procedure MockServerDockerUp(Context) Export
-	
-	Raise "Fail";
+
+	ExitStatus = Undefined;
+	RunApp("docker kill mockserver-1c-integration", , True, ExitStatus);
+	RunApp("docker run -d --rm -p 1080:1080"
+						+ " --name mockserver-1c-integration mockserver/mockserver"
+						+ " -logLevel DEBUG -serverPort 1080",
+						,
+						True,
+						ExitStatus);
+						
+	If ExitStatus <> 0 Then
+		
+		Raise NStr("en = 'Container mockserver-1c-integration isn't created.'");
+		
+	EndIf;
 	
 EndProcedure
 
 // match request by path
 // 
-// @unit-test
+// @unit-test:integration
 Procedure MatchRequestByPath(Context) Export
 
 	// given
@@ -31,7 +44,7 @@ EndProcedure
 
 // match request by query parameter with regex value
 // 
-// @unit-test:dev
+// @unit-test:integration
 Procedure MatchRequestByQueryParameterWithRegexValue(Context) Export
 
 	// given

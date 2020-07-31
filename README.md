@@ -1,7 +1,7 @@
 # MockServer client for 1C:Enterprise Platform
 
-[![Quality Gate Status](https://sonar.openbsl.ru/api/project_badges/measure?project=mockServer-client-1c&metric=alert_status)](https://sonar.openbsl.ru/dashboard?id=mockServer-client-1c)
-[![Maintainability Rating](https://sonar.openbsl.ru/api/project_badges/measure?project=mockServer-client-1c&metric=sqale_rating)](https://sonar.openbsl.ru/dashboard?id=mockServer-client-1c)
+[![Quality Gate Status](https://sonar.openbsl.ru/api/project_badges/measure?project=mockserver-client-1c&metric=alert_status)](https://sonar.openbsl.ru/dashboard?id=mockserver-client-1c)
+[![Maintainability Rating](https://sonar.openbsl.ru/api/project_badges/measure?project=mockserver-client-1c&metric=sqale_rating)](https://sonar.openbsl.ru/dashboard?id=mockserver-client-1c)
 
 [ru](./docs/ru/README.md)
 

@@ -3,7 +3,7 @@
   <name>MockServerClient</name>
   <synonym>
     <key>ru</key>
-    <value>MockServer-client</value>
+    <value>mockserver-client</value>
   </synonym>
   <objectBelonging>Adopted</objectBelonging>
   <extension xsi:type="mdclassExtension:ConfigurationExtension">

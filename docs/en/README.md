@@ -26,6 +26,10 @@
 
 Вот и все! Мок создан!
 
+## Guidelines
+
+[Getting Started](./docs/ru/GettingStarted.md)
+
 ## Зависимости
 
 Проект создан с помощью:

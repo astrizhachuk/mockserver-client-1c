@@ -26,6 +26,10 @@
 
 That's all! Mock is created!
 
+## Guidelines
+
+[Getting Started](./docs/en/GettingStarted.md)
+
 ## Dependencies
 
 The project built with:

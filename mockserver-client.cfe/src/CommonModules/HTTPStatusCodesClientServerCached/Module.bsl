@@ -1,3 +1,5 @@
+// BSLLS-off
+
 // HTTPStatusCodes - https://github.com/astrizhachuk/HTTPStatusCodes
 //
 // This program is free software: you can redistribute it and/or modify

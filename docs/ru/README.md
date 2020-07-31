@@ -28,7 +28,7 @@
 
 ## Guidelines
 
-[Getting Started](./docs/ru/GettingStarted.md)
+[Getting Started](https://github.com/astrizhachuk/mockserver-client-1c/blob/master/docs/ru/GettingStarted.md)
 
 ## Зависимости
 

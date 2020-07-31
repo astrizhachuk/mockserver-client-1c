@@ -3,7 +3,7 @@
 [![Quality Gate Status](https://sonar.openbsl.ru/api/project_badges/measure?project=mockserver-client-1c&metric=alert_status)](https://sonar.openbsl.ru/dashboard?id=mockserver-client-1c)
 [![Maintainability Rating](https://sonar.openbsl.ru/api/project_badges/measure?project=mockserver-client-1c&metric=sqale_rating)](https://sonar.openbsl.ru/dashboard?id=mockserver-client-1c)
 
-[русский](./docs/ru/README.md)
+[русский](https://github.com/astrizhachuk/mockserver-client-1c/blob/master/docs/ru/README.md)
 
 *[MockServer](https://www.mock-server.com/#what-is-mockserver)-client-1c* is designed to [controll](https://www.mock-server.com/mock_server/mockserver_clients.html) MoskServer using 1C:Enterprise Platform. This *client* is distributed as *cfe*, but it can be used as *epf*.
 
@@ -28,7 +28,7 @@ That's all! Mock is created!
 
 ## Guidelines
 
-[Getting Started](./docs/en/GettingStarted.md)
+[Getting Started](https://github.com/astrizhachuk/mockserver-client-1c/blob/master/docs/en/GettingStarted.md)
 
 ## Dependencies
 

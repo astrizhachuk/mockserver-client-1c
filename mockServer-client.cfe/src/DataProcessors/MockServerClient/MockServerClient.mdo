@@ -7,11 +7,11 @@
   <name>MockServerClient</name>
   <synonym>
     <key>en</key>
-    <value>MockServer-client</value>
+    <value>mockserver-client</value>
   </synonym>
   <synonym>
     <key>ru</key>
-    <value>MockServer-client</value>
+    <value>mockserver-client</value>
   </synonym>
   <useStandardCommands>true</useStandardCommands>
   <attributes uuid="b364f2cc-edd3-4a22-a989-1b1e6ba8e619">

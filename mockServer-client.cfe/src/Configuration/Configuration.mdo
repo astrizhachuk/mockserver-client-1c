@@ -3,7 +3,7 @@
   <name>MockServerClient</name>
   <synonym>
     <key>ru</key>
-    <value>MockServer-client</value>
+    <value>mockserver-client</value>
   </synonym>
   <objectBelonging>Adopted</objectBelonging>
   <extension xsi:type="mdclassExtension:ConfigurationExtension">
@@ -61,8 +61,6 @@
     <languageCode>ru</languageCode>
   </languages>
   <commonModules>CommonModule.HTTPConnector</commonModules>
-  <commonModules>CommonModule.HTTPStatusCode</commonModules>
-  <commonModules>CommonModule.HTTPStatusCodeCached</commonModules>
-  <commonModules>CommonModule.HTTPStatusCodeServer</commonModules>
+  <commonModules>CommonModule.HTTPStatusCodesClientServerCached</commonModules>
   <dataProcessors>DataProcessor.MockServerClient</dataProcessors>
 </mdclass:Configuration>

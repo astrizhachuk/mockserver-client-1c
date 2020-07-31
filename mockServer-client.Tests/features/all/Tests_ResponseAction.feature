@@ -3,10 +3,15 @@
 @tree
 @classname=ModuleExceptionPath
 
-Feature: mockServer-client.Tests.Tests_ResponseAction
+Feature: mockserver-client.Tests.Tests_ResponseAction
 	As Developer
 	I want the returns value to be equal to expected value
 	That I can guarantee the execution of the method
+
+@OnServer
+Scenario: WithBody
+	And I execute 1C:Enterprise script at server
+	| 'Tests_ResponseAction.WithBody(Context());' |
 
 @OnServer
 Scenario: WithStatusCode
@@ -19,6 +24,6 @@ Scenario: WithStatusCodeRewrite
 	| 'Tests_ResponseAction.WithStatusCodeRewrite(Context());' |
 
 @OnServer
-Scenario: WithBody
+Scenario: WithReasonPhrase
 	And I execute 1C:Enterprise script at server
-	| 'Tests_ResponseAction.WithBody(Context());' |
+	| 'Tests_ResponseAction.WithReasonPhrase(Context());' |

@@ -3,7 +3,7 @@
 @tree
 @classname=ModuleExceptionPath
 
-Feature: mockServer-client.Tests.Tests_Request
+Feature: mockserver-client.Tests.Tests_Request
 	As Developer
 	I want the returns value to be equal to expected value
 	That I can guarantee the execution of the method

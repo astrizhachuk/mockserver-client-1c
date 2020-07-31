@@ -3,7 +3,7 @@
 @tree
 @classname=ModuleExceptionPath
 
-Feature: mockServer-client.Tests.Tests_CallWrapperRu
+Feature: mockserver-client.Tests.Tests_CallWrapperRu
 	As Developer
 	I want the returns value to be equal to expected value
 	That I can guarantee the execution of the method
@@ -57,6 +57,11 @@ Scenario: Response
 Scenario: WithStatusCode
 	And I execute 1C:Enterprise script at server
 	| 'Tests_CallWrapperRu.WithStatusCode(Context());' |
+
+@OnServer
+Scenario: WithReasonPhrase
+	And I execute 1C:Enterprise script at server
+	| 'Tests_CallWrapperRu.WithReasonPhrase(Context());' |
 
 @OnServer
 Scenario: Respond

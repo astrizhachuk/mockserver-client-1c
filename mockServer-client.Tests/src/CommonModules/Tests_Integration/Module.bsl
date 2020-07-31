@@ -1,15 +1,30 @@
 #Region Internal
 
-// @unit-test:inegration
+// @unit-test:fast
 Procedure MockServerDockerUp(Context) Export
-	
-	Raise "Fail";
+
+	ExitStatus = Undefined;
+	RunApp("docker kill mockserver-1c-integration", , True, ExitStatus);
+	RunApp("docker run -d --rm -p 1080:1080"
+						+ " --name mockserver-1c-integration mockserver/mockserver"
+						+ " -logLevel DEBUG -serverPort 1080",
+						,
+						True,
+						ExitStatus);
+						
+	If ExitStatus <> 0 Then
+		
+		Raise NStr("en = 'Container mockserver-1c-integration isn't created.'");
+		
+	EndIf;
 	
 EndProcedure
 
+// Request Properties Matcher Code Examples
+
 // match request by path
 // 
-// @unit-test:dev
+// @unit-test:integration
 Procedure MatchRequestByPath(Context) Export
 
 	// given
@@ -29,36 +44,54 @@ Procedure MatchRequestByPath(Context) Export
 
 EndProcedure
 
-//// @unit-test:dev
-//Procedure RespondResponse(Context) Export
-//	
-//	// given
-//	Mock = DataProcessors.MockServerClient.Create();
-//	Mock.URL = "localhost:1080";
-//	// when
-//	Mock.When( Mock.Request("""method"":""GET""") ).Respond( Mock.Response("""statusCode"": 404") );
-//	// then
-//
-//EndProcedure
-
-Procedure TODO(Context) Export
+// match request by query parameter with regex value
+// 
+// @unit-test:integration
+Procedure MatchRequestByQueryParameterWithRegexValue(Context) Export
 
 	// given
-	Мок = DataProcessors.MockServerClient.Create();
+	Mock = DataProcessors.MockServerClient.Create();
 	// when
-	Мок.Сервер("localhost", "1080")
-		.Когда(
-			Мок.Запрос()
-				.Метод("GET")
-				.Путь("/%D1%84%D1%8D%D0%B9%D0%BA.epf")
-				.Заголовок("PRIVATE-TOKEN", "-U2ssrBsM4rmx85HXzZ1")
-		).Ответить(
-			Мок.Ответ()
-				.КодОтвета(404)
+	Mock.Server("localhost", "1080")
+		.When(
+			Mock.Request()
+				.WithPath("/some/path")
+				.WithQueryStringParameters("cartId", "[A-Z0-9\\-]+")
+				.WithQueryStringParameters("anotherId", "[A-Z0-9\\-]+")
+		).Respond(
+			Mock.Response()
+				.WithBody("some_response_body")
 		);
 	// then
-	Assert.AreEqual(Мок.MockServerResponse.КодСостояния, 201);
-	Assert.AreEqual(Мок.MockServerResponse.URL, "http://localhost:1080/mockserver/expectation");
+	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 201);
+	Assert.AreEqual(Mock.MockServerResponse.URL, "http://localhost:1080/mockserver/expectation");
+
+EndProcedure
+
+
+// Response Action Code Examples
+
+// literal response with status code and reason phrase
+// 
+// @unit-test:integration
+Procedure LiteralResponseWithStatusCodeAndReasonPhrase(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Mock.Server("localhost", "1080")
+		.When(
+			Mock.Request()
+				.WithPath("/some/path")
+				.WithMethod("POST")
+		).Respond(
+			Mock.Response()
+				.WithStatusCode(418)
+				.WithReasonPhrase("I'm a teapot")
+		);	
+	// then
+	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 201);
+	Assert.AreEqual(Mock.MockServerResponse.URL, "http://localhost:1080/mockserver/expectation");
 
 EndProcedure
 

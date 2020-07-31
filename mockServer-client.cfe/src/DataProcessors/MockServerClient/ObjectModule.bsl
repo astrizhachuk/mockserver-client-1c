@@ -76,6 +76,12 @@ Function КодОтвета( КодОтвета ) Export
 	
 EndFunction
 
+Function Причина( Причина ) Export
+	
+	Return WithReasonPhrase( Причина );
+	
+EndFunction
+
 #EndRegion
 
 #Region En
@@ -96,7 +102,7 @@ Function Server( Val URL, Val Port = Undefined, Val Reset = false ) Export
 		
 		Reset();
 		
-		If ( HTTPStatusCode.isOk(ThisObject.MockServerResponse.КодСостояния) ) Then
+		If ( HTTPStatusCodesClientServerCached.isOk(ThisObject.MockServerResponse.КодСостояния) ) Then
 			
 			ThisObject.MockServerResponse = Undefined;
 			
@@ -180,7 +186,7 @@ Procedure Respond( Val Object = Undefined ) Export
 															ThisObject.Json,
 															ContentTypeJsonHeaders() );
 		
-		If ( NOT HTTPStatusCode.isCreated(ThisObject.MockServerResponse.КодСостояния) ) Then
+		If ( NOT HTTPStatusCodesClientServerCached.isCreated(ThisObject.MockServerResponse.КодСостояния) ) Then
 		
 			Raise HTTPConnector.КакТекст( ThisObject.MockServerResponse );		
 		
@@ -202,7 +208,7 @@ Function WithMethod( Val Method ) Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	ConstructorPropertyByStage( ThisObject.CurrentStage ).Insert( "method", Method );
+	AddConstructorStageProperty( "method", Method );
 	
 	Return ThisObject;
 	
@@ -212,10 +218,23 @@ Function WithPath( Val Path ) Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	ConstructorPropertyByStage( ThisObject.CurrentStage ).Insert( "path", Path );
+	AddConstructorStageProperty( "path", Path );
 	
 	Return ThisObject;
 	
+EndFunction
+
+Function WithQueryStringParameters( Val Key, Val Value ) Export
+	
+	Var NewQueryParameters;
+	
+	CheckObjectPropertiesForMethod();
+	
+	NewQueryParameters = MapStringValueToArray( Key, Value );
+	InsertConstructorStageProperty( "queryStringParameters", NewQueryParameters );
+
+	Return ThisObject;
+
 EndFunction
 
 Function Headers( Val Headers = Undefined ) Export
@@ -232,19 +251,12 @@ EndFunction
 
 Function WithHeader( Val Key, Val Value ) Export
 
-	Var CurrentHeaders;
 	Var NewHeader;
 	
 	CheckObjectPropertiesForMethod();
-
-	CurrentHeaders = StageHeaders( ThisObject.CurrentStage );
-	NewHeader = MapByDifferentTypeValues( Key, Value );
-
-	Для Каждого KeyValue Из NewHeader Цикл
-		
-		CurrentHeaders.Insert( KeyValue.Key, KeyValue.Value );
-		
-	КонецЦикла;
+	
+	NewHeader = MapStringValueToArray( Key, Value );
+	InsertConstructorStageProperty( "headers", NewHeader );
 
 	Return ThisObject;
 	
@@ -259,8 +271,8 @@ EndFunction
 Function WithBody( Val Body ) Export
 	
 	CheckObjectPropertiesForMethod();
-
-	ConstructorPropertyByStage( ThisObject.CurrentStage ).Insert( "body", Body );
+	
+	AddConstructorStageProperty( "body", Body );
 
 	Return ThisObject;
 	
@@ -269,9 +281,19 @@ EndFunction
 Function WithStatusCode( Val StatusCode ) Export
 	
 	CheckObjectPropertiesForMethod();
-
-	ConstructorPropertyByStage( ThisObject.CurrentStage ).Insert( "statusCode", StatusCode );
 	
+	AddConstructorStageProperty( "statusCode", StatusCode );
+
+	Return ThisObject;
+	
+EndFunction
+
+Function WithReasonPhrase( Val ReasonPhrase ) Export
+	
+	CheckObjectPropertiesForMethod();
+	
+	AddConstructorStageProperty( "reasonPhrase", ReasonPhrase );
+
 	Return ThisObject;
 	
 EndFunction
@@ -331,9 +353,9 @@ Procedure InitConstructor()
 	
 EndProcedure
 
-Function ConstructorPropertyByStage( Val Stage )
+Function ConstructorRootProperty( Val Key )
 	
-	Result = ThisObject.Constructor.Get( Stage );
+	Result = ThisObject.Constructor.Get( Key );
 	
 	If ( TypeOf(Result) <> Type("Map") ) Then
 		Raise RuntimeError(
@@ -346,11 +368,35 @@ Function ConstructorPropertyByStage( Val Stage )
 	
 EndFunction
 
-Procedure FillPropertyByValue( Property, Value, Stage = "" )
+Procedure AddConstructorStageProperty( Val Key, Val Value )
+	
+	Var ConstructorRootProperty;
+	
+	ConstructorRootProperty = ConstructorRootProperty( ThisObject.CurrentStage );
+	ConstructorRootProperty.Insert( Key, Value );
+	
+EndProcedure
+
+Процедура InsertConstructorStageProperty( Val Key, Val Value )
+	
+	Var Result;
+	
+	Result = ConstructorStagePropertyOrInitMapIfAbsent( ThisObject.CurrentStage, Key );
+
+	For Each KeyValue In Value Do
+		
+		Result.Insert( KeyValue.Key, KeyValue.Value );
+		
+	EndDo;
+	
+КонецПроцедуры
+
+// TODO refactoring, bad idea
+Procedure FillPropertyByValue( Key, Value, Stage = "" )
 	
 	If ( TypeOf(Value) = Type("String") ) Then
 		
-		ThisObject[ Property + "Json" ] = Value;
+		ThisObject[ Key + "Json" ] = Value;
 		
 	Else
 
@@ -358,11 +404,11 @@ Procedure FillPropertyByValue( Property, Value, Stage = "" )
 		
 		If ( IsBlankString(Stage) ) Then
 			
-			ThisObject.Constructor.Insert( Property, New Map() );
+			ThisObject.Constructor.Insert( Key, New Map() );
 			
 		Else
 			
-			ConstructorPropertyByStage( Stage ).Insert( Property, Value );
+			ConstructorRootProperty( Stage ).Insert( Key, Value );
 			
 		EndIf;
 		
@@ -370,19 +416,19 @@ Procedure FillPropertyByValue( Property, Value, Stage = "" )
 	
 EndProcedure
 
-Function StageHeaders( Val Stage )
+Function ConstructorStagePropertyOrInitMapIfAbsent( Val Stage, Val Key )
 	
-	Var PropertyCurrentStage;
+	Var StageProperty;
 	Var Result;
 	
-	PropertyCurrentStage = ConstructorPropertyByStage( Stage );
-	
-	Result = PropertyCurrentStage.Get("headers");
+	StageProperty = ConstructorRootProperty( Stage );
+
+	Result = StageProperty.Get( Key );
 	
 	If ( Result = Undefined ) Then
 		
-		PropertyCurrentStage.Insert( "headers", New Map() );
-		Result = PropertyCurrentStage.Get( "headers" );
+		StageProperty.Insert( Key, New Map() );
+		Result = StageProperty.Get( Key );
 		
 	EndIf;
 	
@@ -390,7 +436,7 @@ Function StageHeaders( Val Stage )
 
 EndFunction
 
-Function MapByDifferentTypeValues( Val Key, Val Value )
+Function MapStringValueToArray( Val Key, Val Value )
 	
 	Var Result;
 	
@@ -402,6 +448,7 @@ Function MapByDifferentTypeValues( Val Key, Val Value )
 		NewValue.Add( Value );
 	
 	Else
+		
 		NewValue = Value;
 	
 	EndIf;
@@ -499,7 +546,7 @@ Function MockServerError( DetailErrorDescription )
 	Var Result;
 	
 	Result = New Structure();
-	Result.Insert( "КодСостояния", HTTPStatusCode.НайтиКодПоИдентификатору("INTERNAL_SERVER_ERROR") );
+	Result.Insert( "КодСостояния", HTTPStatusCodesClientServerCached.FindCodeById("INTERNAL_SERVER_ERROR") );
 	Result.Insert( "ТекстОшибки", DetailErrorDescription );
 	
 	Return Result;

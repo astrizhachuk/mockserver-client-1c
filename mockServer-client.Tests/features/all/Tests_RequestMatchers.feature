@@ -3,7 +3,7 @@
 @tree
 @classname=ModuleExceptionPath
 
-Feature: mockServer-client.Tests.Tests_RequestMatchers
+Feature: mockserver-client.Tests.Tests_RequestMatchers
 	As Developer
 	I want the returns value to be equal to expected value
 	That I can guarantee the execution of the method
@@ -62,3 +62,8 @@ Scenario: WithMethodRewrite
 Scenario: WithPathNotEmpty
 	And I execute 1C:Enterprise script at server
 	| 'Tests_RequestMatchers.WithPathNotEmpty(Context());' |
+
+@OnServer
+Scenario: WithQueryStringParametersNotEmpty
+	And I execute 1C:Enterprise script at server
+	| 'Tests_RequestMatchers.WithQueryStringParametersNotEmpty(Context());' |

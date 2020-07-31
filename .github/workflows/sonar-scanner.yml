@@ -10,7 +10,7 @@ on:
 
 jobs:
   SonarScanner:
-    if: github.repository == 'astrizhachuk/mockServer-client-1c'
+    if: github.repository == 'astrizhachuk/mockserver-client-1c'
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -21,7 +21,7 @@ jobs:
       if: github.event_name == 'push'
       run: sonar-scanner
         -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-        -Dsonar.projectVersion=$(grep -oPm1 "(?<=<version>)[^<]+" mockServer-client/src/Configuration/Configuration.mdo)
+        -Dsonar.projectVersion=$(grep -oPm1 "(?<=<version>)[^<]+" mockserver-client/src/Configuration/Configuration.mdo)
         -Dsonar.host.url=https://sonar.openbsl.ru
         -Dsonar.branch.name=${GITHUB_REF#refs/heads/}
     - name: Run SonarQube on pull request
@@ -29,7 +29,7 @@ jobs:
       run: sonar-scanner
         -Dsonar.login=${{ secrets.SONAR_TOKEN }}
         -Dsonar.host.url=https://sonar.openbsl.ru
-        -Dsonar.projectVersion=$(grep -oPm1 "(?<=<version>)[^<]+" mockServer-client/src/Configuration/Configuration.mdo)
+        -Dsonar.projectVersion=$(grep -oPm1 "(?<=<version>)[^<]+" mockserver-client/src/Configuration/Configuration.mdo)
         -Dsonar.pullrequest.key=${{ github.event.pull_request.number }}
         -Dsonar.pullrequest.branch=${{ github.event.pull_request.head.ref }}
         -Dsonar.pullrequest.base=${{ github.event.pull_request.base.ref }}

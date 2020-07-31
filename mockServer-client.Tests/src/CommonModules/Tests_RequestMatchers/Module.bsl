@@ -273,6 +273,32 @@ Procedure WithPathNotEmpty(Context) Export
 							   | }
 							   |}");
 							   
-EndProcedure	
+EndProcedure
+
+// @unit-test:dev
+Procedure WithQueryStringParametersNotEmpty(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("this.is.error.url", "1080");
+	// when
+	Mock.When(Mock.Request().WithQueryStringParameters("cartId", "[A-Z0-9\\-]+")).Respond();
+	// then
+	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
+	Assert.AreEqual(Mock.CurrentStage, "");
+	Assert.AreEqual(Mock.Constructor["httpRequest"]["queryStringParameters"]["cartId"][0], "[A-Z0-9\\-]+");
+	Assert.AreEqual(Mock.Json, "{
+							   | ""httpRequest"": {
+							   |  ""queryStringParameters"": {
+            				   |   ""cartId"": [
+            				   |    ""[A-Z0-9\\\\-]+""
+            				   |   ]
+        					   |  }
+							   | }
+							   |}");
+							   
+EndProcedure
+
+	
 
 #EndRegion

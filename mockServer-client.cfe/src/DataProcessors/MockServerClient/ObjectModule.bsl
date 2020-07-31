@@ -76,6 +76,12 @@ Function КодОтвета( КодОтвета ) Export
 	
 EndFunction
 
+Function Причина( Причина ) Export
+	
+	Return WithReasonPhrase( Причина );
+	
+EndFunction
+
 #EndRegion
 
 #Region En
@@ -277,6 +283,16 @@ Function WithStatusCode( Val StatusCode ) Export
 	CheckObjectPropertiesForMethod();
 	
 	AddConstructorStageProperty( "statusCode", StatusCode );
+
+	Return ThisObject;
+	
+EndFunction
+
+Function WithReasonPhrase( Val ReasonPhrase ) Export
+	
+	CheckObjectPropertiesForMethod();
+	
+	AddConstructorStageProperty( "reasonPhrase", ReasonPhrase );
 
 	Return ThisObject;
 	

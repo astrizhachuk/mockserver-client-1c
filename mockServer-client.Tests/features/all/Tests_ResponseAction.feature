@@ -9,6 +9,11 @@ Feature: mockserver-client.Tests.Tests_ResponseAction
 	That I can guarantee the execution of the method
 
 @OnServer
+Scenario: WithBody
+	And I execute 1C:Enterprise script at server
+	| 'Tests_ResponseAction.WithBody(Context());' |
+
+@OnServer
 Scenario: WithStatusCode
 	And I execute 1C:Enterprise script at server
 	| 'Tests_ResponseAction.WithStatusCode(Context());' |
@@ -19,6 +24,6 @@ Scenario: WithStatusCodeRewrite
 	| 'Tests_ResponseAction.WithStatusCodeRewrite(Context());' |
 
 @OnServer
-Scenario: WithBody
+Scenario: WithReasonPhrase
 	And I execute 1C:Enterprise script at server
-	| 'Tests_ResponseAction.WithBody(Context());' |
+	| 'Tests_ResponseAction.WithReasonPhrase(Context());' |

@@ -59,6 +59,11 @@ Scenario: WithStatusCode
 	| 'Tests_CallWrapperRu.WithStatusCode(Context());' |
 
 @OnServer
+Scenario: WithReasonPhrase
+	And I execute 1C:Enterprise script at server
+	| 'Tests_CallWrapperRu.WithReasonPhrase(Context());' |
+
+@OnServer
 Scenario: Respond
 	And I execute 1C:Enterprise script at server
 	| 'Tests_CallWrapperRu.Respond(Context());' |

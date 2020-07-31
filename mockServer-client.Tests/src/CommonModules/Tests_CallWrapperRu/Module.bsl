@@ -177,6 +177,26 @@ Procedure WithStatusCode(Context) Export
 EndProcedure
 
 // @unit-test
+Procedure WithReasonPhrase(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("this.is.error.url", "1080");
+	// when
+	Mock.Respond(Mock.Response().Причина("I'm a teapot"));
+	// then
+	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
+	Assert.AreEqual(Mock.CurrentStage, "");
+	Assert.AreEqual(Mock.Constructor["httpResponse"]["reasonPhrase"], "I'm a teapot");
+	Assert.AreEqual(Mock.Json, "{
+								| ""httpResponse"": {
+								|  ""reasonPhrase"": ""I'm a teapot""
+								| }
+								|}");
+
+EndProcedure
+
+// @unit-test
 Procedure Respond(Context) Export
 	
 	// given

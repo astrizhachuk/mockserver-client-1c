@@ -9,11 +9,6 @@ Feature: mockserver-client.Tests.Tests_Integration
 	That I can guarantee the execution of the method
 
 @OnServer
-Scenario: MockServerDockerUp
-	And I execute 1C:Enterprise script at server
-	| 'Tests_Integration.MockServerDockerUp(Context());' |
-
-@OnServer
 Scenario: MatchRequestByPath
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Integration.MatchRequestByPath(Context());' |
@@ -24,6 +19,6 @@ Scenario: MatchRequestByQueryParameterWithRegexValue
 	| 'Tests_Integration.MatchRequestByQueryParameterWithRegexValue(Context());' |
 
 @OnServer
-Scenario: TODO
+Scenario: LiteralResponseWithStatusCodeAndReasonPhrase
 	And I execute 1C:Enterprise script at server
-	| 'Tests_Integration.TODO(Context());' |
+	| 'Tests_Integration.LiteralResponseWithStatusCodeAndReasonPhrase(Context());' |

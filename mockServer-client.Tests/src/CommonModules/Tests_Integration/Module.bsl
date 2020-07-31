@@ -1,6 +1,6 @@
 #Region Internal
 
-// @unit-test:integration
+// @unit-test:fast
 Procedure MockServerDockerUp(Context) Export
 
 	ExitStatus = Undefined;
@@ -74,24 +74,24 @@ EndProcedure
 // literal response with status code and reason phrase
 // 
 // @unit-test:integration
-Procedure TODO(Context) Export
+Procedure LiteralResponseWithStatusCodeAndReasonPhrase(Context) Export
 
 	// given
-	Мок = DataProcessors.MockServerClient.Create();
+	Mock = DataProcessors.MockServerClient.Create();
 	// when
-	Мок.Сервер("localhost", "1080")
-		.Когда(
-			Мок.Запрос()
-				.Метод("GET")
-				.Путь("/%D1%84%D1%8D%D0%B9%D0%BA.epf")
-				.Заголовок("PRIVATE-TOKEN", "-U2ssrBsM4rmx85HXzZ1")
-		).Ответить(
-			Мок.Ответ()
-				.КодОтвета(404)
-		);
+	Mock.Server("localhost", "1080")
+		.When(
+			Mock.Request()
+				.WithPath("/some/path")
+				.WithMethod("POST")
+		).Respond(
+			Mock.Response()
+				.WithStatusCode(418)
+				.WithReasonPhrase("I'm a teapot")
+		);	
 	// then
-	Assert.AreEqual(Мок.MockServerResponse.КодСостояния, 201);
-	Assert.AreEqual(Мок.MockServerResponse.URL, "http://localhost:1080/mockserver/expectation");
+	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 201);
+	Assert.AreEqual(Mock.MockServerResponse.URL, "http://localhost:1080/mockserver/expectation");
 
 EndProcedure
 

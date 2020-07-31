@@ -20,6 +20,8 @@ Procedure MockServerDockerUp(Context) Export
 	
 EndProcedure
 
+// Request Properties Matcher Code Examples
+
 // match request by path
 // 
 // @unit-test:integration
@@ -66,18 +68,12 @@ Procedure MatchRequestByQueryParameterWithRegexValue(Context) Export
 
 EndProcedure
 
-//// @unit-test:dev
-//Procedure RespondResponse(Context) Export
-//	
-//	// given
-//	Mock = DataProcessors.MockServerClient.Create();
-//	Mock.URL = "localhost:1080";
-//	// when
-//	Mock.When( Mock.Request("""method"":""GET""") ).Respond( Mock.Response("""statusCode"": 404") );
-//	// then
-//
-//EndProcedure
 
+// Response Action Code Examples
+
+// literal response with status code and reason phrase
+// 
+// @unit-test:integration
 Procedure TODO(Context) Export
 
 	// given

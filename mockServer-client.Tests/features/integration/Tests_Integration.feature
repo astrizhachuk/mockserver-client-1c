@@ -22,3 +22,8 @@ Scenario: MatchRequestByPath
 Scenario: MatchRequestByQueryParameterWithRegexValue
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Integration.MatchRequestByQueryParameterWithRegexValue(Context());' |
+
+@OnServer
+Scenario: TODO
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.TODO(Context());' |

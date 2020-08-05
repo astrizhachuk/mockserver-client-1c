@@ -4,7 +4,7 @@ The typical sequence for using MockServer is as follows:
 
 * [Start MockServer](#StartMockServer)
 * [Create an instance of the client](#CreateInstance)
-* Setup Expectations
+* [Setup Expectations](#SetupExpectations)
 * Run Your Test Scenarios
 * Verify Requests
 
@@ -48,3 +48,6 @@ To the specific server with a completely MockServer [reset](https://www.mock-ser
 Mock = DataProcessors.MockServerClient.Create();
 Mock = Mock.Server( "http://server", "1099", true );
 ```
+
+## Setup Expectations<a name="SetupExpectations"></a>
+

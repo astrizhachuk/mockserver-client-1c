@@ -38,10 +38,11 @@ To the specific server:
 Mock = DataProcessors.MockServerClient.Create();
 Mock = Mock.Server( "http://server" );
 # or
+Mock = DataProcessors.MockServerClient.Create();
 Mock = Mock.Server( "http://server", "1099" );
 ```
 
-To the specific server with a completely MockServer reset:
+To the specific server with a completely MockServer [reset](https://www.mock-server.com/mock_server/clearing_and_resetting.html):
 
 ```bash
 Mock = DataProcessors.MockServerClient.Create();

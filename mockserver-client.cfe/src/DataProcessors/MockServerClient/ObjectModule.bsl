@@ -88,6 +88,21 @@ EndFunction
 	
 #Region Intermediate
 
+// Defines and returns the client communicating to a MockServer at the specified host and port.
+//
+// Parameters:
+// 	URL - String - URL;
+// 	Port - String - port;
+// 	Reset - Boolean - true - reset MockServer, otherwise - false (default false);
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object;
+// 	
+// Example:
+//  Mock = DataProcessors.MockServerClient.Create().Server("http://server");
+//  Mock = DataProcessors.MockServerClient.Create().Server("http://server", "1090");
+//  Mock = DataProcessors.MockServerClient.Create().Server("http://server", "1090", true);
+//
 Function Server( Val URL, Val Port = Undefined, Val Reset = false ) Export
 	
 	If ( Port <> Undefined ) Then

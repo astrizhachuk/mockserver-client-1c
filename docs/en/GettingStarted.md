@@ -32,7 +32,7 @@ To the default server:
 Mock = DataProcessors.MockServerClient.Create();
 ```
 
-To the specific server:
+To the server at the specified host and port:
 
 ```bash
 Mock = DataProcessors.MockServerClient.Create();
@@ -42,7 +42,7 @@ Mock = DataProcessors.MockServerClient.Create();
 Mock = Mock.Server( "http://server", "1099" );
 ```
 
-To the specific server with a completely MockServer [reset](https://www.mock-server.com/mock_server/clearing_and_resetting.html):
+To the server at the specified host and port with a completely MockServer [reset](https://www.mock-server.com/mock_server/clearing_and_resetting.html):
 
 ```bash
 Mock = DataProcessors.MockServerClient.Create();

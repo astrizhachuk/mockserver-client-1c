@@ -101,6 +101,20 @@
       <types>Arbitrary</types>
     </type>
   </attributes>
+  <attributes uuid="f6902609-2086-4001-9e15-31f518861bd1">
+    <name>TimesJson</name>
+    <synonym>
+      <key>en</key>
+      <value>TimesJson</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>TimesJson</value>
+    </synonym>
+    <type>
+      <types>Arbitrary</types>
+    </type>
+  </attributes>
   <attributes uuid="bad92865-714e-4d0e-a61f-010843636ea9">
     <name>MockServerResponse</name>
     <synonym>

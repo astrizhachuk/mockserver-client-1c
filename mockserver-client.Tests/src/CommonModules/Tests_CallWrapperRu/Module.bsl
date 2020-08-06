@@ -38,6 +38,7 @@ Procedure When(Context) Export
 	Assert.AreEqual(Result.Json, "{""sample"": ""any""}");
 	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
 	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
+	Assert.IsTrue(IsBlankString(Result.TimesJson));		
 
 EndProcedure
 
@@ -52,6 +53,7 @@ Procedure Request(Context) Export
 	Assert.IsTrue(IsBlankString(Result.Json));
 	Assert.IsFalse(IsBlankString(Result.HttpRequestJson));
 	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));		
+	Assert.IsTrue(IsBlankString(Result.TimesJson));		
 	Assert.IsUndefined(Result.Constructor);
 
 EndProcedure
@@ -152,6 +154,7 @@ Procedure Response(Context) Export
 	Assert.IsTrue(IsBlankString(Result.Json));
 	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
 	Assert.IsFalse(IsBlankString(Result.HttpResponseJson));		
+	Assert.IsTrue(IsBlankString(Result.TimesJson));
 	Assert.IsUndefined(Result.Constructor);
 	
 EndProcedure
@@ -210,7 +213,28 @@ Procedure Respond(Context) Export
 	Assert.IsUndefined(Mock.Constructor);
 	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
 	Assert.IsTrue(IsBlankString(Mock.HttpResponseJson));
+	Assert.IsTrue(IsBlankString(Mock.TimesJson));
 	Assert.AreEqual(Mock.Json, "{""name"":""value""}");
+
+EndProcedure
+
+// @unit-test
+Procedure Times(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Result = Mock.Повторений();
+	// then
+	Assert.AreEqual(Mock.CurrentStage, "times");
+	Assert.IsTrue(IsBlankString(Result.Json));
+	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
+	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
+	Assert.IsTrue(IsBlankString(Result.TimesJson));
+	Assert.IsInstanceOfType("Map", Result.Constructor);
+	Assert.AreEqual(Result.Constructor.Count(), 1);
+	Assert.IsInstanceOfType("Map", Result.Constructor["times"]);
+	Assert.AreCollectionEmpty(Result.Constructor["times"]);
 
 EndProcedure
 

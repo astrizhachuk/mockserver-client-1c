@@ -12,6 +12,7 @@ Procedure RequestUndefinedConstructor(Context) Export
 	Assert.IsTrue(IsBlankString(Result.Json));
 	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
 	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
+	Assert.IsTrue(IsBlankString(Result.TimesJson));	
 	Assert.IsInstanceOfType("Map", Result.Constructor);
 	Assert.AreEqual(Result.Constructor.Count(), 1);
 	Assert.IsInstanceOfType("Map", Result.Constructor["httpRequest"]);
@@ -32,6 +33,7 @@ Procedure RequestReInitWrongConstructor(Context) Export
 	Assert.IsTrue(IsBlankString(Result.Json));
 	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
 	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
+	Assert.IsTrue(IsBlankString(Result.TimesJson));
 	Assert.IsInstanceOfType("Map", Result.Constructor);
 	Assert.AreEqual(Result.Constructor.Count(), 1);
 	Assert.IsInstanceOfType("Map", Result.Constructor["httpRequest"]);
@@ -50,7 +52,8 @@ Procedure RequestStringJson(Context) Export
 	Assert.AreEqual(Mock.CurrentStage, "httpRequest");
 	Assert.IsTrue(IsBlankString(Result.Json));
 	Assert.IsFalse(IsBlankString(Result.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));		
+	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
+	Assert.IsTrue(IsBlankString(Result.TimesJson));
 	Assert.IsUndefined(Result.Constructor);
 
 EndProcedure

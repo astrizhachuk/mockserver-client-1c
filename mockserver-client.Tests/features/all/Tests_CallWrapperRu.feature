@@ -67,3 +67,8 @@ Scenario: WithReasonPhrase
 Scenario: Respond
 	And I execute 1C:Enterprise script at server
 	| 'Tests_CallWrapperRu.Respond(Context());' |
+
+@OnServer
+Scenario: Times
+	And I execute 1C:Enterprise script at server
+	| 'Tests_CallWrapperRu.Times(Context());' |

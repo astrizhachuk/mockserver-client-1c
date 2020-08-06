@@ -40,6 +40,12 @@ Function Ответ( ОтветJson = Undefined ) Export
 	
 EndFunction
 
+Function Повторений( Повторений = Undefined ) Export
+	
+	Return Times( Повторений );
+	
+EndFunction
+
 Function Заголовки( Заголовки = Undefined ) Export
 	
 	Return Headers( Заголовки );
@@ -166,6 +172,17 @@ Function Response( Val HttpResponseJson = Undefined  ) Export
 	
 EndFunction
 
+Function Times( Val TimesJson = Undefined  ) Export
+	
+	ThisObject.Json = "";
+	ThisObject.CurrentStage = "times";
+	
+	FillPropertyByValue( "times", TimesJson );
+	
+	Return ThisObject;
+	
+EndFunction
+
 #EndRegion
 
 #Region Terminal
@@ -220,6 +237,10 @@ Procedure Respond( Val Object = Undefined ) Export
 	EndTry;
 
 EndProcedure
+
+//Procedure Verify( Val Object = Undefined ) Export
+//	
+//EndProcedure
 
 #EndRegion
 

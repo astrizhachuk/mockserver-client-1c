@@ -179,6 +179,12 @@ Procedure Reset() Export
 
 		ThisObject.MockServerResponse = HTTPConnector.Put( ThisObject.URL + "/mockserver/reset" );
 		
+		If ( HTTPStatusCodesClientServerCached.IsServerError(ThisObject.MockServerResponse.КодСостояния) ) Then
+			
+			Raise HTTPConnector.КакТекст( ThisObject.MockServerResponse );
+			
+		EndIf;
+		
 	Except
 		
 		ThisObject.MockServerResponse = MockServerError( DetailErrorDescription(ErrorInfo()) );

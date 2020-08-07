@@ -72,3 +72,28 @@ Scenario: Respond
 Scenario: Times
 	And I execute 1C:Enterprise script at server
 	| 'Tests_CallWrapperRu.Times(Context());' |
+
+@OnServer
+Scenario: AtLeast
+	And I execute 1C:Enterprise script at server
+	| 'Tests_CallWrapperRu.AtLeast(Context());' |
+
+@OnServer
+Scenario: AtMost
+	And I execute 1C:Enterprise script at server
+	| 'Tests_CallWrapperRu.AtMost(Context());' |
+
+@OnServer
+Scenario: Exactly
+	And I execute 1C:Enterprise script at server
+	| 'Tests_CallWrapperRu.Exactly(Context());' |
+
+@OnServer
+Scenario: Once
+	And I execute 1C:Enterprise script at server
+	| 'Tests_CallWrapperRu.Once(Context());' |
+
+@OnServer
+Scenario: Between
+	And I execute 1C:Enterprise script at server
+	| 'Tests_CallWrapperRu.Between(Context());' |

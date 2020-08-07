@@ -210,10 +210,6 @@ Procedure Respond(Context) Export
 	// then
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
-	Assert.IsUndefined(Mock.Constructor);
-	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Mock.HttpResponseJson));
-	Assert.IsTrue(IsBlankString(Mock.TimesJson));
 	Assert.AreEqual(Mock.Json, "{""name"":""value""}");
 
 EndProcedure
@@ -227,14 +223,76 @@ Procedure Times(Context) Export
 	Result = Mock.Повторений();
 	// then
 	Assert.AreEqual(Mock.CurrentStage, "times");
-	Assert.IsTrue(IsBlankString(Result.Json));
-	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
-	Assert.IsTrue(IsBlankString(Result.TimesJson));
-	Assert.IsInstanceOfType("Map", Result.Constructor);
-	Assert.AreEqual(Result.Constructor.Count(), 1);
 	Assert.IsInstanceOfType("Map", Result.Constructor["times"]);
 	Assert.AreCollectionEmpty(Result.Constructor["times"]);
+
+EndProcedure
+
+// @unit-test
+Procedure AtLeast(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Result = Mock.Повторений().НеМенее(2);
+	// then
+	Assert.AreEqual(Mock.CurrentStage, "times");
+	Assert.AreEqual(Mock.Constructor["times"]["atLeast"], 2);
+
+EndProcedure
+
+// @unit-test
+Procedure AtMost(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Result = Mock.Повторений().НеБолее(2);
+	// then
+	Assert.AreEqual(Mock.CurrentStage, "times");
+	Assert.AreEqual(Mock.Constructor["times"]["atMost"], 2);
+
+EndProcedure
+
+// @unit-test
+Procedure Exactly(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Result = Mock.Повторений().Точно(2);
+	// then
+	Assert.AreEqual(Mock.CurrentStage, "times");
+	Assert.AreEqual(Mock.Constructor["times"]["atLeast"], 2);
+	Assert.AreEqual(Mock.Constructor["times"]["atMost"], 2);
+
+EndProcedure
+
+// @unit-test
+Procedure Once(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Result = Mock.Повторений().Однократно();
+	// then
+	Assert.AreEqual(Mock.CurrentStage, "times");
+	Assert.AreEqual(Mock.Constructor["times"]["atLeast"], 1);
+	Assert.AreEqual(Mock.Constructor["times"]["atMost"], 1);
+
+EndProcedure
+
+// @unit-test
+Procedure Between(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Result = Mock.Повторений().Между(2, 3);
+	// then
+	Assert.AreEqual(Mock.CurrentStage, "times");
+	Assert.AreEqual(Mock.Constructor["times"]["atLeast"], 2);
+	Assert.AreEqual(Mock.Constructor["times"]["atMost"], 3);
 
 EndProcedure
 

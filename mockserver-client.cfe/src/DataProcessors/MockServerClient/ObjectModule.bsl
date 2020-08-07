@@ -46,6 +46,36 @@ Function Повторений( Повторений = Undefined ) Export
 	
 EndFunction
 
+Function НеМенее( Val Повторений ) Export
+	
+	Return AtLeast( Повторений );
+	
+EndFunction
+
+Function НеБолее( Val Повторений ) Export
+	
+	Return AtMost( Повторений );
+	
+EndFunction
+
+Function Точно( Val Повторений ) Export
+	
+	Return Exactly( Повторений );
+	
+EndFunction
+
+Function Однократно() Export
+	
+	Return Once();
+	
+EndFunction
+
+Function Между( Val От, Val До ) Export
+	
+	Return Between( От, До );
+	
+EndFunction
+
 Function Заголовки( Заголовки = Undefined ) Export
 	
 	Return Headers( Заголовки );
@@ -341,6 +371,63 @@ Function WithReasonPhrase( Val ReasonPhrase ) Export
 EndFunction
 
 #EndRegion
+
+#EndRegion
+
+#Region Times
+
+Function AtLeast( Val Count ) Export
+	
+	CheckObjectPropertiesForMethod();
+	
+	AddConstructorStageProperty( "atLeast", Count );
+	
+	Return ThisObject;
+	
+EndFunction
+
+Function AtMost( Val Count ) Export
+	
+	CheckObjectPropertiesForMethod();
+	
+	AddConstructorStageProperty( "atMost", Count );
+	
+	Return ThisObject;
+	
+EndFunction
+
+Function Exactly( Val Count ) Export
+	
+	CheckObjectPropertiesForMethod();
+
+	AddConstructorStageProperty( "atLeast", Count );	
+	AddConstructorStageProperty( "atMost", Count );
+	
+	Return ThisObject;
+	
+EndFunction
+
+Function Once() Export
+	
+	CheckObjectPropertiesForMethod();
+	
+	AddConstructorStageProperty( "atLeast", 1 );
+	AddConstructorStageProperty( "atMost", 1 );
+	
+	Return ThisObject;
+	
+EndFunction
+
+Function Between( Val AtLeast, Val AtMost ) Export
+	
+	CheckObjectPropertiesForMethod();
+
+	AddConstructorStageProperty( "atLeast", AtLeast );	
+	AddConstructorStageProperty( "atMost", AtMost );
+	
+	Return ThisObject;
+	
+EndFunction
 
 #EndRegion
 

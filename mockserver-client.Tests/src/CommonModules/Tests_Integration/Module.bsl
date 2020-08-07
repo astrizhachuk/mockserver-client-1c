@@ -95,4 +95,51 @@ Procedure LiteralResponseWithStatusCodeAndReasonPhrase(Context) Export
 
 EndProcedure
 
+// Verifying Repeating Requests Code Examples
+
+// verify requests received at least twice
+// 
+// @unit-test:integration
+Procedure VerifyRequestsReceivedAtLeastTwice(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("localhost", "1080", true);
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	// when
+	Mock.When(
+			Mock.Request()
+				.WithPath("/some/path")
+		).Verify(
+			Mock.Times()
+				.AtLeast(2)
+		);	
+	// then
+	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 202);
+	Assert.AreEqual(Mock.MockServerResponse.URL, "http://localhost:1080/mockserver/verify");
+
+EndProcedure
+
+// @unit-test:integration
+Procedure VerifyRequestsReceivedAtLeastTwiceFail(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("localhost", "1080", true);
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	// when
+	Mock.When(
+			Mock.Request()
+				.WithPath("/some/path")
+		).Verify(
+			Mock.Times()
+				.AtLeast(2)
+		);	
+	// then
+	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 406);
+	Assert.AreEqual(Mock.MockServerResponse.URL, "http://localhost:1080/mockserver/verify");
+
+EndProcedure
+
 #EndRegion

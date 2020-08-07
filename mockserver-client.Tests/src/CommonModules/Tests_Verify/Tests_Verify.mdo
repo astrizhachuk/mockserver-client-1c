@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="570884e6-77f3-4635-9f2c-6e2fb8c70d12">
+  <name>Tests_Verify</name>
+  <synonym>
+    <key>en</key>
+    <value>Verify</value>
+  </synonym>
+  <server>true</server>
+</mdclass:CommonModule>

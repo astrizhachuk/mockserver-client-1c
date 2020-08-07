@@ -27,3 +27,13 @@ Scenario: MatchRequestByQueryParameterWithRegexValue
 Scenario: LiteralResponseWithStatusCodeAndReasonPhrase
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Integration.LiteralResponseWithStatusCodeAndReasonPhrase(Context());' |
+
+@OnServer
+Scenario: VerifyRequestsReceivedAtLeastTwice
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.VerifyRequestsReceivedAtLeastTwice(Context());' |
+
+@OnServer
+Scenario: VerifyRequestsReceivedAtLeastTwiceFail
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.VerifyRequestsReceivedAtLeastTwiceFail(Context());' |

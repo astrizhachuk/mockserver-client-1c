@@ -220,57 +220,23 @@ EndFunction
 Procedure Reset() Export
 	
 	ThisObject.Json = "";
-	ThisObject.CurrentStage = "";
-	
-	Try
-
-		ThisObject.MockServerResponse = HTTPConnector.Put( ThisObject.URL + "/mockserver/reset" );
-		
-		If ( HTTPStatusCodesClientServerCached.IsServerError(ThisObject.MockServerResponse.КодСостояния) ) Then
-			
-			Raise HTTPConnector.КакТекст( ThisObject.MockServerResponse );
-			
-		EndIf;
-		
-	Except
-		
-		ThisObject.MockServerResponse = MockServerError( DetailErrorDescription(ErrorInfo()) );
-		
-	EndTry;
+	DoAction( "reset" );
 	
 EndProcedure
 
-Procedure Respond( Val Object = Undefined ) Export
+Procedure Respond( Val Self = Undefined ) Export
 	
-	ThisObject.CurrentStage = "";
-	
-	// TODO add Action (time, httpOverrideForwardedRequest, httpForward, errors etc)
-	
-	Try
-
-		GenerateJson();
-		
-		ThisObject.MockServerResponse = HTTPConnector.Put( ThisObject.Url + "/mockserver/expectation",
-															ThisObject.Json,
-															ContentTypeJsonHeaders() );
-		
-		If ( NOT HTTPStatusCodesClientServerCached.isCreated(ThisObject.MockServerResponse.КодСостояния) ) Then
-		
-			Raise HTTPConnector.КакТекст( ThisObject.MockServerResponse );		
-		
-		EndIf;
-		
-	Except
-		
-		ThisObject.MockServerResponse = MockServerError( DetailErrorDescription(ErrorInfo()) );
-		
-	EndTry;
+	GenerateJson();
+	DoAction( "expectation" );
 
 EndProcedure
 
-//Procedure Verify( Val Object = Undefined ) Export
-//	
-//EndProcedure
+Procedure Verify( Val Self = Undefined ) Export
+	
+	GenerateJson();
+	DoAction( "verify" );
+	
+EndProcedure
 
 #EndRegion
 
@@ -588,52 +554,36 @@ Function MapStringValueToArray( Val Key, Val Value )
 	
 EndFunction
 
-Функция JoinJsonProperties()
+Procedure FillActionTemplate( Result,  Val Key, Val Value )
 	
-	Перем Result;
+	If ( TypeOf(Key) = Тип("String") AND NOT IsBlankString(Value) ) Then
+		
+		Result = Result + StrTemplate(
+	        " ""%1"": {
+	        |%2
+	        | },", Key, Value );
+		
+	EndIf;
+	
+EndProcedure
+
+Function JoinJsonParts()
+	
+	Var Result;
 
 	Result = "{" + Chars.LF;
 	
-	Если ( ТипЗнч(HttpRequestJson) = Тип("String") И НЕ ПустаяСтрока(HttpRequestJson) ) Тогда
-		
-		Если ( HttpResponseJson = Неопределено ) Тогда
-			
-			Result = Result + StrTemplate(
-		        " ""httpRequest"": {
-		        |%1
-		        | }",
-		        HttpRequestJson
-	    	);
-	    	
-		Иначе
-			
-			Result = Result + StrTemplate(
-		        " ""httpRequest"": {
-		        |%1
-		        | },",
-		        HttpRequestJson
-	    	);
-	    			
-		КонецЕсли;
-		
-	КонецЕсли;
-	
-	Если ( ТипЗнч(HttpResponseJson) = Тип("String") И НЕ ПустаяСтрока(HttpResponseJson) ) Тогда
-		
-			Result = Result + StrTemplate(
-		        " ""httpResponse"": {
-		        |%1
-		        | }",
-		        HttpResponseJson
-	    	);
+	FillActionTemplate( Result, "httpRequest", HttpRequestJson);
+	FillActionTemplate( Result, "httpResponse", HttpResponseJson);
+	FillActionTemplate( Result, "times", TimesJson);
 
-	КонецЕсли;
+	Result = Left( Result, StrLen(Result) - 1 );
 	
 	Result = Result + Chars.LF + "}";
 	
 	Возврат Result;
 	
-КонецФункции
+EndFunction
 
 Procedure GenerateJson()
 	
@@ -645,7 +595,7 @@ Procedure GenerateJson()
 	
 	If ( ThisObject.Constructor = Undefined ) Then
 		
-		ThisObject.Json = JoinJsonProperties();
+		ThisObject.Json = JoinJsonParts();
 
 	Else
 		
@@ -670,6 +620,45 @@ Function ContentTypeJsonHeaders()
 	
 EndFunction
 
+Процедура DoAction( Val Action )
+	
+	Var PutJson;
+	Var PutHeaders;
+	
+	ThisObject.CurrentStage = "";
+	
+	Try
+		
+		If ( IsBlankString(ThisObject.Json) ) Then
+			
+			PutJson = Undefined;
+			PutHeaders = Undefined;
+
+		Else
+			
+			PutJson = ThisObject.Json;
+			PutHeaders = ContentTypeJsonHeaders();
+		
+		EndIf;
+		
+		ThisObject.MockServerResponse = HTTPConnector.Put( ThisObject.Url + "/mockserver/" + Action,
+																PutJson,
+																PutHeaders );
+															
+		If ( HTTPStatusCodesClientServerCached.IsServerError(ThisObject.MockServerResponse.КодСостояния) ) Then
+			
+			Raise HTTPConnector.КакТекст( ThisObject.MockServerResponse );
+			
+		EndIf;
+		
+	Except
+		
+		ThisObject.MockServerResponse = MockServerError( DetailErrorDescription(ErrorInfo()) );
+		
+	EndTry;
+	
+КонецПроцедуры
+
 Function MockServerError( DetailErrorDescription )
 	
 	Var Result;
@@ -690,7 +679,7 @@ EndFunction
 
 #EndRegion
 
-#Region Init
+#Region Initialize
 
 ThisObject.URL = "localhost:1080";
 

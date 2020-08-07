@@ -58,6 +58,7 @@
   <commonModules>CommonModule.Tests_Response</commonModules>
   <commonModules>CommonModule.Tests_ResponseAction</commonModules>
   <commonModules>CommonModule.Tests_Respond</commonModules>
+  <commonModules>CommonModule.Tests_Verify</commonModules>
   <commonModules>CommonModule.Tests_Reset</commonModules>
   <commonModules>CommonModule.Tests_Times</commonModules>
   <commonModules>CommonModule.Tests_TimesMethods</commonModules>

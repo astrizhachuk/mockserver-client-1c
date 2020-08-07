@@ -97,3 +97,8 @@ Scenario: Once
 Scenario: Between
 	And I execute 1C:Enterprise script at server
 	| 'Tests_CallWrapperRu.Between(Context());' |
+
+@OnServer
+Scenario: Verify
+	And I execute 1C:Enterprise script at server
+	| 'Tests_CallWrapperRu.Verify(Context());' |

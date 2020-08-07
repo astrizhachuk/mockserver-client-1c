@@ -296,4 +296,28 @@ Procedure Between(Context) Export
 
 EndProcedure
 
+// @unit-test
+Procedure Verify(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("this.is.error.url", "1080");
+	// when
+	Mock.When( Mock.Request().Метод("GET") ).Проверить( Mock.Times().AtMost(3) );
+	// then
+	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
+	Assert.AreEqual(Mock.Json, "{
+							   | ""httpRequest"": {
+							   |  ""method"": ""GET""
+							   | },
+							   | ""times"": {
+							   |  ""atMost"": 3
+							   | }
+							   |}");
+	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
+	Assert.IsTrue(IsBlankString(Mock.HttpResponseJson));
+	Assert.IsTrue(IsBlankString(Mock.TimesJson));
+
+EndProcedure
+
 #EndRegion

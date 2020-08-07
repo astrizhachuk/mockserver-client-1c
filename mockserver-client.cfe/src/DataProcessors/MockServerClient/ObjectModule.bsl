@@ -40,6 +40,12 @@ Function Ответ( ОтветJson = Undefined ) Export
 	
 EndFunction
 
+Procedure Проверить( Проверка = Undefined ) Export
+	
+	Verify( Проверка );
+	
+EndProcedure
+
 Function Повторений( Повторений = Undefined ) Export
 	
 	Return Times( Повторений );

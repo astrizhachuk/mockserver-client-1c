@@ -159,12 +159,6 @@ Function Server( Val URL, Val Port = Undefined, Val Reset = false ) Export
 		
 		Reset();
 		
-		If ( HTTPStatusCodesClientServerCached.isOk(ThisObject.MockServerResponse.КодСостояния) ) Then
-			
-			ThisObject.MockServerResponse = Undefined;
-			
-		EndIf;
-		
 	EndIf;
 	
 	Return ThisObject;
@@ -191,7 +185,7 @@ Function Request( Val HttpRequestJson = Undefined ) Export
 	ThisObject.Json = "";
 	ThisObject.CurrentStage = "httpRequest";
 	
-	FillPropertyByValue( "httpRequest", HttpRequestJson );
+	FillConstructorRootPropertyByValueType( "httpRequest", HttpRequestJson );
 
 	Return ThisObject;
 	
@@ -202,7 +196,7 @@ Function Response( Val HttpResponseJson = Undefined  ) Export
 	ThisObject.Json = "";
 	ThisObject.CurrentStage = "httpResponse";
 	
-	FillPropertyByValue( "httpResponse", HttpResponseJson );
+	FillConstructorRootPropertyByValueType( "httpResponse", HttpResponseJson );
 	
 	Return ThisObject;
 	
@@ -213,138 +207,11 @@ Function Times( Val TimesJson = Undefined  ) Export
 	ThisObject.Json = "";
 	ThisObject.CurrentStage = "times";
 	
-	FillPropertyByValue( "times", TimesJson );
+	FillConstructorRootPropertyByValueType( "times", TimesJson );
 	
 	Return ThisObject;
 	
 EndFunction
-
-#EndRegion
-
-#Region Terminal
-
-Procedure Reset() Export
-	
-	ThisObject.Json = "";
-	DoAction( "reset" );
-	
-EndProcedure
-
-Procedure Respond( Val Self = Undefined ) Export
-	
-	GenerateJson();
-	DoAction( "expectation" );
-
-EndProcedure
-
-Procedure Verify( Val Self = Undefined ) Export
-	
-	GenerateJson();
-	DoAction( "verify" );
-	
-EndProcedure
-
-#EndRegion
-
-#Region RequestMatchers
-
-Function WithMethod( Val Method ) Export
-	
-	CheckObjectPropertiesForMethod();
-	
-	AddConstructorStageProperty( "method", Method );
-	
-	Return ThisObject;
-	
-EndFunction
-
-Function WithPath( Val Path ) Export
-	
-	CheckObjectPropertiesForMethod();
-	
-	AddConstructorStageProperty( "path", Path );
-	
-	Return ThisObject;
-	
-EndFunction
-
-Function WithQueryStringParameters( Val Key, Val Value ) Export
-	
-	Var NewQueryParameters;
-	
-	CheckObjectPropertiesForMethod();
-	
-	NewQueryParameters = MapStringValueToArray( Key, Value );
-	InsertConstructorStageProperty( "queryStringParameters", NewQueryParameters );
-
-	Return ThisObject;
-
-EndFunction
-
-Function Headers( Val Headers = Undefined ) Export
-	
-	CheckObjectPropertiesForMethod();
-	
-	Headers = ?( (Headers = Undefined), New Map(), Headers );
-	
-	FillPropertyByValue( "headers", Headers, ThisObject.CurrentStage );
-
-	Return ThisObject;
-	
-EndFunction
-
-Function WithHeader( Val Key, Val Value ) Export
-
-	Var NewHeader;
-	
-	CheckObjectPropertiesForMethod();
-	
-	NewHeader = MapStringValueToArray( Key, Value );
-	InsertConstructorStageProperty( "headers", NewHeader );
-
-	Return ThisObject;
-	
-EndFunction
-
-#EndRegion
-
-#Region Actions
-
-#Region ResponseAction
-
-Function WithBody( Val Body ) Export
-	
-	CheckObjectPropertiesForMethod();
-	
-	AddConstructorStageProperty( "body", Body );
-
-	Return ThisObject;
-	
-EndFunction
-
-Function WithStatusCode( Val StatusCode ) Export
-	
-	CheckObjectPropertiesForMethod();
-	
-	AddConstructorStageProperty( "statusCode", StatusCode );
-
-	Return ThisObject;
-	
-EndFunction
-
-Function WithReasonPhrase( Val ReasonPhrase ) Export
-	
-	CheckObjectPropertiesForMethod();
-	
-	AddConstructorStageProperty( "reasonPhrase", ReasonPhrase );
-
-	Return ThisObject;
-	
-EndFunction
-
-#EndRegion
-
-#EndRegion
 
 #Region Times
 
@@ -397,6 +264,189 @@ Function Between( Val AtLeast, Val AtMost ) Export
 	AddConstructorStageProperty( "atLeast", AtLeast );	
 	AddConstructorStageProperty( "atMost", AtMost );
 	
+	Return ThisObject;
+	
+EndFunction
+
+#EndRegion
+
+#EndRegion
+
+#Region Terminal
+
+Procedure Reset() Export
+	
+	ThisObject.Json = "";
+	
+	Try
+		
+		DoAction( "reset" );
+		
+		If ( HTTPStatusCodesClientServerCached.IsOk(ThisObject.MockServerResponse.КодСостояния) ) Then
+			
+			ThisObject.IsActionOk = True;
+			ThisObject.MockServerResponse = Undefined;
+		
+		Else
+			
+			ThisObject.MockServerResponse = MockServerClientError( ThisObject.MockServerResponse.КодСостояния );
+
+		EndIf;
+		
+	Except
+		
+		ThisObject.MockServerResponse = MockServerError( DetailErrorDescription(ErrorInfo()) );
+		
+	EndTry;
+	
+EndProcedure
+
+Procedure Respond( Val Self = Undefined ) Export
+	
+	GenerateJson();
+	
+	Try
+		
+		DoAction( "expectation" );
+		
+		If ( HTTPStatusCodesClientServerCached.IsCreated(ThisObject.MockServerResponse.КодСостояния) ) Then
+			
+			ThisObject.IsActionOk = True;
+			ThisObject.MockServerResponse = Undefined;
+		
+		Else
+			
+			ThisObject.MockServerResponse = MockServerClientError( ThisObject.MockServerResponse.КодСостояния );
+
+		EndIf;
+		
+	Except
+		
+		ThisObject.MockServerResponse = MockServerError( DetailErrorDescription(ErrorInfo()) );
+		
+	EndTry;
+	
+EndProcedure
+
+Procedure Verify( Val Self = Undefined ) Export
+	
+	GenerateJson();
+	
+	Try
+		
+		DoAction( "verify" );
+		
+		If ( HTTPStatusCodesClientServerCached.IsAccepted(ThisObject.MockServerResponse.КодСостояния) ) Then
+			
+			ThisObject.IsActionOk = True;
+			ThisObject.MockServerResponse = Undefined;
+		
+		Else
+			
+			ThisObject.MockServerResponse = MockServerClientError( ThisObject.MockServerResponse.КодСостояния );
+
+		EndIf;
+		
+	Except
+		
+		ThisObject.MockServerResponse = MockServerError( DetailErrorDescription(ErrorInfo()) );
+		
+	EndTry;
+	
+EndProcedure
+
+#EndRegion
+
+#Region RequestMatchers
+
+Function WithMethod( Val Method ) Export
+	
+	CheckObjectPropertiesForMethod();
+	
+	AddConstructorStageProperty( "method", Method );
+	
+	Return ThisObject;
+	
+EndFunction
+
+Function WithPath( Val Path ) Export
+	
+	CheckObjectPropertiesForMethod();
+	
+	AddConstructorStageProperty( "path", Path );
+	
+	Return ThisObject;
+	
+EndFunction
+
+Function WithQueryStringParameters( Val Key, Val Value ) Export
+	
+	Var NewQueryParameters;
+	
+	CheckObjectPropertiesForMethod();
+	
+	NewQueryParameters = MapStringValueToArray( Key, Value );
+	InsertConstructorStageProperty( "queryStringParameters", NewQueryParameters );
+
+	Return ThisObject;
+
+EndFunction
+
+Function Headers( Val Headers = Undefined ) Export
+	
+	CheckObjectPropertiesForMethod();
+	
+	Headers = ?( (Headers = Undefined), New Map(), Headers );
+	
+	FillConstructorRootPropertyByValueType( "headers", Headers, ThisObject.CurrentStage );
+
+	Return ThisObject;
+	
+EndFunction
+
+Function WithHeader( Val Key, Val Value ) Export
+
+	Var NewHeader;
+	
+	CheckObjectPropertiesForMethod();
+	
+	NewHeader = MapStringValueToArray( Key, Value );
+	InsertConstructorStageProperty( "headers", NewHeader );
+
+	Return ThisObject;
+	
+EndFunction
+
+#EndRegion
+
+#Region ResponseAction
+
+Function WithBody( Val Body ) Export
+	
+	CheckObjectPropertiesForMethod();
+	
+	AddConstructorStageProperty( "body", Body );
+
+	Return ThisObject;
+	
+EndFunction
+
+Function WithStatusCode( Val StatusCode ) Export
+	
+	CheckObjectPropertiesForMethod();
+	
+	AddConstructorStageProperty( "statusCode", StatusCode );
+
+	Return ThisObject;
+	
+EndFunction
+
+Function WithReasonPhrase( Val ReasonPhrase ) Export
+	
+	CheckObjectPropertiesForMethod();
+	
+	AddConstructorStageProperty( "reasonPhrase", ReasonPhrase );
+
 	Return ThisObject;
 	
 EndFunction
@@ -492,8 +542,7 @@ EndProcedure
 	
 КонецПроцедуры
 
-// TODO refactoring, bad idea
-Procedure FillPropertyByValue( Key, Value, Stage = "" )
+Procedure FillConstructorRootPropertyByValueType( Key, Value, Stage = "" )
 	
 	If ( TypeOf(Value) = Type("String") ) Then
 		
@@ -632,38 +681,53 @@ EndFunction
 	Var PutHeaders;
 	
 	ThisObject.CurrentStage = "";
-	
-	Try
-		
-		If ( IsBlankString(ThisObject.Json) ) Then
-			
-			PutJson = Undefined;
-			PutHeaders = Undefined;
+	ThisObject.IsActionOk = False;
 
-		Else
-			
-			PutJson = ThisObject.Json;
-			PutHeaders = ContentTypeJsonHeaders();
+	If ( IsBlankString(ThisObject.Json) ) Then
 		
-		EndIf;
+		PutJson = Undefined;
+		PutHeaders = Undefined;
+
+	Else
 		
-		ThisObject.MockServerResponse = HTTPConnector.Put( ThisObject.Url + "/mockserver/" + Action,
-																PutJson,
-																PutHeaders );
-															
-		If ( HTTPStatusCodesClientServerCached.IsServerError(ThisObject.MockServerResponse.КодСостояния) ) Then
-			
-			Raise HTTPConnector.КакТекст( ThisObject.MockServerResponse );
-			
-		EndIf;
-		
-	Except
-		
-		ThisObject.MockServerResponse = MockServerError( DetailErrorDescription(ErrorInfo()) );
-		
-	EndTry;
+		PutJson = ThisObject.Json;
+		PutHeaders = ContentTypeJsonHeaders();
 	
+	EndIf;
+	
+	ThisObject.MockServerResponse = HTTPConnector.Put( ThisObject.Url + "/mockserver/" + Action,
+															PutJson,
+															PutHeaders );
+														
+	If ( HTTPStatusCodesClientServerCached.IsServerError(ThisObject.MockServerResponse.КодСостояния) ) Then
+		
+		Raise HTTPConnector.КакТекст( ThisObject.MockServerResponse );
+		
+	EndIf;
+		
 КонецПроцедуры
+
+#Region Errors
+
+Function RuntimeError( Val Message = "" )
+    
+    Return "[RuntimeError]" + Chars.LF + Message;
+    
+EndFunction
+
+Function MockServerClientError( StatusCode )
+	
+	Var Result;
+	Var ErrorId;
+	
+	Result = New Structure();
+	Result.Insert( "КодСостояния", StatusCode );
+	ErrorId = HTTPStatusCodesClientServerCached.FindIdByCode( StatusCode );
+	Result.Insert( "ТекстОшибки", HTTPStatusCodesClientServerCached.FindReasonPhraseById(ErrorId) );
+	
+	Return Result;
+	
+EndFunction
 
 Function MockServerError( DetailErrorDescription )
 	
@@ -677,11 +741,7 @@ Function MockServerError( DetailErrorDescription )
 	
 EndFunction
 
-Function RuntimeError( Message = "" )
-    
-    Return "[RuntimeError]" + Chars.LF + Message;
-    
-EndFunction
+#EndRegion
 
 #EndRegion
 

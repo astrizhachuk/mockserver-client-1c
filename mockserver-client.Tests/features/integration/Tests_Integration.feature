@@ -9,6 +9,11 @@ Feature: mockserver-client.Tests.Tests_Integration
 	That I can guarantee the execution of the method
 
 @OnServer
+Scenario: ExpectationFail
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.ExpectationFail(Context());' |
+
+@OnServer
 Scenario: MatchRequestByPath
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Integration.MatchRequestByPath(Context());' |

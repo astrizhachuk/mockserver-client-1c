@@ -115,6 +115,16 @@
       <types>Arbitrary</types>
     </type>
   </attributes>
+  <attributes uuid="9c6470a0-c98e-4be7-a384-e3999e8be124">
+    <name>IsActionOk</name>
+    <synonym>
+      <key>ru</key>
+      <value>Action status</value>
+    </synonym>
+    <type>
+      <types>Boolean</types>
+    </type>
+  </attributes>
   <attributes uuid="bad92865-714e-4d0e-a61f-010843636ea9">
     <name>MockServerResponse</name>
     <synonym>

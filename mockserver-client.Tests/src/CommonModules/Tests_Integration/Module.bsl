@@ -1,6 +1,6 @@
 #Region Internal
 
-// @unit-test:fast
+// @unit-test:prepare
 Procedure MockServerDockerUp(Context) Export
 
 	ExitStatus = Undefined;
@@ -18,6 +18,20 @@ Procedure MockServerDockerUp(Context) Export
 		
 	EndIf;
 	
+	Wait(5);
+	
+EndProcedure
+
+// @unit-test:integration
+Procedure ExpectationFail(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Mock.Server("localhost", "1080").When("{}").Respond();
+	// then
+	Assert.IsFalse(Mock.IsActionOk);
+
 EndProcedure
 
 // Request Properties Matcher Code Examples
@@ -39,8 +53,7 @@ Procedure MatchRequestByPath(Context) Export
 				.WithBody("some_response_body")
 		);
 	// then
-	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 201);
-	Assert.AreEqual(Mock.MockServerResponse.URL, "http://localhost:1080/mockserver/expectation");
+	Assert.IsTrue(Mock.IsActionOk);
 
 EndProcedure
 
@@ -63,11 +76,9 @@ Procedure MatchRequestByQueryParameterWithRegexValue(Context) Export
 				.WithBody("some_response_body")
 		);
 	// then
-	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 201);
-	Assert.AreEqual(Mock.MockServerResponse.URL, "http://localhost:1080/mockserver/expectation");
+	Assert.IsTrue(Mock.IsActionOk);
 
 EndProcedure
-
 
 // Response Action Code Examples
 
@@ -90,8 +101,7 @@ Procedure LiteralResponseWithStatusCodeAndReasonPhrase(Context) Export
 				.WithReasonPhrase("I'm a teapot")
 		);	
 	// then
-	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 201);
-	Assert.AreEqual(Mock.MockServerResponse.URL, "http://localhost:1080/mockserver/expectation");
+	Assert.IsTrue(Mock.IsActionOk);
 
 EndProcedure
 
@@ -116,8 +126,7 @@ Procedure VerifyRequestsReceivedAtLeastTwice(Context) Export
 				.AtLeast(2)
 		);	
 	// then
-	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 202);
-	Assert.AreEqual(Mock.MockServerResponse.URL, "http://localhost:1080/mockserver/verify");
+	Assert.IsTrue(Mock.IsActionOk);
 
 EndProcedure
 
@@ -137,9 +146,26 @@ Procedure VerifyRequestsReceivedAtLeastTwiceFail(Context) Export
 				.AtLeast(2)
 		);	
 	// then
-	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 406);
-	Assert.AreEqual(Mock.MockServerResponse.URL, "http://localhost:1080/mockserver/verify");
+	Assert.IsFalse(Mock.IsActionOk);
 
+EndProcedure
+
+#EndRegion
+
+#Region Private
+
+Procedure Wait( Val Wait) Export
+	
+	End = CurrentDate() + Wait;
+	
+	While (True) Do
+		
+		If CurrentDate() >= End Then
+			Return;
+		EndIf;
+		 
+	EndDo;
+	 
 EndProcedure
 
 #EndRegion

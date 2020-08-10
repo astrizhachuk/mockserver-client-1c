@@ -12,6 +12,7 @@ Procedure WhenParamsString(Context) Export
 	Assert.IsUndefined(Result.Constructor);
 	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
 	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
+	Assert.IsTrue(IsBlankString(Result.TimesJson));
 	Assert.AreEqual(Result.Json, "{""sample"": ""any""}");
 
 EndProcedure
@@ -28,6 +29,7 @@ Procedure WhenParamsRequestAction(Context) Export
 	Assert.IsTrue(IsBlankString(Result.Json));
 	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
 	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
+	Assert.IsTrue(IsBlankString(Result.TimesJson));
 	Assert.IsInstanceOfType("Map", Result.Constructor["httpRequest"]);
 	Assert.AreCollectionEmpty(Result.Constructor["httpRequest"]);
 
@@ -45,6 +47,7 @@ Procedure WhenWrongParams(Context) Export
 	Assert.IsTrue(IsBlankString(Result.Json));
 	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
 	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
+	Assert.IsTrue(IsBlankString(Result.TimesJson));
 	Assert.IsUndefined(Result.Constructor);
 
 EndProcedure

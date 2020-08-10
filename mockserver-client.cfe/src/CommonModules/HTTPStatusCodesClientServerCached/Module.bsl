@@ -144,7 +144,7 @@ EndFunction
 // Returns the HTTP status code identifier by its three-digit numeric.
 //
 // Parameters:
-//  Code - Number - three-digit numeric HTTP status code;
+//  Id - String - HTTP status code identifier;
 // 
 // Returns:
 //	- Undefined - identifier not found;

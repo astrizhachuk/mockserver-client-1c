@@ -9,6 +9,11 @@ Feature: mockserver-client.Tests.Tests_Integration
 	That I can guarantee the execution of the method
 
 @OnServer
+Scenario: ExpectationFail
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.ExpectationFail(Context());' |
+
+@OnServer
 Scenario: MatchRequestByPath
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Integration.MatchRequestByPath(Context());' |
@@ -22,3 +27,13 @@ Scenario: MatchRequestByQueryParameterWithRegexValue
 Scenario: LiteralResponseWithStatusCodeAndReasonPhrase
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Integration.LiteralResponseWithStatusCodeAndReasonPhrase(Context());' |
+
+@OnServer
+Scenario: VerifyRequestsReceivedAtLeastTwice
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.VerifyRequestsReceivedAtLeastTwice(Context());' |
+
+@OnServer
+Scenario: VerifyRequestsReceivedAtLeastTwiceFail
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.VerifyRequestsReceivedAtLeastTwiceFail(Context());' |

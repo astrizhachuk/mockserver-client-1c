@@ -3,7 +3,7 @@
   <name>Tests_Exceptions</name>
   <synonym>
     <key>en</key>
-    <value>Constructor</value>
+    <value>Exceptions</value>
   </synonym>
   <server>true</server>
 </mdclass:CommonModule>

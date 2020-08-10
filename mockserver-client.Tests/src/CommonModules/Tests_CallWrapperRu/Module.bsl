@@ -38,6 +38,7 @@ Procedure When(Context) Export
 	Assert.AreEqual(Result.Json, "{""sample"": ""any""}");
 	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
 	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
+	Assert.IsTrue(IsBlankString(Result.TimesJson));		
 
 EndProcedure
 
@@ -52,6 +53,7 @@ Procedure Request(Context) Export
 	Assert.IsTrue(IsBlankString(Result.Json));
 	Assert.IsFalse(IsBlankString(Result.HttpRequestJson));
 	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));		
+	Assert.IsTrue(IsBlankString(Result.TimesJson));		
 	Assert.IsUndefined(Result.Constructor);
 
 EndProcedure
@@ -152,6 +154,7 @@ Procedure Response(Context) Export
 	Assert.IsTrue(IsBlankString(Result.Json));
 	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
 	Assert.IsFalse(IsBlankString(Result.HttpResponseJson));		
+	Assert.IsTrue(IsBlankString(Result.TimesJson));
 	Assert.IsUndefined(Result.Constructor);
 	
 EndProcedure
@@ -207,10 +210,113 @@ Procedure Respond(Context) Export
 	// then
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
-	Assert.IsUndefined(Mock.Constructor);
+	Assert.AreEqual(Mock.Json, "{""name"":""value""}");
+
+EndProcedure
+
+// @unit-test
+Procedure Times(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Result = Mock.Повторений();
+	// then
+	Assert.AreEqual(Mock.CurrentStage, "times");
+	Assert.IsInstanceOfType("Map", Result.Constructor["times"]);
+	Assert.AreCollectionEmpty(Result.Constructor["times"]);
+
+EndProcedure
+
+// @unit-test
+Procedure AtLeast(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Result = Mock.Повторений().НеМенее(2);
+	// then
+	Assert.AreEqual(Mock.CurrentStage, "times");
+	Assert.AreEqual(Mock.Constructor["times"]["atLeast"], 2);
+
+EndProcedure
+
+// @unit-test
+Procedure AtMost(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Result = Mock.Повторений().НеБолее(2);
+	// then
+	Assert.AreEqual(Mock.CurrentStage, "times");
+	Assert.AreEqual(Mock.Constructor["times"]["atMost"], 2);
+
+EndProcedure
+
+// @unit-test
+Procedure Exactly(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Result = Mock.Повторений().Точно(2);
+	// then
+	Assert.AreEqual(Mock.CurrentStage, "times");
+	Assert.AreEqual(Mock.Constructor["times"]["atLeast"], 2);
+	Assert.AreEqual(Mock.Constructor["times"]["atMost"], 2);
+
+EndProcedure
+
+// @unit-test
+Procedure Once(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Result = Mock.Повторений().Однократно();
+	// then
+	Assert.AreEqual(Mock.CurrentStage, "times");
+	Assert.AreEqual(Mock.Constructor["times"]["atLeast"], 1);
+	Assert.AreEqual(Mock.Constructor["times"]["atMost"], 1);
+
+EndProcedure
+
+// @unit-test
+Procedure Between(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Result = Mock.Повторений().Между(2, 3);
+	// then
+	Assert.AreEqual(Mock.CurrentStage, "times");
+	Assert.AreEqual(Mock.Constructor["times"]["atLeast"], 2);
+	Assert.AreEqual(Mock.Constructor["times"]["atMost"], 3);
+
+EndProcedure
+
+// @unit-test
+Procedure Verify(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("this.is.error.url", "1080");
+	// when
+	Mock.When( Mock.Request().Метод("GET") ).Проверить( Mock.Times().AtMost(3) );
+	// then
+	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
+	Assert.AreEqual(Mock.Json, "{
+							   | ""httpRequest"": {
+							   |  ""method"": ""GET""
+							   | },
+							   | ""times"": {
+							   |  ""atMost"": 3
+							   | }
+							   |}");
 	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
 	Assert.IsTrue(IsBlankString(Mock.HttpResponseJson));
-	Assert.AreEqual(Mock.Json, "{""name"":""value""}");
+	Assert.IsTrue(IsBlankString(Mock.TimesJson));
 
 EndProcedure
 

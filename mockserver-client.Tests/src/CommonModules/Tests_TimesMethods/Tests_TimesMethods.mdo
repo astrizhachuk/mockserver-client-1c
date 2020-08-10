@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="306cffba-4acb-4a70-9db0-a347adff3b82">
+  <name>Tests_TimesMethods</name>
+  <synonym>
+    <key>en</key>
+    <value>Times methods</value>
+  </synonym>
+  <server>true</server>
+</mdclass:CommonModule>

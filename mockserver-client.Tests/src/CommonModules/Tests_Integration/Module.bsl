@@ -1,6 +1,6 @@
 #Region Internal
 
-// @unit-test:fast
+// @unit-test:prepare
 Procedure MockServerDockerUp(Context) Export
 
 	ExitStatus = Undefined;
@@ -18,6 +18,20 @@ Procedure MockServerDockerUp(Context) Export
 		
 	EndIf;
 	
+	Wait(5);
+	
+EndProcedure
+
+// @unit-test:integration
+Procedure ExpectationFail(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Mock.Server("localhost", "1080").When("{}").Respond();
+	// then
+	Assert.IsFalse(Mock.IsOk());
+
 EndProcedure
 
 // Request Properties Matcher Code Examples
@@ -39,8 +53,7 @@ Procedure MatchRequestByPath(Context) Export
 				.WithBody("some_response_body")
 		);
 	// then
-	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 201);
-	Assert.AreEqual(Mock.MockServerResponse.URL, "http://localhost:1080/mockserver/expectation");
+	Assert.IsTrue(Mock.IsOk());
 
 EndProcedure
 
@@ -63,11 +76,9 @@ Procedure MatchRequestByQueryParameterWithRegexValue(Context) Export
 				.WithBody("some_response_body")
 		);
 	// then
-	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 201);
-	Assert.AreEqual(Mock.MockServerResponse.URL, "http://localhost:1080/mockserver/expectation");
+	Assert.IsTrue(Mock.IsOk());
 
 EndProcedure
-
 
 // Response Action Code Examples
 
@@ -90,9 +101,71 @@ Procedure LiteralResponseWithStatusCodeAndReasonPhrase(Context) Export
 				.WithReasonPhrase("I'm a teapot")
 		);	
 	// then
-	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 201);
-	Assert.AreEqual(Mock.MockServerResponse.URL, "http://localhost:1080/mockserver/expectation");
+	Assert.IsTrue(Mock.IsOk());
 
+EndProcedure
+
+// Verifying Repeating Requests Code Examples
+
+// verify requests received at least twice
+// 
+// @unit-test:integration
+Procedure VerifyRequestsReceivedAtLeastTwice(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("localhost", "1080", true);
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	// when
+	Mock.When(
+			Mock.Request()
+				.WithPath("/some/path")
+		).Verify(
+			Mock.Times()
+				.AtLeast(2)
+		);	
+	// then
+	Assert.IsTrue(Mock.IsOk());
+
+EndProcedure
+
+// @unit-test:integration
+Procedure VerifyRequestsReceivedAtLeastTwiceFail(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("localhost", "1080", true);
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	// when
+	Mock.When(
+			Mock.Request()
+				.WithPath("/some/path")
+		).Verify(
+			Mock.Times()
+				.AtLeast(2)
+		);	
+	// then
+	Assert.IsFalse(Mock.IsOk());
+
+EndProcedure
+
+#EndRegion
+
+#Region Private
+
+Procedure Wait( Val Wait) Export
+	
+	End = CurrentDate() + Wait;
+	
+	While (True) Do
+		
+		If CurrentDate() >= End Then
+			Return;
+		EndIf;
+		 
+	EndDo;
+	 
 EndProcedure
 
 #EndRegion

@@ -4,23 +4,13 @@
 
 #Region Ru
 
+#Region Промежуточные
+
 Function Сервер( URL, Port = Undefined ) Export
 	
 	Return Server( URL, Port );
 	
 EndFunction
-
-Procedure Сбросить() Export
-	
-	Reset();
-	
-EndProcedure
-
-Procedure Ответить( Ожидание = Undefined ) Export
-	
-	Respond( Ожидание );
-	
-EndProcedure
 
 Function Когда( Запрос ) Export
 	
@@ -40,17 +30,13 @@ Function Ответ( ОтветJson = Undefined ) Export
 	
 EndFunction
 
-Procedure Проверить( Проверка = Undefined ) Export
-	
-	Verify( Проверка );
-	
-EndProcedure
-
 Function Повторений( Повторений = Undefined ) Export
 	
 	Return Times( Повторений );
 	
 EndFunction
+
+#Region Повторения
 
 Function НеМенее( Val Повторений ) Export
 	
@@ -82,6 +68,32 @@ Function Между( Val От, Val До ) Export
 	
 EndFunction
 
+#EndRegion
+
+#EndRegion
+
+#Region Терминальные
+
+Procedure Сбросить() Export
+	
+	Reset();
+	
+EndProcedure
+
+Procedure Ответить( Ожидание = Undefined ) Export
+	
+	Respond( Ожидание );
+	
+EndProcedure
+
+Procedure Проверить( Проверка = Undefined ) Export
+	
+	Verify( Проверка );
+	
+EndProcedure
+
+#Region Условия
+
 Function Заголовки( Заголовки = Undefined ) Export
 	
 	Return Headers( Заголовки );
@@ -106,6 +118,10 @@ Function Путь( Путь ) Export
 	
 EndFunction
 
+#EndRegion
+
+#Region Действия
+
 Function Тело( Тело ) Export
 	
 	Return WithBody( Тело );
@@ -123,6 +139,10 @@ Function Причина( Причина ) Export
 	Return WithReasonPhrase( Причина );
 	
 EndFunction
+
+#EndRegion
+
+#EndRegion
 
 #EndRegion
 

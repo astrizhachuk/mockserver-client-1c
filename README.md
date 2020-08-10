@@ -26,10 +26,6 @@
 
 That's all! Mock is created!
 
-## Guidelines
-
-[Getting Started](https://github.com/astrizhachuk/mockserver-client-1c/blob/master/docs/en/GettingStarted.md)
-
 ## Dependencies
 
 The project built with:
@@ -45,3 +41,90 @@ Working with HTTP is implemented using the following libraries:
 
 * [HTTPConnector](https://github.com/vbondarevsky/Connector)
 * [HTTPStatusCodes](https://github.com/astrizhachuk/HTTPStatusCodes)
+
+## Getting Started
+
+[Overview](https://www.mock-server.com/mock_server/getting_started.html)
+
+The typical sequence for using MockServer is as follows:
+
+* [Start MockServer](#StartMockServer)
+* [Create an instance of the client](#CreateInstance)
+* [Setup Expectations](#SetupExpectations)
+* Run Your Test Scenarios
+* Verify Requests
+
+### Start MockServer<a name="StartMockServer"></a>
+
+[Running MockServer documentation](https://www.mock-server.com/mock_server/running_mock_server.html)
+
+For example, start the MockServer docker container:
+
+```bash
+docker run -d --rm -p 1080:1080 --name mockserver-1c-integration mockserver/mockserver -logLevel DEBUG -serverPort 1080
+```
+
+Or run docker-compose.yml from root directory of the project:
+
+```bash
+docker-compose -f "docker-compose.yml" up -d --build
+```
+
+### Create an instance of the client<a name="CreateInstance"></a>
+
+Connect to the default server:
+
+```bash
+Mock = DataProcessors.MockServerClient.Create();
+```
+
+Connect to the server at the specified host and port:
+
+```bash
+Mock = DataProcessors.MockServerClient.Create();
+Mock = Mock.Server( "http://server" );
+# or
+Mock = DataProcessors.MockServerClient.Create();
+Mock = Mock.Server( "http://server", "1099" );
+```
+
+Connect to the server at the specified host and port with a completely MockServer [reset](https://www.mock-server.com/mock_server/clearing_and_resetting.html):
+
+```bash
+Mock = DataProcessors.MockServerClient.Create();
+Mock = Mock.Server( "http://server", "1099", True );
+```
+
+### Setup Expectations<a name="SetupExpectations"></a>
+
+Setup expectation (and verify requests) consists of two stages: preparing conditions (json) and sending an action (PUT json).
+
+There are two types of methods: **intermediate** (returns self-object) and **terminal** (perform action). Some object's methods as parameters can accept a reference to themselves or a json-format string. Before executing the action, a json will be auto-generated.
+
+Use method chaining style (fluent interface):
+
+```bash
+  # full json without auto-generating
+  Mock.Server( "localhost", "1080" )
+    .When( "{""name"":""value""}" )
+    .Respond();
+
+  # httpRequest property in json-style
+  Mock.Server( "localhost", "1080" )
+    .When(
+      Mock.Request( """name"":""value""" )
+    )
+    .Respond();
+
+  # combined style
+  Mock.Server( "localhost", "1080" )
+    .When(
+      Mock.Request()
+        .WithMethod( "GET" )
+        .WithPath( "some/path" )
+    )
+    .Respond(
+        Mock.Response( """statusCode"": 404" )
+    );
+
+```

@@ -5,7 +5,7 @@
 
 [english](https://github.com/astrizhachuk/mockserver-client-1c/blob/master/README.md)
 
-*[MockServer](https://www.mock-server.com/#what-is-mockserver)-client-1c* создан для [управления](https://www.mock-server.com/mock_server/mockserver_clients.html) MoskServer при помощи 1C:Предприятие 8. *Клиент* поставляется в виде расширения конфигурации, однако, технически, поставку можно осуществлять и в виде внешней обработки.
+*[MockServer](https://www.mock-server.com/#what-is-mockserver)-client-1c* создан для [управления](https://www.mock-server.com/mock_server/mockserver_clients.html) MoskServer с помощью 1C:Предприятие 8. *Клиент* поставляется в виде расширения конфигурации и реализован в виде обработки, взаимодействующей с MockServer через [REST API](https://app.swaggerhub.com/apis/jamesdbloom/mock-server-openapi/5.11.x).
 
 ## Как это работает
 

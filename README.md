@@ -5,7 +5,7 @@
 
 [русский](https://github.com/astrizhachuk/mockserver-client-1c/blob/master/docs/ru/README.md)
 
-*[MockServer](https://www.mock-server.com/#what-is-mockserver)-client-1c* is designed to [controll](https://www.mock-server.com/mock_server/mockserver_clients.html) MoskServer using 1C:Enterprise Platform. This *client* is distributed as *cfe*, but it can be used as *epf*.
+*[MockServer](https://www.mock-server.com/#what-is-mockserver)-client-1c* is designed to [controll](https://www.mock-server.com/mock_server/mockserver_clients.html) MoskServer using 1C:Enterprise Platform. This *client* is distributed as *cfe*, is implemented as *DataProcessor* that interacts with the MockServer via the [REST API](https://app.swaggerhub.com/apis/jamesdbloom/mock-server-openapi/5.11.x).
 
 ## How it works
 

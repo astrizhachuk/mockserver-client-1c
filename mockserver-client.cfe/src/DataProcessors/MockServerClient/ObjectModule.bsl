@@ -486,28 +486,6 @@ EndFunction
 	
 КонецПроцедуры
 
-Procedure RaiseIfCurrentStageEmpty()
-	
-	If ( IsBlankString(ThisObject.CurrentStage) ) Then
-		Raise RuntimeError(
-		    NStr("en = 'The action needs to be initialized first.';
-		         |ru = 'Сначала необходимо инициализировать действие.'")
-		);
-	EndIf;
-	
-EndProcedure
-
-Procedure RaiseIfConstructorUndefined()
-	
-	If ( ThisObject.Constructor = Undefined ) Then
-		Raise RuntimeError(
-		    NStr("en = 'Constructor not initialized.';
-		         |ru = 'Конструктор не был инициализирован.'")
-		);
-	EndIf;
-	
-EndProcedure
-
 Procedure InitMapValue( Value )
 	
 	If ( (Value = Undefined) OR (TypeOf(Value) <> Type("Map")) ) Then
@@ -728,6 +706,28 @@ EndFunction
 КонецПроцедуры
 
 #Region Errors
+
+Procedure RaiseIfCurrentStageEmpty()
+	
+	If ( IsBlankString(ThisObject.CurrentStage) ) Then
+		Raise RuntimeError(
+		    NStr("en = 'The action needs to be initialized first.';
+		         |ru = 'Сначала необходимо инициализировать действие.'")
+		);
+	EndIf;
+	
+EndProcedure
+
+Procedure RaiseIfConstructorUndefined()
+	
+	If ( ThisObject.Constructor = Undefined ) Then
+		Raise RuntimeError(
+		    NStr("en = 'Constructor not initialized.';
+		         |ru = 'Конструктор не был инициализирован.'")
+		);
+	EndIf;
+	
+EndProcedure
 
 Function RuntimeError( Val Message = "" )
     

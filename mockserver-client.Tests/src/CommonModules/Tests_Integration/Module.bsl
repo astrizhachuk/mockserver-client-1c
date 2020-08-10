@@ -30,7 +30,7 @@ Procedure ExpectationFail(Context) Export
 	// when
 	Mock.Server("localhost", "1080").When("{}").Respond();
 	// then
-	Assert.IsFalse(Mock.IsActionOk);
+	Assert.IsFalse(Mock.IsOk());
 
 EndProcedure
 
@@ -53,7 +53,7 @@ Procedure MatchRequestByPath(Context) Export
 				.WithBody("some_response_body")
 		);
 	// then
-	Assert.IsTrue(Mock.IsActionOk);
+	Assert.IsTrue(Mock.IsOk());
 
 EndProcedure
 
@@ -76,7 +76,7 @@ Procedure MatchRequestByQueryParameterWithRegexValue(Context) Export
 				.WithBody("some_response_body")
 		);
 	// then
-	Assert.IsTrue(Mock.IsActionOk);
+	Assert.IsTrue(Mock.IsOk());
 
 EndProcedure
 
@@ -101,7 +101,7 @@ Procedure LiteralResponseWithStatusCodeAndReasonPhrase(Context) Export
 				.WithReasonPhrase("I'm a teapot")
 		);	
 	// then
-	Assert.IsTrue(Mock.IsActionOk);
+	Assert.IsTrue(Mock.IsOk());
 
 EndProcedure
 
@@ -126,7 +126,7 @@ Procedure VerifyRequestsReceivedAtLeastTwice(Context) Export
 				.AtLeast(2)
 		);	
 	// then
-	Assert.IsTrue(Mock.IsActionOk);
+	Assert.IsTrue(Mock.IsOk());
 
 EndProcedure
 
@@ -146,7 +146,7 @@ Procedure VerifyRequestsReceivedAtLeastTwiceFail(Context) Export
 				.AtLeast(2)
 		);	
 	// then
-	Assert.IsFalse(Mock.IsActionOk);
+	Assert.IsFalse(Mock.IsOk());
 
 EndProcedure
 

@@ -377,6 +377,17 @@ EndProcedure
 
 #EndRegion
 
+// Returns the result of executing the PUT method for the last action.
+// 
+// Returns:
+// 	Boolean - true - operation was successful, otherwise - false;
+//
+Function IsOk() Export
+	
+	Return ThisObject.IsActionOk;
+	
+EndFunction
+
 #Region RequestMatchers
 
 Function WithMethod( Val Method ) Export

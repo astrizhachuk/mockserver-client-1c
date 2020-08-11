@@ -127,6 +127,7 @@ Procedure VerifyRequestsReceivedAtLeastTwice(Context) Export
 		);	
 	// then
 	Assert.IsTrue(Mock.IsOk());
+	Assert.IsTrue(Mock.Успешно());
 
 EndProcedure
 
@@ -147,6 +148,7 @@ Procedure VerifyRequestsReceivedAtLeastTwiceFail(Context) Export
 		);	
 	// then
 	Assert.IsFalse(Mock.IsOk());
+	Assert.IsFalse(Mock.Успешно());
 
 EndProcedure
 

@@ -38,7 +38,7 @@ Procedure Verify(Context) Export
     ).Verify(
       Mock.Times()
         .AtLeast(2)
-    );	
+    );
   // then
   Assert.IsTrue(Mock.IsOk());
 EndProcedure
@@ -151,23 +151,16 @@ Use method chaining style (fluent interface):
 
 ## Examples
 
-
 ### Verifying Repeating Requests Code Examples
 
 #### verify requests received at least twice
 
 ```text
-  // given
-  Mock = DataProcessors.MockServerClient.Create();
-  // when
   Mock.When(
       Mock.Request()
         .WithPath("/some/path")
     ).Verify(
       Mock.Times()
         .AtLeast(2)
-    );	
-  // then
-  Assert.IsTrue(Mock.IsOk());
-
+    );
 ```

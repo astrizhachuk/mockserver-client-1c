@@ -26,6 +26,26 @@
 
 That's all! Mock is created!
 
+```text
+// @unit-test
+Procedure Verify(Context) Export
+  // given
+  Mock = DataProcessors.MockServerClient.Create();
+  // when
+  Mock.When(
+      Mock.Request()
+        .WithPath("/some/path")
+    ).Verify(
+      Mock.Times()
+        .AtLeast(2)
+    );	
+  // then
+  Assert.IsTrue(Mock.IsOk());
+EndProcedure
+```
+
+Tested!
+
 ## Dependencies
 
 The project built with:
@@ -60,13 +80,13 @@ The typical sequence for using MockServer is as follows:
 
 For example, start the MockServer docker container:
 
-```bash
+```text
 docker run -d --rm -p 1080:1080 --name mockserver-1c-integration mockserver/mockserver -logLevel DEBUG -serverPort 1080
 ```
 
 Or run docker-compose.yml from root directory of the project:
 
-```bash
+```text
 docker-compose -f "docker-compose.yml" up -d --build
 ```
 
@@ -74,13 +94,13 @@ docker-compose -f "docker-compose.yml" up -d --build
 
 Connect to the default server:
 
-```bash
+```text
 Mock = DataProcessors.MockServerClient.Create();
 ```
 
 Connect to the server at the specified host and port:
 
-```bash
+```text
 Mock = DataProcessors.MockServerClient.Create();
 Mock = Mock.Server( "http://server" );
 # or
@@ -90,7 +110,7 @@ Mock = Mock.Server( "http://server", "1099" );
 
 Connect to the server at the specified host and port with a completely MockServer [reset](https://www.mock-server.com/mock_server/clearing_and_resetting.html):
 
-```bash
+```text
 Mock = DataProcessors.MockServerClient.Create();
 Mock = Mock.Server( "http://server", "1099", True );
 ```
@@ -99,11 +119,11 @@ Mock = Mock.Server( "http://server", "1099", True );
 
 Setup expectation (and verify requests) consists of two stages: preparing conditions (json) and sending an action (PUT json).
 
-There are two types of methods: **intermediate** (returns self-object) and **terminal** (perform action). Some object's methods as parameters can accept a reference to themselves or a json-format string. Before executing the action, a json will be auto-generated.
+There are two types of methods: **intermediate** (returns self-object) and **terminal** (perform action). Some object's methods as parameters can accept a reference to themselves with preparing conditions or a json-format string. Before executing the action, the necessary json will be automatically generated depending on the selected terminal operation and preconditions.
 
 Use method chaining style (fluent interface):
 
-```bash
+```text
   # full json without auto-generating
   Mock.Server( "localhost", "1080" )
     .When( "{""name"":""value""}" )
@@ -126,5 +146,28 @@ Use method chaining style (fluent interface):
     .Respond(
         Mock.Response( """statusCode"": 404" )
     );
+
+```
+
+## Examples
+
+
+### Verifying Repeating Requests Code Examples
+
+#### verify requests received at least twice
+
+```text
+  // given
+  Mock = DataProcessors.MockServerClient.Create();
+  // when
+  Mock.When(
+      Mock.Request()
+        .WithPath("/some/path")
+    ).Verify(
+      Mock.Times()
+        .AtLeast(2)
+    );	
+  // then
+  Assert.IsTrue(Mock.IsOk());
 
 ```

@@ -80,15 +80,25 @@ Procedure Сбросить() Export
 	
 EndProcedure
 
-Procedure Ответить( Ожидание = Undefined ) Export
+Procedure Ответить( Объект = Undefined ) Export
 	
-	Respond( Ожидание );
+	Respond( Объект );
 	
 EndProcedure
 
-Procedure Проверить( Проверка = Undefined ) Export
+// Проверяет наличие отправленного на сервер запроса (терминальная операция).
+// 
+// Параметры:
+// 	Объект - Обработки.MockServerClient - ссылка на объект с предварительными условиями; 
+//
+// Пример:
+//	Мок.Когда( Мок.Запрос().Метод("GET") ).Проверить( Мок.Повторений().НеБолее(3) );
+//	Мок.Проверить( Мок.Повторений().НеБолее(3) );
+//	Мок.Проверить( Мок.Повторений("""atMost"": 3") );
+//
+Procedure Проверить( Объект = Undefined ) Export
 	
-	Verify( Проверка );
+	Verify( Объект );
 	
 EndProcedure
 
@@ -348,6 +358,16 @@ Procedure Respond( Val Self = Undefined ) Export
 	
 EndProcedure
 
+// Verify a request has been sent (terminal operation).
+// 
+// Parameters:
+// 	Self - DataProcessor.MockServerClient - a reference to object with preparing conditions; 
+//
+// Example:
+//	Mock.When( Mock.Request().WithMethod("GET") ).Verify( Mock.Times().AtMost(3) );
+//	Mock.Verify( Mock.Times().AtMost(3) );
+//	Mock.Verify( Mock.Times("""atMost"": 3") );
+//
 Procedure Verify( Val Self = Undefined ) Export
 	
 	GenerateJson();

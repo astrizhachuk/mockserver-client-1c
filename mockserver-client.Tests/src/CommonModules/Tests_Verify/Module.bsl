@@ -153,7 +153,7 @@ Procedure VerifydWhenRequestAndTimes(Context) Export
 	Mock = DataProcessors.MockServerClient.Create();
 	Mock.Server("this.is.error.url", "1080");
 	// when
-	Mock.Verify( Mock.Request().Метод("GET").Times().AtMost(3) );
+	Mock.Verify( Mock.Request().WithMethod("GET").Times().AtMost(3) );
 	// then
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.Json, "{
@@ -177,7 +177,7 @@ Procedure VerifydWhenRequestInWhenAndTimesInVerify(Context) Export
 	Mock = DataProcessors.MockServerClient.Create();
 	Mock.Server("this.is.error.url", "1080");
 	// when
-	Mock.When( Mock.Request().Метод("GET") ).Verify( Mock.Times().AtMost(3) );
+	Mock.When( Mock.Request().WithMethod("GET") ).Verify( Mock.Times().AtMost(3) );
 	// then
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.Json, "{

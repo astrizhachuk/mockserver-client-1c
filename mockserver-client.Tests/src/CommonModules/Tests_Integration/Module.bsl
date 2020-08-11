@@ -124,7 +124,7 @@ Procedure VerifyRequestsReceivedAtLeastTwice(Context) Export
 		).Verify(
 			Mock.Times()
 				.AtLeast(2)
-		);	
+		);
 	// then
 	Assert.IsTrue(Mock.IsOk());
 	Assert.IsTrue(Mock.Успешно());

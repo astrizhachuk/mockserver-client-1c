@@ -31,6 +31,9 @@ That's all! Mock is created!
 Procedure Verify(Context) Export
   // given
   Mock = DataProcessors.MockServerClient.Create();
+  Mock.Server( "localhost", "1080", true );
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
   // when
   Mock.When(
       Mock.Request()

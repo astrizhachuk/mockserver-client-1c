@@ -31,6 +31,9 @@
 Процедура Пример(Фреймворк) Экспорт
   // given
   Мок = Обработки.MockServerClient.Создать();
+  Мок.Сервер( "localhost", "1080", Истина );
+  HTTPConnector.Get( "http://localhost:1080/some/path" );
+  HTTPConnector.Get( "http://localhost:1080/some/path" );
   // when
   Мок.Когда(
       Мок.Запрос()

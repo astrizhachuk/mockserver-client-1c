@@ -30,9 +30,23 @@ Function Ответ( ОтветJson = Undefined ) Export
 	
 EndFunction
 
-Function Повторений( Повторений = Undefined ) Export
+// Устанавливает условие на проверку количества запросов к MockServer.
+// 
+// Параметры:
+// 	Условие - Строка - (необязательно) условие проверки на количество запросов в виде строки json-формата,
+// 						если параметр не указан, то в условия для свойства 'times' добавляется пустая коллекция;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+// 	
+// Пример:
+//	Мок.Когда( Мок.Запрос().Метод("GET") ).Проверить( Мок.Повторений().НеБолее(3) );
+//  Результат = Мок.Проверить().НеМенее(3).НеБолее(3);
+//  Результат = Мок.Проверить( """atLeast"": 3, ""atMost"": 3" );
+//
+Function Повторений( Условие = Undefined ) Export
 	
-	Return Times( Повторений );
+	Return Times( Условие );
 	
 EndFunction
 
@@ -89,7 +103,7 @@ EndProcedure
 // Проверяет наличие отправленного на сервер запроса (терминальная операция).
 // 
 // Параметры:
-// 	Объект - Обработки.MockServerClient - ссылка на объект с предварительными условиями; 
+// 	Объект - ОбработкаОбъект.MockServerClient - объект с предварительно установленными условиями; 
 //
 // Пример:
 //	Мок.Когда( Мок.Запрос().Метод("GET") ).Проверить( Мок.Повторений().НеБолее(3) );
@@ -221,34 +235,48 @@ Function When( Val What ) Export
 	
 EndFunction
 
-Function Request( Val HttpRequestJson = Undefined ) Export
+Function Request( Val Self = Undefined ) Export
 
 	ThisObject.Json = "";
 	ThisObject.CurrentStage = "httpRequest";
 	
-	FillConstructorRootPropertyByValueType( "httpRequest", HttpRequestJson );
+	FillConstructorRootPropertyByValueType( "httpRequest", Self );
 
 	Return ThisObject;
 	
 EndFunction
 
-Function Response( Val HttpResponseJson = Undefined  ) Export
+Function Response( Val Self = Undefined  ) Export
 	
 	ThisObject.Json = "";
 	ThisObject.CurrentStage = "httpResponse";
 	
-	FillConstructorRootPropertyByValueType( "httpResponse", HttpResponseJson );
+	FillConstructorRootPropertyByValueType( "httpResponse", Self );
 	
 	Return ThisObject;
 	
 EndFunction
 
-Function Times( Val TimesJson = Undefined  ) Export
+// Sets condition that a request has been received by MockServer a specific number of time.
+// 
+// Parameters:
+// 	Condition - String - a conditions in json-format string;
+// 						an empty collection for 'times'-property is added to the conditions collection,
+// 						if the parameter is not specified
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object;
+// 	
+// Example:
+//	Mock.When( Mock.Request().WithMethod("GET") ).Verify( Mock.Times().AtMost(3) );
+//  Result = Mock.Times().AtMost(3).AtLeast(3);
+//  Result = Mock.Times("""atLeast"": 3, ""atMost"": 3");
+//
+Function Times( Val Condition = Undefined  ) Export
 	
 	ThisObject.Json = "";
 	ThisObject.CurrentStage = "times";
 	
-	FillConstructorRootPropertyByValueType( "times", TimesJson );
+	FillConstructorRootPropertyByValueType( "times", Condition );
 	
 	Return ThisObject;
 	
@@ -372,7 +400,7 @@ EndProcedure
 // Verify a request has been sent (terminal operation).
 // 
 // Parameters:
-// 	Self - DataProcessor.MockServerClient - a reference to object with preparing conditions; 
+// 	Self - DataProcessorObject.MockServerClient - a reference to object with preparing conditions; 
 //
 // Example:
 //	Mock.When( Mock.Request().WithMethod("GET") ).Verify( Mock.Times().AtMost(3) );

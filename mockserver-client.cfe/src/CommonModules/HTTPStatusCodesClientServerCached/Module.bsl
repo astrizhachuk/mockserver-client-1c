@@ -1,3 +1,4 @@
+
 // BSLLS-off
 
 // HTTPStatusCodes - https://github.com/astrizhachuk/HTTPStatusCodes
@@ -16,7 +17,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // 
 // Copyright © 2020 Alexander Strizhachuk
-// version: 2.0.0
+// version: 2.0.2
 //
 //	Status Codes (RFC 2068, 2518, 3229, 4918, 5842, 6585, 7231-7233):
 //		100, "CONTINUE", "Continue"

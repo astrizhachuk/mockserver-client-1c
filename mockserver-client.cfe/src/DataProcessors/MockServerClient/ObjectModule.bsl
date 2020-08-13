@@ -30,7 +30,7 @@ Function Ответ( ОтветJson = Undefined ) Export
 	
 EndFunction
 
-// Устанавливает условие на проверку количества запросов к MockServer.
+// Устанавливает условия на проверку количества запросов к MockServer.
 // 
 // Параметры:
 // 	Условие - Строка - (необязательно) условие проверки на количество запросов в виде строки json-формата,
@@ -52,30 +52,68 @@ EndFunction
 
 #Region Повторения
 
+// Добавляет условие, что количество запросов к MockServer было не менее n раз.
+// 
+// Параметры:
+// 	Повторений - Число - количество повторений запросов;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+//
 Function НеМенее( Val Повторений ) Export
 	
 	Return AtLeast( Повторений );
 	
 EndFunction
 
+// Добавляет условие, что количество запросов к MockServer было не более n раз.
+// 
+// Параметры:
+// 	Повторений - Число - количество повторений запросов;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+//
 Function НеБолее( Val Повторений ) Export
 	
 	Return AtMost( Повторений );
 	
 EndFunction
 
+// Добавляет условие, что количество запросов к MockServer было ровно n раз.
+// 
+// Параметры:
+// 	Повторений - Число - количество повторений запросов;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+//
 Function Точно( Val Повторений ) Export
 	
 	Return Exactly( Повторений );
 	
 EndFunction
 
+// Добавляет условие, что запрос к MockServer был только один раз.
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+//
 Function Однократно() Export
 	
 	Return Once();
 	
 EndFunction
 
+// Добавляет условие, что количество запросов к MockServer было от n до m раз.
+// 
+// Параметры:
+// 	От - Число - не менее n раз;
+// 	До - Число - не более m раз;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+//
 Function Между( Val От, Val До ) Export
 	
 	Return Between( От, До );
@@ -144,7 +182,7 @@ EndFunction
 
 #EndRegion
 
-// Возвращает результат выполения PUT-метода для последней терминальной операции (действия).
+// Возвращает результат выполнения PUT-метода для последней терминальной операции (действия).
 // 
 // Возвращаемое значение:
 // 	Булево - Истина - операция выполнена успешно, иначе - Ложь;
@@ -200,7 +238,7 @@ EndFunction
 //  Mock = DataProcessors.MockServerClient.Create().Server("http://server", "1090");
 //  Mock = DataProcessors.MockServerClient.Create().Server("http://server", "1090", true);
 //
-Function Server( Val URL, Val Port = Undefined, Val Reset = false ) Export
+Function Server( Val URL, Val Port = Undefined, Val Reset = False ) Export
 	
 	If ( Port <> Undefined ) Then
 
@@ -284,6 +322,14 @@ EndFunction
 
 #Region Times
 
+// Add condition that a request has been received by MockServer at least n-times.
+// 
+// Parameters:
+// 	Count - Number - n-times;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object;
+//
 Function AtLeast( Val Count ) Export
 	
 	CheckObjectPropertiesForMethod();
@@ -294,6 +340,14 @@ Function AtLeast( Val Count ) Export
 	
 EndFunction
 
+// Add condition that a request has been received by MockServer at most n-times.
+// 
+// Parameters:
+// 	Count - Number - number of times;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object;
+//
 Function AtMost( Val Count ) Export
 	
 	CheckObjectPropertiesForMethod();
@@ -304,6 +358,14 @@ Function AtMost( Val Count ) Export
 	
 EndFunction
 
+// Add condition that a request has been received by MockServer exactly n-times.
+// 
+// Parameters:
+// 	Count - Number - number of times;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object;
+//
 Function Exactly( Val Count ) Export
 	
 	CheckObjectPropertiesForMethod();
@@ -315,6 +377,11 @@ Function Exactly( Val Count ) Export
 	
 EndFunction
 
+// Add condition that a request has been received by MockServer only once.
+// 
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object;
+//
 Function Once() Export
 	
 	CheckObjectPropertiesForMethod();
@@ -326,6 +393,15 @@ Function Once() Export
 	
 EndFunction
 
+// Add condition that a request has been received by MockServer between n and m times.
+// 
+// Parameters:
+// 	AtLeast - Number - at least n-times;
+// 	AtMost - Number - at most m-times;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object;
+//
 Function Between( Val AtLeast, Val AtMost ) Export
 	
 	CheckObjectPropertiesForMethod();
@@ -573,14 +649,18 @@ Procedure InitConstructor()
 EndProcedure
 
 Function ConstructorRootProperty( Val Key )
+
+	Var Message;
 	
 	Result = ThisObject.Constructor.Get( Key );
+
+	Message = NStr( "en = 'Constructor does not contain action scope.';
+		            |ru = 'Конструктор не содержит область применения метода.'" );
 	
 	If ( TypeOf(Result) <> Type("Map") ) Then
-		Raise RuntimeError(
-		    NStr("en = 'Constructor does not contain action scope.';
-		         |ru = 'Конструктор не содержит область применения метода.'")
-		);
+
+		Raise RuntimeError( Message );
+		
 	EndIf;
 	
 	Return Result;
@@ -778,23 +858,29 @@ EndFunction
 #Region Errors
 
 Procedure RaiseIfCurrentStageEmpty()
+
+	Var Message;
+
+	Message = NStr( "en = 'The action needs to be initialized first.';
+		            |ru = 'Сначала необходимо инициализировать действие.'" );
 	
 	If ( IsBlankString(ThisObject.CurrentStage) ) Then
-		Raise RuntimeError(
-		    NStr("en = 'The action needs to be initialized first.';
-		         |ru = 'Сначала необходимо инициализировать действие.'")
-		);
+		Raise RuntimeError( Message );
 	EndIf;
 	
 EndProcedure
 
 Procedure RaiseIfConstructorUndefined()
+
+	Var Message;
+
+	Message = NStr( "en = 'Constructor not initialized.';
+		            |ru = 'Конструктор не был инициализирован.'" );
 	
 	If ( ThisObject.Constructor = Undefined ) Then
-		Raise RuntimeError(
-		    NStr("en = 'Constructor not initialized.';
-		         |ru = 'Конструктор не был инициализирован.'")
-		);
+
+		Raise RuntimeError( Message );
+
 	EndIf;
 	
 EndProcedure

@@ -1,3 +1,21 @@
+// mockserver-client-1c - https://github.com/astrizhachuk/mockserver-client-1c
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// 
+// Copyright © 2020 Alexander Strizhachuk
+// version: 0.1.2
+
 #If Server Or ThickClientOrdinaryApplication Or ExternalConnection Then
 
 #Region Public
@@ -30,38 +48,90 @@ Function Ответ( ОтветJson = Undefined ) Export
 	
 EndFunction
 
-Function Повторений( Повторений = Undefined ) Export
+// Устанавливает условия на проверку количества запросов к MockServer.
+// 
+// Параметры:
+// 	Условие - Строка - (необязательно) условие проверки на количество запросов в виде строки json-формата,
+// 						если параметр не указан, то в условия для свойства 'times' добавляется пустая коллекция;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+// 	
+// Пример:
+//	Мок.Когда( Мок.Запрос().Метод("GET") ).Проверить( Мок.Повторений().НеБолее(3) );
+//  Результат = Мок.Проверить().НеМенее(3).НеБолее(3);
+//  Результат = Мок.Проверить( """atLeast"": 3, ""atMost"": 3" );
+//
+Function Повторений( Условие = Undefined ) Export
 	
-	Return Times( Повторений );
+	Return Times( Условие );
 	
 EndFunction
 
 #Region Повторения
 
+// Добавляет условие, что количество запросов к MockServer было не менее n раз.
+// 
+// Параметры:
+// 	Повторений - Число - количество повторений запросов;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+//
 Function НеМенее( Val Повторений ) Export
 	
 	Return AtLeast( Повторений );
 	
 EndFunction
 
+// Добавляет условие, что количество запросов к MockServer было не более n раз.
+// 
+// Параметры:
+// 	Повторений - Число - количество повторений запросов;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+//
 Function НеБолее( Val Повторений ) Export
 	
 	Return AtMost( Повторений );
 	
 EndFunction
 
+// Добавляет условие, что количество запросов к MockServer было ровно n раз.
+// 
+// Параметры:
+// 	Повторений - Число - количество повторений запросов;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+//
 Function Точно( Val Повторений ) Export
 	
 	Return Exactly( Повторений );
 	
 EndFunction
 
+// Добавляет условие, что запрос к MockServer был только один раз.
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+//
 Function Однократно() Export
 	
 	Return Once();
 	
 EndFunction
 
+// Добавляет условие, что количество запросов к MockServer было от n до m раз.
+// 
+// Параметры:
+// 	От - Число - не менее n раз;
+// 	До - Число - не более m раз;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+//
 Function Между( Val От, Val До ) Export
 	
 	Return Between( От, До );
@@ -80,15 +150,25 @@ Procedure Сбросить() Export
 	
 EndProcedure
 
-Procedure Ответить( Ожидание = Undefined ) Export
+Procedure Ответить( Объект = Undefined ) Export
 	
-	Respond( Ожидание );
+	Respond( Объект );
 	
 EndProcedure
 
-Procedure Проверить( Проверка = Undefined ) Export
+// Проверяет наличие отправленного на сервер запроса (терминальная операция).
+// 
+// Параметры:
+// 	Объект - ОбработкаОбъект.MockServerClient - объект с предварительно установленными условиями; 
+//
+// Пример:
+//	Мок.Когда( Мок.Запрос().Метод("GET") ).Проверить( Мок.Повторений().НеБолее(3) );
+//	Мок.Проверить( Мок.Повторений().НеБолее(3) );
+//	Мок.Проверить( Мок.Повторений("""atMost"": 3") );
+//
+Procedure Проверить( Объект = Undefined ) Export
 	
-	Verify( Проверка );
+	Verify( Объект );
 	
 EndProcedure
 
@@ -119,6 +199,17 @@ Function Путь( Путь ) Export
 EndFunction
 
 #EndRegion
+
+// Возвращает результат выполнения PUT-метода для последней терминальной операции (действия).
+// 
+// Возвращаемое значение:
+// 	Булево - Истина - операция выполнена успешно, иначе - Ложь;
+//
+Function Успешно() Export
+	
+	Return IsOk();
+	
+EndFunction
 
 #Region Действия
 
@@ -165,7 +256,7 @@ EndFunction
 //  Mock = DataProcessors.MockServerClient.Create().Server("http://server", "1090");
 //  Mock = DataProcessors.MockServerClient.Create().Server("http://server", "1090", true);
 //
-Function Server( Val URL, Val Port = Undefined, Val Reset = false ) Export
+Function Server( Val URL, Val Port = Undefined, Val Reset = False ) Export
 	
 	If ( Port <> Undefined ) Then
 
@@ -200,34 +291,48 @@ Function When( Val What ) Export
 	
 EndFunction
 
-Function Request( Val HttpRequestJson = Undefined ) Export
+Function Request( Val Self = Undefined ) Export
 
 	ThisObject.Json = "";
 	ThisObject.CurrentStage = "httpRequest";
 	
-	FillConstructorRootPropertyByValueType( "httpRequest", HttpRequestJson );
+	FillConstructorRootPropertyByValueType( "httpRequest", Self );
 
 	Return ThisObject;
 	
 EndFunction
 
-Function Response( Val HttpResponseJson = Undefined  ) Export
+Function Response( Val Self = Undefined  ) Export
 	
 	ThisObject.Json = "";
 	ThisObject.CurrentStage = "httpResponse";
 	
-	FillConstructorRootPropertyByValueType( "httpResponse", HttpResponseJson );
+	FillConstructorRootPropertyByValueType( "httpResponse", Self );
 	
 	Return ThisObject;
 	
 EndFunction
 
-Function Times( Val TimesJson = Undefined  ) Export
+// Sets condition that a request has been received by MockServer a specific number of time.
+// 
+// Parameters:
+// 	Condition - String - a conditions in json-format string;
+// 						an empty collection for 'times'-property is added to the conditions collection,
+// 						if the parameter is not specified
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object;
+// 	
+// Example:
+//	Mock.When( Mock.Request().WithMethod("GET") ).Verify( Mock.Times().AtMost(3) );
+//  Result = Mock.Times().AtMost(3).AtLeast(3);
+//  Result = Mock.Times("""atLeast"": 3, ""atMost"": 3");
+//
+Function Times( Val Condition = Undefined  ) Export
 	
 	ThisObject.Json = "";
 	ThisObject.CurrentStage = "times";
 	
-	FillConstructorRootPropertyByValueType( "times", TimesJson );
+	FillConstructorRootPropertyByValueType( "times", Condition );
 	
 	Return ThisObject;
 	
@@ -235,6 +340,14 @@ EndFunction
 
 #Region Times
 
+// Add condition that a request has been received by MockServer at least n-times.
+// 
+// Parameters:
+// 	Count - Number - n-times;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object;
+//
 Function AtLeast( Val Count ) Export
 	
 	CheckObjectPropertiesForMethod();
@@ -245,6 +358,14 @@ Function AtLeast( Val Count ) Export
 	
 EndFunction
 
+// Add condition that a request has been received by MockServer at most n-times.
+// 
+// Parameters:
+// 	Count - Number - number of times;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object;
+//
 Function AtMost( Val Count ) Export
 	
 	CheckObjectPropertiesForMethod();
@@ -255,6 +376,14 @@ Function AtMost( Val Count ) Export
 	
 EndFunction
 
+// Add condition that a request has been received by MockServer exactly n-times.
+// 
+// Parameters:
+// 	Count - Number - number of times;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object;
+//
 Function Exactly( Val Count ) Export
 	
 	CheckObjectPropertiesForMethod();
@@ -266,6 +395,11 @@ Function Exactly( Val Count ) Export
 	
 EndFunction
 
+// Add condition that a request has been received by MockServer only once.
+// 
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object;
+//
 Function Once() Export
 	
 	CheckObjectPropertiesForMethod();
@@ -277,6 +411,15 @@ Function Once() Export
 	
 EndFunction
 
+// Add condition that a request has been received by MockServer between n and m times.
+// 
+// Parameters:
+// 	AtLeast - Number - at least n-times;
+// 	AtMost - Number - at most m-times;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object;
+//
 Function Between( Val AtLeast, Val AtMost ) Export
 	
 	CheckObjectPropertiesForMethod();
@@ -348,6 +491,16 @@ Procedure Respond( Val Self = Undefined ) Export
 	
 EndProcedure
 
+// Verify a request has been sent (terminal operation).
+// 
+// Parameters:
+// 	Self - DataProcessorObject.MockServerClient - a reference to object with preparing conditions; 
+//
+// Example:
+//	Mock.When( Mock.Request().WithMethod("GET") ).Verify( Mock.Times().AtMost(3) );
+//	Mock.Verify( Mock.Times().AtMost(3) );
+//	Mock.Verify( Mock.Times("""atMost"": 3") );
+//
 Procedure Verify( Val Self = Undefined ) Export
 	
 	GenerateJson();
@@ -514,14 +667,18 @@ Procedure InitConstructor()
 EndProcedure
 
 Function ConstructorRootProperty( Val Key )
+
+	Var Message;
 	
 	Result = ThisObject.Constructor.Get( Key );
+
+	Message = NStr( "en = 'Constructor does not contain action scope.';
+		            |ru = 'Конструктор не содержит область применения метода.'" );
 	
 	If ( TypeOf(Result) <> Type("Map") ) Then
-		Raise RuntimeError(
-		    NStr("en = 'Constructor does not contain action scope.';
-		         |ru = 'Конструктор не содержит область применения метода.'")
-		);
+
+		Raise RuntimeError( Message );
+		
 	EndIf;
 	
 	Return Result;
@@ -719,23 +876,29 @@ EndFunction
 #Region Errors
 
 Procedure RaiseIfCurrentStageEmpty()
+
+	Var Message;
+
+	Message = NStr( "en = 'The action needs to be initialized first.';
+		            |ru = 'Сначала необходимо инициализировать действие.'" );
 	
 	If ( IsBlankString(ThisObject.CurrentStage) ) Then
-		Raise RuntimeError(
-		    NStr("en = 'The action needs to be initialized first.';
-		         |ru = 'Сначала необходимо инициализировать действие.'")
-		);
+		Raise RuntimeError( Message );
 	EndIf;
 	
 EndProcedure
 
 Procedure RaiseIfConstructorUndefined()
+
+	Var Message;
+
+	Message = NStr( "en = 'Constructor not initialized.';
+		            |ru = 'Конструктор не был инициализирован.'" );
 	
 	If ( ThisObject.Constructor = Undefined ) Then
-		Raise RuntimeError(
-		    NStr("en = 'Constructor not initialized.';
-		         |ru = 'Конструктор не был инициализирован.'")
-		);
+
+		Raise RuntimeError( Message );
+
 	EndIf;
 	
 EndProcedure

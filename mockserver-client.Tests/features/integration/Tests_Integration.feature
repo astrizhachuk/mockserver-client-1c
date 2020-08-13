@@ -37,3 +37,58 @@ Scenario: VerifyRequestsReceivedAtLeastTwice
 Scenario: VerifyRequestsReceivedAtLeastTwiceFail
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Integration.VerifyRequestsReceivedAtLeastTwiceFail(Context());' |
+
+@OnServer
+Scenario: VerifyRequestsReceivedAtMostTwice
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.VerifyRequestsReceivedAtMostTwice(Context());' |
+
+@OnServer
+Scenario: VerifyRequestsReceivedAtMostTwiceFail
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.VerifyRequestsReceivedAtMostTwiceFail(Context());' |
+
+@OnServer
+Scenario: VerifyRequestsReceivedExactlyTwice
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.VerifyRequestsReceivedExactlyTwice(Context());' |
+
+@OnServer
+Scenario: VerifyRequestsReceivedExactlyTwiceFail
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.VerifyRequestsReceivedExactlyTwiceFail(Context());' |
+
+@OnServer
+Scenario: VerifyRequestsReceivedOnce
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.VerifyRequestsReceivedOnce(Context());' |
+
+@OnServer
+Scenario: VerifyRequestsReceivedOnceFail
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.VerifyRequestsReceivedOnceFail(Context());' |
+
+@OnServer
+Scenario: VerifyRequestsReceivedBetween
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.VerifyRequestsReceivedBetween(Context());' |
+
+@OnServer
+Scenario: VerifyRequestsReceivedBetweenLessFail
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.VerifyRequestsReceivedBetweenLessFail(Context());' |
+
+@OnServer
+Scenario: VerifyRequestsReceivedBetweenMoreFail
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.VerifyRequestsReceivedBetweenMoreFail(Context());' |
+
+@OnServer
+Scenario: VerifyRequestsNeverReceived
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.VerifyRequestsNeverReceived(Context());' |
+
+@OnServer
+Scenario: VerifyRequestsNeverReceivedFail
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.VerifyRequestsNeverReceivedFail(Context());' |

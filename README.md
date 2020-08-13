@@ -32,8 +32,8 @@ Procedure Verify(Context) Export
   // given
   Mock = DataProcessors.MockServerClient.Create();
   Mock.Server( "localhost", "1080", true );
-	HTTPConnector.Get( "http://localhost:1080/some/path" );
-	HTTPConnector.Get( "http://localhost:1080/some/path" );
+  HTTPConnector.Get( "http://localhost:1080/some/path" );
+  HTTPConnector.Get( "http://localhost:1080/some/path" );
   // when
   Mock.When(
       Mock.Request()
@@ -165,5 +165,65 @@ Use method chaining style (fluent interface):
     ).Verify(
       Mock.Times()
         .AtLeast(2)
+    );
+```
+
+#### verify requests received at most twice
+
+```text
+  Mock.When(
+      Mock.Request()
+        .WithPath("/some/path")
+    ).Verify(
+      Mock.Times()
+        .AtMost(2)
+    );
+```
+
+#### verify requests received exactly twice
+
+```text
+  Mock.When(
+      Mock.Request()
+        .WithPath("/some/path")
+    ).Verify(
+      Mock.Times()
+        .Exactly(2)
+    );
+```
+
+#### verify requests received at exactly once
+
+```text
+  Mock.When(
+      Mock.Request()
+        .WithPath("/some/path")
+    ).Verify(
+      Mock.Times()
+        .Once()
+    );
+```
+
+#### verify requests received between n and m times
+
+```text
+  Mock.When(
+      Mock.Request()
+        .WithPath("/some/path")
+    ).Verify(
+      Mock.Times()
+        .Between(2, 3)
+    );
+```
+
+#### verify requests never received
+
+```text
+  Mock.When(
+      Mock.Request()
+        .WithPath("/some/path")
+    ).Verify(
+      Mock.Times()
+        .Exactly(0)
     );
 ```

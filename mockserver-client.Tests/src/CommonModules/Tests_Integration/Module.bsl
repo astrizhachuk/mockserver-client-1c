@@ -105,7 +105,7 @@ Procedure LiteralResponseWithStatusCodeAndReasonPhrase(Context) Export
 
 EndProcedure
 
-// Verifying Repeating Requests Code Examples
+#Region VerifyingRepeatingRequests
 
 // verify requests received at least twice
 // 
@@ -151,6 +151,262 @@ Procedure VerifyRequestsReceivedAtLeastTwiceFail(Context) Export
 	Assert.IsFalse(Mock.Успешно());
 
 EndProcedure
+
+// verify requests received at most twice
+// 
+// @unit-test:integration
+Procedure VerifyRequestsReceivedAtMostTwice(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("localhost", "1080", true);
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	HTTPConnector.Get( "http://localhost:1080/some/another" );
+	// when
+	Mock.When(
+			Mock.Request()
+				.WithPath("/some/path")
+		).Verify(
+			Mock.Times()
+				.AtMost(2)
+		);
+	// then
+	Assert.IsTrue(Mock.IsOk());
+	Assert.IsTrue(Mock.Успешно());
+
+EndProcedure
+
+// @unit-test:integration
+Procedure VerifyRequestsReceivedAtMostTwiceFail(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("localhost", "1080", true);
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	// when
+	Mock.When(
+			Mock.Request()
+				.WithPath("/some/path")
+		).Verify(
+			Mock.Times()
+				.AtMost(2)
+		);	
+	// then
+	Assert.IsFalse(Mock.IsOk());
+	Assert.IsFalse(Mock.Успешно());
+
+EndProcedure
+
+// verify requests received exactly twice
+// 
+// @unit-test:integration
+Procedure VerifyRequestsReceivedExactlyTwice(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("localhost", "1080", true);
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	HTTPConnector.Get( "http://localhost:1080/some/another" );
+	// when
+	Mock.When(
+			Mock.Request()
+				.WithPath("/some/path")
+		).Verify(
+			Mock.Times()
+				.Exactly(2)
+		);
+	// then
+	Assert.IsTrue(Mock.IsOk());
+	Assert.IsTrue(Mock.Успешно());
+
+EndProcedure
+
+// @unit-test:integration
+Procedure VerifyRequestsReceivedExactlyTwiceFail(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("localhost", "1080", true);
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	// when
+	Mock.When(
+			Mock.Request()
+				.WithPath("/some/path")
+		).Verify(
+			Mock.Times()
+				.Exactly(2)
+		);	
+	// then
+	Assert.IsFalse(Mock.IsOk());
+	Assert.IsFalse(Mock.Успешно());
+
+EndProcedure
+
+// verify requests received at exactly once
+// 
+// @unit-test:integration
+Procedure VerifyRequestsReceivedOnce(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("localhost", "1080", true);
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	HTTPConnector.Get( "http://localhost:1080/some/another" );
+	// when
+	Mock.When(
+			Mock.Request()
+				.WithPath("/some/path")
+		).Verify(
+			Mock.Times()
+				.Once()
+		);
+	// then
+	Assert.IsTrue(Mock.IsOk());
+	Assert.IsTrue(Mock.Успешно());
+
+EndProcedure
+
+// @unit-test:integration
+Procedure VerifyRequestsReceivedOnceFail(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("localhost", "1080", true);
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	// when
+	Mock.When(
+			Mock.Request()
+				.WithPath("/some/path")
+		).Verify(
+			Mock.Times()
+				.Once()
+		);	
+	// then
+	Assert.IsFalse(Mock.IsOk());
+	Assert.IsFalse(Mock.Успешно());
+
+EndProcedure
+
+// verify requests received between n and m times
+// 
+// @unit-test:integration
+Procedure VerifyRequestsReceivedBetween(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("localhost", "1080", true);
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	// when
+	Mock.When(
+			Mock.Request()
+				.WithPath("/some/path")
+		).Verify(
+			Mock.Times()
+				.Between(2, 3)
+		);
+	// then
+	Assert.IsTrue(Mock.IsOk());
+	Assert.IsTrue(Mock.Успешно());
+
+EndProcedure
+
+// @unit-test:integration
+Procedure VerifyRequestsReceivedBetweenLessFail(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("localhost", "1080", true);
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	// when
+	Mock.When(
+			Mock.Request()
+				.WithPath("/some/path")
+		).Verify(
+			Mock.Times()
+				.Between(2, 3)
+		);	
+	// then
+	Assert.IsFalse(Mock.IsOk());
+	Assert.IsFalse(Mock.Успешно());
+
+EndProcedure
+
+// @unit-test:integration
+Procedure VerifyRequestsReceivedBetweenMoreFail(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("localhost", "1080", true);
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	// when
+	Mock.When(
+			Mock.Request()
+				.WithPath("/some/path")
+		).Verify(
+			Mock.Times()
+				.Between(2, 3)
+		);	
+	// then
+	Assert.IsFalse(Mock.IsOk());
+	Assert.IsFalse(Mock.Успешно());
+
+EndProcedure
+
+// verify requests never received
+// 
+// @unit-test:integration
+Procedure VerifyRequestsNeverReceived(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("localhost", "1080", true);
+	// when
+	Mock.When(
+			Mock.Request()
+				.WithPath("/some/path")
+		).Verify(
+			Mock.Times()
+				.Exactly(0)
+		);
+	// then
+	Assert.IsTrue(Mock.IsOk());
+	Assert.IsTrue(Mock.Успешно());
+
+EndProcedure
+
+// @unit-test:integration
+Procedure VerifyRequestsNeverReceivedFail(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("localhost", "1080", true);
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	// when
+	Mock.When(
+			Mock.Request()
+				.WithPath("/some/path")
+		).Verify(
+			Mock.Times()
+				.Exactly(0)
+		);	
+	// then
+	Assert.IsFalse(Mock.IsOk());
+	Assert.IsFalse(Mock.Успешно());
+
+EndProcedure
+
+#EndRegion
 
 #EndRegion
 

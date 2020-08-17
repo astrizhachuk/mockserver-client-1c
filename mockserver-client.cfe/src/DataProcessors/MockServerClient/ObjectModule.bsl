@@ -20,223 +20,6 @@
 
 #Region Public
 
-#Region Ru
-
-#Region Промежуточные
-
-Function Сервер( URL, Port = Undefined ) Export
-	
-	Return Server( URL, Port );
-	
-EndFunction
-
-Function Когда( Запрос ) Export
-	
-	Return When( Запрос );
-	
-EndFunction
-
-Function Запрос( ЗапросJson = Undefined ) Export
-	
-	Return Request( ЗапросJson );
-	
-EndFunction
-
-Function Ответ( ОтветJson = Undefined ) Export
-	
-	Return Response( ОтветJson );
-	
-EndFunction
-
-// Устанавливает условия на проверку количества запросов к MockServer.
-// 
-// Параметры:
-// 	Условие - Строка - (необязательно) условие проверки на количество запросов в виде строки json-формата,
-// 						если параметр не указан, то в условия для свойства 'times' добавляется пустая коллекция;
-// 	
-// Возвращаемое значение:
-// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
-// 	
-// Пример:
-//	Мок.Когда( Мок.Запрос().Метод("GET") ).Проверить( Мок.Повторений().НеБолее(3) );
-//  Результат = Мок.Проверить().НеМенее(3).НеБолее(3);
-//  Результат = Мок.Проверить( """atLeast"": 3, ""atMost"": 3" );
-//
-Function Повторений( Условие = Undefined ) Export
-	
-	Return Times( Условие );
-	
-EndFunction
-
-#Region Повторения
-
-// Добавляет условие, что количество запросов к MockServer было не менее n раз.
-// 
-// Параметры:
-// 	Повторений - Число - количество повторений запросов;
-// 	
-// Возвращаемое значение:
-// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
-//
-Function НеМенее( Val Повторений ) Export
-	
-	Return AtLeast( Повторений );
-	
-EndFunction
-
-// Добавляет условие, что количество запросов к MockServer было не более n раз.
-// 
-// Параметры:
-// 	Повторений - Число - количество повторений запросов;
-// 	
-// Возвращаемое значение:
-// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
-//
-Function НеБолее( Val Повторений ) Export
-	
-	Return AtMost( Повторений );
-	
-EndFunction
-
-// Добавляет условие, что количество запросов к MockServer было ровно n раз.
-// 
-// Параметры:
-// 	Повторений - Число - количество повторений запросов;
-// 	
-// Возвращаемое значение:
-// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
-//
-Function Точно( Val Повторений ) Export
-	
-	Return Exactly( Повторений );
-	
-EndFunction
-
-// Добавляет условие, что запрос к MockServer был только один раз.
-// 	
-// Возвращаемое значение:
-// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
-//
-Function Однократно() Export
-	
-	Return Once();
-	
-EndFunction
-
-// Добавляет условие, что количество запросов к MockServer было от n до m раз.
-// 
-// Параметры:
-// 	От - Число - не менее n раз;
-// 	До - Число - не более m раз;
-// 	
-// Возвращаемое значение:
-// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
-//
-Function Между( Val От, Val До ) Export
-	
-	Return Between( От, До );
-	
-EndFunction
-
-#EndRegion
-
-#EndRegion
-
-#Region Терминальные
-
-Procedure Сбросить() Export
-	
-	Reset();
-	
-EndProcedure
-
-Procedure Ответить( Объект = Undefined ) Export
-	
-	Respond( Объект );
-	
-EndProcedure
-
-// Проверяет наличие отправленного на сервер запроса (терминальная операция).
-// 
-// Параметры:
-// 	Объект - ОбработкаОбъект.MockServerClient - объект с предварительно установленными условиями; 
-//
-// Пример:
-//	Мок.Когда( Мок.Запрос().Метод("GET") ).Проверить( Мок.Повторений().НеБолее(3) );
-//	Мок.Проверить( Мок.Повторений().НеБолее(3) );
-//	Мок.Проверить( Мок.Повторений("""atMost"": 3") );
-//
-Procedure Проверить( Объект = Undefined ) Export
-	
-	Verify( Объект );
-	
-EndProcedure
-
-#Region Условия
-
-Function Заголовки( Заголовки = Undefined ) Export
-	
-	Return Headers( Заголовки );
-	
-EndFunction
-
-Function Заголовок( Ключ, Значение ) Export
-	
-	Return WithHeader( Ключ, Значение );
-	
-EndFunction
-
-Function Метод( Метод ) Export
-	
-	Return WithMethod( Метод );
-	
-EndFunction
-
-Function Путь( Путь ) Export
-	
-	Return WithPath( Путь );
-	
-EndFunction
-
-#EndRegion
-
-// Возвращает результат выполнения PUT-метода для последней терминальной операции (действия).
-// 
-// Возвращаемое значение:
-// 	Булево - Истина - операция выполнена успешно, иначе - Ложь;
-//
-Function Успешно() Export
-	
-	Return IsOk();
-	
-EndFunction
-
-#Region Действия
-
-Function Тело( Тело ) Export
-	
-	Return WithBody( Тело );
-	
-EndFunction
-
-Function КодОтвета( КодОтвета ) Export
-	
-	Return WithStatusCode( КодОтвета );
-	
-EndFunction
-
-Function Причина( Причина ) Export
-	
-	Return WithReasonPhrase( Причина );
-	
-EndFunction
-
-#EndRegion
-
-#EndRegion
-
-#EndRegion
-
 #Region En
 	
 #Region Intermediate
@@ -310,6 +93,12 @@ Function Response( Val Self = Undefined  ) Export
 	FillConstructorRootPropertyByValueType( "httpResponse", Self );
 	
 	Return ThisObject;
+	
+EndFunction
+
+Function OpenAPI( Val Self = Undefined  ) Export
+	
+	Return Request(Self);
 	
 EndFunction
 
@@ -528,6 +317,33 @@ Procedure Verify( Val Self = Undefined ) Export
 	
 EndProcedure
 
+Procedure OpenAPIExpectation( Val Source, Val Condition = "" ) Export
+	
+	GenerateOpenApiJson( Source, Condition );
+	
+	Try
+		
+		DoAction( "openapi" );
+		
+		If ( HTTPStatusCodesClientServerCached.IsCreated(ThisObject.MockServerResponse.КодСостояния) ) Then
+			
+			ThisObject.IsActionOk = True;
+			ThisObject.MockServerResponse = Undefined;
+		
+		Else
+			
+			ThisObject.MockServerResponse = MockServerClientError( ThisObject.MockServerResponse.КодСостояния );
+
+		EndIf;
+		
+	Except
+		
+		ThisObject.MockServerResponse = MockServerError( DetailErrorDescription(ErrorInfo()) );
+		
+	EndTry;
+	
+EndProcedure
+
 #EndRegion
 
 // Returns the result of executing the PUT method for the last action.
@@ -634,6 +450,247 @@ Function WithReasonPhrase( Val ReasonPhrase ) Export
 	Return ThisObject;
 	
 EndFunction
+
+#EndRegion
+
+#Region OpenAPI
+
+Function WithSource( Val Source ) Export
+	
+	CheckObjectPropertiesForMethod();
+	
+	AddConstructorStageProperty( "specUrlOrPayload", Source );
+	
+	Return ThisObject;
+	
+EndFunction
+
+Function WithOperationId( Val OperationId ) Export
+	
+	CheckObjectPropertiesForMethod();
+	
+	AddConstructorStageProperty( "operationId", OperationId );
+	
+	Return ThisObject;
+	
+EndFunction
+
+#EndRegion
+
+#EndRegion
+
+#Region Ru
+
+#Region Промежуточные
+
+Function Сервер( URL, Port = Undefined ) Export
+	
+	Return Server( URL, Port );
+	
+EndFunction
+
+Function Когда( Запрос ) Export
+	
+	Return When( Запрос );
+	
+EndFunction
+
+Function Запрос( ЗапросJson = Undefined ) Export
+	
+	Return Request( ЗапросJson );
+	
+EndFunction
+
+Function Ответ( ОтветJson = Undefined ) Export
+	
+	Return Response( ОтветJson );
+	
+EndFunction
+
+// Устанавливает условия на проверку количества запросов к MockServer.
+// 
+// Параметры:
+// 	Условие - Строка - (необязательно) условие проверки на количество запросов в виде строки json-формата,
+// 						если параметр не указан, то в условия для свойства 'times' добавляется пустая коллекция;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+//
+// Пример:
+//	Мок.Когда( Мок.Запрос().Метод("GET") ).Проверить( Мок.Повторений().НеБолее(3) );
+//  Результат = Мок.Проверить().НеМенее(3).НеБолее(3);
+//  Результат = Мок.Проверить( """atLeast"": 3, ""atMost"": 3" );
+//
+Function Повторений( Условие = Undefined ) Export
+	
+	Return Times( Условие );
+	
+EndFunction
+
+#Region Повторения
+
+// Добавляет условие, что количество запросов к MockServer было не менее n раз.
+// 
+// Параметры:
+// 	Повторений - Число - количество повторений запросов;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+//
+Function НеМенее( Val Повторений ) Export
+	
+	Return AtLeast( Повторений );
+	
+EndFunction
+
+// Добавляет условие, что количество запросов к MockServer было не более n раз.
+// 
+// Параметры:
+// 	Повторений - Число - количество повторений запросов;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+//
+Function НеБолее( Val Повторений ) Export
+	
+	Return AtMost( Повторений );
+	
+EndFunction
+
+// Добавляет условие, что количество запросов к MockServer было ровно n раз.
+// 
+// Параметры:
+// 	Повторений - Число - количество повторений запросов;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+//
+Function Точно( Val Повторений ) Export
+	
+	Return Exactly( Повторений );
+	
+EndFunction
+
+// Добавляет условие, что запрос к MockServer был только один раз.
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+//
+Function Однократно() Export
+	
+	Return Once();
+	
+EndFunction
+
+// Добавляет условие, что количество запросов к MockServer было от n до m раз.
+// 
+// Параметры:
+// 	От - Число - не менее n раз;
+// 	До - Число - не более m раз;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+//
+Function Между( Val От, Val До ) Export
+	
+	Return Between( От, До );
+	
+EndFunction
+
+#EndRegion
+
+#EndRegion
+
+#Region Терминальные
+
+Procedure Сбросить() Export
+	
+	Reset();
+	
+EndProcedure
+
+Procedure Ответить( Объект = Undefined ) Export
+	
+	Respond( Объект );
+	
+EndProcedure
+
+// Проверяет наличие отправленного на сервер запроса (терминальная операция).
+// 
+// Параметры:
+// 	Объект - ОбработкаОбъект.MockServerClient - объект с предварительно установленными условиями; 
+//
+// Пример:
+//	Мок.Когда( Мок.Запрос().Метод("GET") ).Проверить( Мок.Повторений().НеБолее(3) );
+//	Мок.Проверить( Мок.Повторений().НеБолее(3) );
+//	Мок.Проверить( Мок.Повторений("""atMost"": 3") );
+//
+Procedure Проверить( Объект = Undefined ) Export
+	
+	Verify( Объект );
+	
+EndProcedure
+
+#Region Условия
+
+Function Заголовки( Заголовки = Undefined ) Export
+	
+	Return Headers( Заголовки );
+	
+EndFunction
+
+Function Заголовок( Ключ, Значение ) Export
+	
+	Return WithHeader( Ключ, Значение );
+	
+EndFunction
+
+Function Метод( Метод ) Export
+	
+	Return WithMethod( Метод );
+	
+EndFunction
+
+Function Путь( Путь ) Export
+	
+	Return WithPath( Путь );
+	
+EndFunction
+
+#EndRegion
+
+// Возвращает результат выполнения PUT-метода для последней терминальной операции (действия).
+// 
+// Возвращаемое значение:
+// 	Булево - Истина - операция выполнена успешно, иначе - Ложь;
+//
+Function Успешно() Export
+	
+	Return IsOk();
+	
+EndFunction
+
+#Region Действия
+
+Function Тело( Тело ) Export
+	
+	Return WithBody( Тело );
+	
+EndFunction
+
+Function КодОтвета( КодОтвета ) Export
+	
+	Return WithStatusCode( КодОтвета );
+	
+EndFunction
+
+Function Причина( Причина ) Export
+	
+	Return WithReasonPhrase( Причина );
+	
+EndFunction
+
+#EndRegion
 
 #EndRegion
 
@@ -775,7 +832,7 @@ Function MapStringValueToArray( Val Key, Val Value )
 	
 EndFunction
 
-Procedure FillActionTemplate( Result,  Val Key, Val Value )
+Procedure FillActionTemplate( Result, Val Key, Val Value )
 	
 	If ( TypeOf(Key) = Тип("String") AND NOT IsBlankString(Value) ) Then
 		
@@ -783,7 +840,7 @@ Procedure FillActionTemplate( Result,  Val Key, Val Value )
 	        " ""%1"": {
 	        |%2
 	        | },", Key, Value );
-		
+			
 	EndIf;
 	
 EndProcedure
@@ -797,14 +854,37 @@ Function JoinJsonParts()
 	FillActionTemplate( Result, "httpRequest", HttpRequestJson);
 	FillActionTemplate( Result, "httpResponse", HttpResponseJson);
 	FillActionTemplate( Result, "times", TimesJson);
-
-	Result = Left( Result, StrLen(Result) - 1 );
 	
+	Result = Left( Result, StrLen(Result) - 1 );
 	Result = Result + Chars.LF + "}";
 	
 	Возврат Result;
 	
 EndFunction
+
+Procedure GenerateOpenApiJson( Val Source, Val Condition = "" )
+	
+	Var Template;
+	Var ConditionTemplate;
+	
+	Template = "{
+		| ""specUrlOrPayload"": ""%1""%2
+	    |}";
+    
+    If ( NOT IsBlankString(Condition) ) Then
+    	
+		ConditionTemplate = ",
+			| ""operationsAndResponses"": {
+			|  %1
+			| }";
+			
+		Condition = StrTemplate( ConditionTemplate, Condition );
+    	
+    EndIf;
+    
+    ThisObject.Json = StrTemplate( Template, Source, Condition );
+
+EndProcedure
 
 Procedure GenerateJson()
 	
@@ -883,7 +963,9 @@ Procedure RaiseIfCurrentStageEmpty()
 		            |ru = 'Сначала необходимо инициализировать действие.'" );
 	
 	If ( IsBlankString(ThisObject.CurrentStage) ) Then
+		
 		Raise RuntimeError( Message );
+		
 	EndIf;
 	
 EndProcedure

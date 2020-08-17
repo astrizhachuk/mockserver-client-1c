@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="edbc4ca3-8a11-4b5d-b736-31abb7ad60c3">
+  <name>Tests_OpenAPI</name>
+  <synonym>
+    <key>en</key>
+    <value>Open API</value>
+  </synonym>
+  <server>true</server>
+</mdclass:CommonModule>

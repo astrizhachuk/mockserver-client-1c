@@ -1,7 +1,7 @@
 #Region Internal
 
 // @unit-test
-Procedure VerifydUrlException(Context) Export
+Procedure VerifyUrlException(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
@@ -183,6 +183,79 @@ Procedure VerifydWhenRequestInWhenAndTimesInVerify(Context) Export
 	Assert.AreEqual(Mock.Json, "{
 							   | ""httpRequest"": {
 							   |  ""method"": ""GET""
+							   | },
+							   | ""times"": {
+							   |  ""atMost"": 3
+							   | }
+							   |}");
+	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
+	Assert.IsTrue(IsBlankString(Mock.HttpResponseJson));
+	Assert.IsTrue(IsBlankString(Mock.TimesJson));
+
+EndProcedure
+
+// @unit-test
+Procedure VerifyWhenOpenAPIWithSource(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("this.is.error.url", "1080");
+	// when
+	Mock.When( Mock.OpenAPI().WithSource("http...") ).Verify( Mock.Times().AtMost(3) );
+	// then
+	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
+	Assert.AreEqual(Mock.Json, "{
+							   | ""httpRequest"": {
+							   |  ""specUrlOrPayload"": ""http...""
+							   | },
+							   | ""times"": {
+							   |  ""atMost"": 3
+							   | }
+							   |}");
+	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
+	Assert.IsTrue(IsBlankString(Mock.HttpResponseJson));
+	Assert.IsTrue(IsBlankString(Mock.TimesJson));
+
+EndProcedure
+
+// @unit-test
+Procedure VerifyWhenOpenAPIWithOperationId(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("this.is.error.url", "1080");
+	// when
+	Mock.When( Mock.OpenAPI().WithOperationId("operation") ).Verify( Mock.Times().AtMost(3) );
+	// then
+	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
+	Assert.AreEqual(Mock.Json, "{
+							   | ""httpRequest"": {
+							   |  ""operationId"": ""operation""
+							   | },
+							   | ""times"": {
+							   |  ""atMost"": 3
+							   | }
+							   |}");
+	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
+	Assert.IsTrue(IsBlankString(Mock.HttpResponseJson));
+	Assert.IsTrue(IsBlankString(Mock.TimesJson));
+
+EndProcedure
+
+// @unit-test
+Procedure VerifyWhenOpenAPI(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("this.is.error.url", "1080");
+	// when
+	Mock.When( Mock.OpenAPI().WithSource("http...").WithOperationId("operation") ).Verify( Mock.Times().AtMost(3) );
+	// then
+	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
+	Assert.AreEqual(Mock.Json, "{
+							   | ""httpRequest"": {
+							   |  ""specUrlOrPayload"": ""http..."",
+							   |  ""operationId"": ""operation""
 							   | },
 							   | ""times"": {
 							   |  ""atMost"": 3

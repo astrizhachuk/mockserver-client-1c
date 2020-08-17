@@ -9,9 +9,9 @@ Feature: mockserver-client.Tests.Tests_Verify
 	That I can guarantee the execution of the method
 
 @OnServer
-Scenario: VerifydUrlException
+Scenario: VerifyUrlException
 	And I execute 1C:Enterprise script at server
-	| 'Tests_Verify.VerifydUrlException(Context());' |
+	| 'Tests_Verify.VerifyUrlException(Context());' |
 
 @OnServer
 Scenario: VerifyWhenFullJson
@@ -52,3 +52,18 @@ Scenario: VerifydWhenRequestAndTimes
 Scenario: VerifydWhenRequestInWhenAndTimesInVerify
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Verify.VerifydWhenRequestInWhenAndTimesInVerify(Context());' |
+
+@OnServer
+Scenario: VerifyWhenOpenAPIWithSource
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Verify.VerifyWhenOpenAPIWithSource(Context());' |
+
+@OnServer
+Scenario: VerifyWhenOpenAPIWithOperationId
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Verify.VerifyWhenOpenAPIWithOperationId(Context());' |
+
+@OnServer
+Scenario: VerifyWhenOpenAPI
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Verify.VerifyWhenOpenAPI(Context());' |

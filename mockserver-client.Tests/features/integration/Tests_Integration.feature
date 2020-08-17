@@ -59,6 +59,26 @@ Scenario: VerifyRequestsReceivedExactlyTwiceFail
 	| 'Tests_Integration.VerifyRequestsReceivedExactlyTwiceFail(Context());' |
 
 @OnServer
+Scenario: VerifyRequestsReceivedAtLeastTwiceByOpenAPI
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.VerifyRequestsReceivedAtLeastTwiceByOpenAPI(Context());' |
+
+@OnServer
+Scenario: VerifyRequestsReceivedAtLeastTwiceByOpenAPIFailed
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.VerifyRequestsReceivedAtLeastTwiceByOpenAPIFailed(Context());' |
+
+@OnServer
+Scenario: VerifyRequestsReceivedAtExactlyOnceByOpenAPIAndOperation
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.VerifyRequestsReceivedAtExactlyOnceByOpenAPIAndOperation(Context());' |
+
+@OnServer
+Scenario: VerifyRequestsReceivedAtExactlyOnceByOpenAPIAndOperationFail
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.VerifyRequestsReceivedAtExactlyOnceByOpenAPIAndOperationFail(Context());' |
+
+@OnServer
 Scenario: VerifyRequestsReceivedOnce
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Integration.VerifyRequestsReceivedOnce(Context());' |

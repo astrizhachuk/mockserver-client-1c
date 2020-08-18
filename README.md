@@ -5,7 +5,7 @@
 
 [русский](https://github.com/astrizhachuk/mockserver-client-1c/blob/master/docs/ru/README.md)
 
-*[MockServer](https://www.mock-server.com/#what-is-mockserver)-client-1c* is designed to [controll](https://www.mock-server.com/mock_server/mockserver_clients.html) MoskServer using 1C:Enterprise Platform. This *client* is distributed as *cfe* and implemented as *DataProcessor* that interacts with the MockServer via the [REST API](https://app.swaggerhub.com/apis/jamesdbloom/mock-server-openapi/5.11.x).
+*[MockServer](https://www.mock-server.com/#what-is-mockserver)-client-1c* is designed to [controll](https://www.mock-server.com/mock_server/mockserver_clients.html) MoskServer using 1C:Enterprise Platform. This *client* is distributed as *cfe* and implemented as *DataProcessor* that interacts with the MockServer via the [REST API](https://app.swaggerhub.com/apis/jamesdbloom/mock-server-openapi/5.11.x). MockServer supports OpenAPI v3 specifications in either JSON or YAML format.
 
 ## How it works
 
@@ -189,6 +189,31 @@ Use method chaining style (fluent interface):
     ).Verify(
       Mock.Times()
         .Exactly(2)
+    );
+```
+
+#### verify requests received at least twice by openapi
+
+```text
+  Mock.When(
+      Mock.OpenAPI()
+        .WithSource("https://raw.githubusercontent.com/mock-server/mockserver/master/mockserver-integration-testing/src/main/resources/org/mockserver/mock/openapi_petstore_example.json")
+    ).Verify(
+      Mock.Times()
+        .AtLeast(2)
+    );
+```
+
+#### verify requests received at exactly once by openapi and operation
+
+```text
+  Mock.When(
+      Mock.OpenAPI()
+        .WithSource("https://raw.githubusercontent.com/mock-server/mockserver/master/mockserver-integration-testing/src/main/resources/org/mockserver/mock/openapi_petstore_example.json")
+        .WithOperationId("listPets")
+    ).Verify(
+      Mock.Times()
+        .Once()
     );
 ```
 

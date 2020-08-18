@@ -28,9 +28,26 @@ Procedure ExpectationFail(Context) Export
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
 	// when
-	Mock.Server("localhost", "1080").When("{}").Respond();
+	Mock.Server("localhost", "1080", true).When("{}").Respond();
 	// then
 	Assert.IsFalse(Mock.IsOk());
+
+EndProcedure
+
+// @unit-test:integration
+Procedure RequestAndResponseJsonFormat(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Mock.Server("localhost", "1080", true)
+		.When(
+			Mock.Request("""path"": ""/some/path""")
+		).Respond(
+			Mock.Response("""body"": ""some_response_body""")
+		);
+	// then
+	Assert.IsTrue(Mock.IsOk());
 
 EndProcedure
 
@@ -44,7 +61,7 @@ Procedure MatchRequestByPath(Context) Export
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
 	// when
-	Mock.Server("localhost", "1080")
+	Mock.Server("localhost", "1080", true)
 		.When(
 			Mock.Request()
 				.WithPath("/some/path")
@@ -65,7 +82,7 @@ Procedure MatchRequestByQueryParameterWithRegexValue(Context) Export
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
 	// when
-	Mock.Server("localhost", "1080")
+	Mock.Server("localhost", "1080", true)
 		.When(
 			Mock.Request()
 				.WithPath("/some/path")
@@ -92,7 +109,7 @@ Procedure LiteralResponseWithStatusCodeAndReasonPhrase(Context) Export
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
 	// when
-	Mock.Server("localhost", "1080")
+	Mock.Server("localhost", "1080", true)
 		.When(
 			Mock.Request()
 				.WithPath("/some/path")

@@ -14,6 +14,11 @@ Scenario: ExpectationFail
 	| 'Tests_Integration.ExpectationFail(Context());' |
 
 @OnServer
+Scenario: RequestAndResponseJsonFormat
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.RequestAndResponseJsonFormat(Context());' |
+
+@OnServer
 Scenario: MatchRequestByPath
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Integration.MatchRequestByPath(Context());' |

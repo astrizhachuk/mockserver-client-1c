@@ -174,11 +174,11 @@ EndFunction
 
 #Region Times
 
-// Add condition that a request has been received by MockServer at least n-times.
-// 
+// Adds  condition that a request has been received by MockServer at least n-times.
+//
 // Parameters:
 // 	Count - Number - n-times;
-// 	
+//
 // Returns:
 // 	DataProcessorObject.MockServerClient - instance of mock-object;
 //
@@ -192,11 +192,11 @@ Function AtLeast( Val Count ) Export
 	
 EndFunction
 
-// Add condition that a request has been received by MockServer at most n-times.
-// 
+// Adds condition that a request has been received by MockServer at most n-times.
+//
 // Parameters:
 // 	Count - Number - number of times;
-// 	
+//
 // Returns:
 // 	DataProcessorObject.MockServerClient - instance of mock-object;
 //
@@ -210,11 +210,11 @@ Function AtMost( Val Count ) Export
 	
 EndFunction
 
-// Add condition that a request has been received by MockServer exactly n-times.
-// 
+// Adds condition that a request has been received by MockServer exactly n-times.
+//
 // Parameters:
 // 	Count - Number - number of times;
-// 	
+//
 // Returns:
 // 	DataProcessorObject.MockServerClient - instance of mock-object;
 //
@@ -222,14 +222,14 @@ Function Exactly( Val Count ) Export
 	
 	CheckObjectPropertiesForMethod();
 
-	AddConstructorStageProperty( "atLeast", Count );	
+	AddConstructorStageProperty( "atLeast", Count );
 	AddConstructorStageProperty( "atMost", Count );
 	
 	Return ThisObject;
 	
 EndFunction
 
-// Add condition that a request has been received by MockServer only once.
+// Adds condition that a request has been received by MockServer only once.
 // 
 // Returns:
 // 	DataProcessorObject.MockServerClient - instance of mock-object;
@@ -245,12 +245,12 @@ Function Once() Export
 	
 EndFunction
 
-// Add condition that a request has been received by MockServer between n and m times.
-// 
+// Adds condition that a request has been received by MockServer between n and m times.
+//
 // Parameters:
 // 	AtLeast - Number - at least n-times;
 // 	AtMost - Number - at most m-times;
-// 	
+//
 // Returns:
 // 	DataProcessorObject.MockServerClient - instance of mock-object;
 //
@@ -258,7 +258,7 @@ Function Between( Val AtLeast, Val AtMost ) Export
 	
 	CheckObjectPropertiesForMethod();
 
-	AddConstructorStageProperty( "atLeast", AtLeast );	
+	AddConstructorStageProperty( "atLeast", AtLeast );
 	AddConstructorStageProperty( "atMost", AtMost );
 	
 	Return ThisObject;
@@ -382,7 +382,7 @@ Procedure OpenAPIExpectation( Val Source, Val Operations = "" ) Export
 	GenerateOpenApiJson( Source, Operations );
 	
 	Try
-		
+
 		DoAction( "openapi" );
 		
 		If ( HTTPStatusCodesClientServerCached.IsCreated(ThisObject.MockServerResponse.КодСостояния) ) Then
@@ -515,6 +515,26 @@ EndFunction
 
 #Region OpenAPI
 
+// Adds the "specUrlOrPayload" property describing the data source or the data itself in OpenAPI format.
+// 
+// Parameters:
+// 	Source - String - the path to the OpenAPI document or the data itself in accordance with the OpenAPI specification;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object with added property;
+//
+// Example:
+//  
+// 	Mock.When(
+//		Mock.OpenAPI()
+//			.WithSource("https://example.com/openapi.json")
+//	).Verify(
+//		Mock.Times()
+//			.AtLeast(2)
+//	);
+//
+//  Result = Mock.OpenAPI().WithSource( "file:/Users/me/openapi.json" );
+//
 Function WithSource( Val Source ) Export
 	
 	CheckObjectPropertiesForMethod();
@@ -525,6 +545,27 @@ Function WithSource( Val Source ) Export
 	
 EndFunction
 
+// Adds the "operationId" property that specifies which operations of OpenAPI are included.
+// 
+// Parameters:
+// 	OperationId - String - the operation in the OpenAPI specification;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object with added property;
+//
+// Example:
+//  
+// 	Mock.When(
+//		Mock.OpenAPI()
+//			.WithSource("https://example.com/openapi.json")
+//			.WithOperationId("listPets")
+//	).Verify(
+//		Mock.Times()
+//			.AtLeast(2)
+//	);
+//
+//  Result = Mock.OpenAPI().WithSource( "file:/Users/me/openapi.json" ).WithOperationId("listPets");
+//
 Function WithOperationId( Val OperationId ) Export
 	
 	CheckObjectPropertiesForMethod();
@@ -797,6 +838,63 @@ EndFunction
 Function Причина( Причина ) Export
 	
 	Return WithReasonPhrase( Причина );
+	
+EndFunction
+
+#EndRegion
+
+#Region OpenAPI
+
+// Добавляет свойство "specUrlOrPayload", которое описывает источник данных или сами данные в формате OpenAPI.
+// 
+// Параметры:
+// 	Источник - Строка - путь к документу с описанием данных или сами данные в соответствии с OpenAPI спецификацией;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с добавленным свойством;
+//
+// Пример:
+//  
+// 	Мок.Когда(
+//		Мок.OpenAPI()
+//			.Источник("https://example.com/openapi.json")
+//	).Проверить(
+//		Мок.Повторений()
+//			.НеМенее(2)
+//	);
+//
+//  Результат = Мок.OpenAPI().Источник( "file:/Users/me/openapi.json" );
+//
+Function Источник( Источник ) Export
+	
+	Return WithSource( Источник );
+	
+EndFunction
+
+// Добавляет свойство "operationId", указывающее на операцию из спецификации документа OpenAPI;
+// 
+// Параметры:
+// 	Операция - Строка - операция из документа OpenAPI;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с добавленным свойством;
+//
+// Пример:
+//  
+// 	Мок.Когда(
+//		Мок.OpenAPI()
+//			.Источник("https://example.com/openapi.json")
+//			.Операция("listPets")
+//	).Проверить(
+//		Мок.Повторений()
+//			.НеМенее(2)
+//	);
+//
+//  Результат = Мок.OpenAPI().Источник( "file:/Users/me/openapi.json" ).Операция("listPets");
+//
+Function Операция( Операция ) Export
+	
+	Return WithOperationId( Операция );
 	
 EndFunction
 

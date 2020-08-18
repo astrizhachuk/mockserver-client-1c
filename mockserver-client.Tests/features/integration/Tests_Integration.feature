@@ -14,6 +14,11 @@ Scenario: ExpectationFail
 	| 'Tests_Integration.ExpectationFail(Context());' |
 
 @OnServer
+Scenario: RequestAndResponseJsonFormat
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.RequestAndResponseJsonFormat(Context());' |
+
+@OnServer
 Scenario: MatchRequestByPath
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Integration.MatchRequestByPath(Context());' |
@@ -27,6 +32,16 @@ Scenario: MatchRequestByQueryParameterWithRegexValue
 Scenario: LiteralResponseWithStatusCodeAndReasonPhrase
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Integration.LiteralResponseWithStatusCodeAndReasonPhrase(Context());' |
+
+@OnServer
+Scenario: OpenAPIExpectationOnlySource
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.OpenAPIExpectationOnlySource(Context());' |
+
+@OnServer
+Scenario: OpenAPIExpectationSourceAndOperations
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.OpenAPIExpectationSourceAndOperations(Context());' |
 
 @OnServer
 Scenario: VerifyRequestsReceivedAtLeastTwice
@@ -57,6 +72,26 @@ Scenario: VerifyRequestsReceivedExactlyTwice
 Scenario: VerifyRequestsReceivedExactlyTwiceFail
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Integration.VerifyRequestsReceivedExactlyTwiceFail(Context());' |
+
+@OnServer
+Scenario: VerifyRequestsReceivedAtLeastTwiceByOpenAPI
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.VerifyRequestsReceivedAtLeastTwiceByOpenAPI(Context());' |
+
+@OnServer
+Scenario: VerifyRequestsReceivedAtLeastTwiceByOpenAPIFailed
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.VerifyRequestsReceivedAtLeastTwiceByOpenAPIFailed(Context());' |
+
+@OnServer
+Scenario: VerifyRequestsReceivedAtExactlyOnceByOpenAPIAndOperation
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.VerifyRequestsReceivedAtExactlyOnceByOpenAPIAndOperation(Context());' |
+
+@OnServer
+Scenario: VerifyRequestsReceivedAtExactlyOnceByOpenAPIAndOperationFail
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.VerifyRequestsReceivedAtExactlyOnceByOpenAPIAndOperationFail(Context());' |
 
 @OnServer
 Scenario: VerifyRequestsReceivedOnce

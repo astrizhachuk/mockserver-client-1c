@@ -20,223 +20,6 @@
 
 #Region Public
 
-#Region Ru
-
-#Region Промежуточные
-
-Function Сервер( URL, Port = Undefined ) Export
-	
-	Return Server( URL, Port );
-	
-EndFunction
-
-Function Когда( Запрос ) Export
-	
-	Return When( Запрос );
-	
-EndFunction
-
-Function Запрос( ЗапросJson = Undefined ) Export
-	
-	Return Request( ЗапросJson );
-	
-EndFunction
-
-Function Ответ( ОтветJson = Undefined ) Export
-	
-	Return Response( ОтветJson );
-	
-EndFunction
-
-// Устанавливает условия на проверку количества запросов к MockServer.
-// 
-// Параметры:
-// 	Условие - Строка - (необязательно) условие проверки на количество запросов в виде строки json-формата,
-// 						если параметр не указан, то в условия для свойства 'times' добавляется пустая коллекция;
-// 	
-// Возвращаемое значение:
-// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
-// 	
-// Пример:
-//	Мок.Когда( Мок.Запрос().Метод("GET") ).Проверить( Мок.Повторений().НеБолее(3) );
-//  Результат = Мок.Проверить().НеМенее(3).НеБолее(3);
-//  Результат = Мок.Проверить( """atLeast"": 3, ""atMost"": 3" );
-//
-Function Повторений( Условие = Undefined ) Export
-	
-	Return Times( Условие );
-	
-EndFunction
-
-#Region Повторения
-
-// Добавляет условие, что количество запросов к MockServer было не менее n раз.
-// 
-// Параметры:
-// 	Повторений - Число - количество повторений запросов;
-// 	
-// Возвращаемое значение:
-// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
-//
-Function НеМенее( Val Повторений ) Export
-	
-	Return AtLeast( Повторений );
-	
-EndFunction
-
-// Добавляет условие, что количество запросов к MockServer было не более n раз.
-// 
-// Параметры:
-// 	Повторений - Число - количество повторений запросов;
-// 	
-// Возвращаемое значение:
-// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
-//
-Function НеБолее( Val Повторений ) Export
-	
-	Return AtMost( Повторений );
-	
-EndFunction
-
-// Добавляет условие, что количество запросов к MockServer было ровно n раз.
-// 
-// Параметры:
-// 	Повторений - Число - количество повторений запросов;
-// 	
-// Возвращаемое значение:
-// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
-//
-Function Точно( Val Повторений ) Export
-	
-	Return Exactly( Повторений );
-	
-EndFunction
-
-// Добавляет условие, что запрос к MockServer был только один раз.
-// 	
-// Возвращаемое значение:
-// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
-//
-Function Однократно() Export
-	
-	Return Once();
-	
-EndFunction
-
-// Добавляет условие, что количество запросов к MockServer было от n до m раз.
-// 
-// Параметры:
-// 	От - Число - не менее n раз;
-// 	До - Число - не более m раз;
-// 	
-// Возвращаемое значение:
-// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
-//
-Function Между( Val От, Val До ) Export
-	
-	Return Between( От, До );
-	
-EndFunction
-
-#EndRegion
-
-#EndRegion
-
-#Region Терминальные
-
-Procedure Сбросить() Export
-	
-	Reset();
-	
-EndProcedure
-
-Procedure Ответить( Объект = Undefined ) Export
-	
-	Respond( Объект );
-	
-EndProcedure
-
-// Проверяет наличие отправленного на сервер запроса (терминальная операция).
-// 
-// Параметры:
-// 	Объект - ОбработкаОбъект.MockServerClient - объект с предварительно установленными условиями; 
-//
-// Пример:
-//	Мок.Когда( Мок.Запрос().Метод("GET") ).Проверить( Мок.Повторений().НеБолее(3) );
-//	Мок.Проверить( Мок.Повторений().НеБолее(3) );
-//	Мок.Проверить( Мок.Повторений("""atMost"": 3") );
-//
-Procedure Проверить( Объект = Undefined ) Export
-	
-	Verify( Объект );
-	
-EndProcedure
-
-#Region Условия
-
-Function Заголовки( Заголовки = Undefined ) Export
-	
-	Return Headers( Заголовки );
-	
-EndFunction
-
-Function Заголовок( Ключ, Значение ) Export
-	
-	Return WithHeader( Ключ, Значение );
-	
-EndFunction
-
-Function Метод( Метод ) Export
-	
-	Return WithMethod( Метод );
-	
-EndFunction
-
-Function Путь( Путь ) Export
-	
-	Return WithPath( Путь );
-	
-EndFunction
-
-#EndRegion
-
-// Возвращает результат выполнения PUT-метода для последней терминальной операции (действия).
-// 
-// Возвращаемое значение:
-// 	Булево - Истина - операция выполнена успешно, иначе - Ложь;
-//
-Function Успешно() Export
-	
-	Return IsOk();
-	
-EndFunction
-
-#Region Действия
-
-Function Тело( Тело ) Export
-	
-	Return WithBody( Тело );
-	
-EndFunction
-
-Function КодОтвета( КодОтвета ) Export
-	
-	Return WithStatusCode( КодОтвета );
-	
-EndFunction
-
-Function Причина( Причина ) Export
-	
-	Return WithReasonPhrase( Причина );
-	
-EndFunction
-
-#EndRegion
-
-#EndRegion
-
-#EndRegion
-
 #Region En
 	
 #Region Intermediate
@@ -291,36 +74,87 @@ Function When( Val What ) Export
 	
 EndFunction
 
-Function Request( Val Self = Undefined ) Export
+// Prepares a set of request properties in "httpRequest" node.
+// 
+// Parameters:
+// 	Request - String - a request properties in json-format string;
+//          - Undefined - an empty collection will be added to the conditions collection for the 'httpRequest' node;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object with a new collection of properties;
+//
+// Example:
+//	Mock.When( Mock.Request().WithPath("/фуу/foo") ).Respond( Mock.Response().WithBody("some_response_body") );
+//	Mock.When( Mock.Request("""method"": ""GET""") ).Respond( Mock.Response().WithBody("some_response_body") );
+//
+Function Request( Val Request = Undefined ) Export
 
 	ThisObject.Json = "";
 	ThisObject.CurrentStage = "httpRequest";
 	
-	FillConstructorRootPropertyByValueType( "httpRequest", Self );
+	FillConstructorRootPropertyByValueType( "httpRequest", Request );
 
 	Return ThisObject;
 	
 EndFunction
 
-Function Response( Val Self = Undefined  ) Export
+// Prepares a set of response properties in "httpResponse" node.
+// 
+// Parameters:
+// 	Response - String - a response properties in json-format string;
+//           - Undefined - an empty collection will be added to the conditions collection for the 'httpResponse' node;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object with a new collection of properties;
+//
+// Example:
+//	Mock.When( Mock.Request().WithPath("/фуу/foo") ).Respond( Mock.Response().WithBody("some_response_body") );
+//	Mock.When( Mock.Request().WithPath("/фуу/foo") ).Respond( Mock.Response("""statusCode"": 200 ") );
+//
+Function Response( Val Response = Undefined  ) Export
 	
 	ThisObject.Json = "";
 	ThisObject.CurrentStage = "httpResponse";
 	
-	FillConstructorRootPropertyByValueType( "httpResponse", Self );
+	FillConstructorRootPropertyByValueType( "httpResponse", Response );
 	
 	Return ThisObject;
 	
 EndFunction
 
-// Sets condition that a request has been received by MockServer a specific number of time.
+// Prepares a set of OpenAPI properties in "httpResponse" node.
+// 
+// Parameters:
+// 	OpenAPI - String - OpenAPI properties in json-format string;
+//           - Undefined - an empty collection will be added to the conditions collection for the 'httpResponse' node;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object with a new collection of properties;
+//
+// Example:
+//	Mock.When(
+//			Mock.OpenAPI()
+//				.WithSource("http://example.com/openapi_petstore_example.json")
+//				.WithOperationId("some_id")
+//		).Verify(
+//			Mock.Times()
+//				.Once()
+//		);
+//
+Function OpenAPI( Val OpenAPI = Undefined ) Export
+	
+	Return Request( OpenAPI );
+	
+EndFunction
+
+// Sets conditions that a requests has been received by MockServer a specific number of time.
 // 
 // Parameters:
 // 	Condition - String - a conditions in json-format string;
-// 						an empty collection for 'times'-property is added to the conditions collection,
-// 						if the parameter is not specified
+//            - Undefined - an empty collection will be added to the conditions collection for the 'times' node;
+//
 // Returns:
-// 	DataProcessorObject.MockServerClient - instance of mock-object;
+// 	DataProcessorObject.MockServerClient - instance of mock-object with a new collection of properties;
 // 	
 // Example:
 //	Mock.When( Mock.Request().WithMethod("GET") ).Verify( Mock.Times().AtMost(3) );
@@ -340,11 +174,11 @@ EndFunction
 
 #Region Times
 
-// Add condition that a request has been received by MockServer at least n-times.
-// 
+// Adds  condition that a request has been received by MockServer at least n-times.
+//
 // Parameters:
 // 	Count - Number - n-times;
-// 	
+//
 // Returns:
 // 	DataProcessorObject.MockServerClient - instance of mock-object;
 //
@@ -358,11 +192,11 @@ Function AtLeast( Val Count ) Export
 	
 EndFunction
 
-// Add condition that a request has been received by MockServer at most n-times.
-// 
+// Adds condition that a request has been received by MockServer at most n-times.
+//
 // Parameters:
 // 	Count - Number - number of times;
-// 	
+//
 // Returns:
 // 	DataProcessorObject.MockServerClient - instance of mock-object;
 //
@@ -376,11 +210,11 @@ Function AtMost( Val Count ) Export
 	
 EndFunction
 
-// Add condition that a request has been received by MockServer exactly n-times.
-// 
+// Adds condition that a request has been received by MockServer exactly n-times.
+//
 // Parameters:
 // 	Count - Number - number of times;
-// 	
+//
 // Returns:
 // 	DataProcessorObject.MockServerClient - instance of mock-object;
 //
@@ -388,14 +222,14 @@ Function Exactly( Val Count ) Export
 	
 	CheckObjectPropertiesForMethod();
 
-	AddConstructorStageProperty( "atLeast", Count );	
+	AddConstructorStageProperty( "atLeast", Count );
 	AddConstructorStageProperty( "atMost", Count );
 	
 	Return ThisObject;
 	
 EndFunction
 
-// Add condition that a request has been received by MockServer only once.
+// Adds condition that a request has been received by MockServer only once.
 // 
 // Returns:
 // 	DataProcessorObject.MockServerClient - instance of mock-object;
@@ -411,12 +245,12 @@ Function Once() Export
 	
 EndFunction
 
-// Add condition that a request has been received by MockServer between n and m times.
-// 
+// Adds condition that a request has been received by MockServer between n and m times.
+//
 // Parameters:
 // 	AtLeast - Number - at least n-times;
 // 	AtMost - Number - at most m-times;
-// 	
+//
 // Returns:
 // 	DataProcessorObject.MockServerClient - instance of mock-object;
 //
@@ -424,7 +258,7 @@ Function Between( Val AtLeast, Val AtMost ) Export
 	
 	CheckObjectPropertiesForMethod();
 
-	AddConstructorStageProperty( "atLeast", AtLeast );	
+	AddConstructorStageProperty( "atLeast", AtLeast );
 	AddConstructorStageProperty( "atMost", AtMost );
 	
 	Return ThisObject;
@@ -510,6 +344,48 @@ Procedure Verify( Val Self = Undefined ) Export
 		DoAction( "verify" );
 		
 		If ( HTTPStatusCodesClientServerCached.IsAccepted(ThisObject.MockServerResponse.КодСостояния) ) Then
+			
+			ThisObject.IsActionOk = True;
+			ThisObject.MockServerResponse = Undefined;
+		
+		Else
+			
+			ThisObject.MockServerResponse = MockServerClientError( ThisObject.MockServerResponse.КодСостояния );
+
+		EndIf;
+		
+	Except
+		
+		ThisObject.MockServerResponse = MockServerError( DetailErrorDescription(ErrorInfo()) );
+		
+	EndTry;
+	
+EndProcedure
+
+// Sets the expectations according to the OpenAPI specification (terminal operation).
+// 
+// Parameters:
+// 	Source - String - the path to the OpenAPI document or the data itself in accordance with the OpenAPI specification;
+// 	Operations - String - operation id and response status code for the selected operation as a json-format string;
+//
+// Example:
+//  Mock.OpenAPIExpectation( "file:/Users/me/openapi.json" );
+//  Mock.OpenAPIExpectation( "http://example.com/mock/openapi.json", """some_operation_id"": ""200""" );
+//  Mock.OpenAPIExpectation( "---\n""
+//        + """openapi: 3.0.0\n"""
+//        + """info:\n"""
+//		...
+//        + """...OpenAPI specification here""" " );	
+//
+Procedure OpenAPIExpectation( Val Source, Val Operations = "" ) Export
+	
+	GenerateOpenApiJson( Source, Operations );
+	
+	Try
+
+		DoAction( "openapi" );
+		
+		If ( HTTPStatusCodesClientServerCached.IsCreated(ThisObject.MockServerResponse.КодСостояния) ) Then
 			
 			ThisObject.IsActionOk = True;
 			ThisObject.MockServerResponse = Undefined;
@@ -632,6 +508,393 @@ Function WithReasonPhrase( Val ReasonPhrase ) Export
 	AddConstructorStageProperty( "reasonPhrase", ReasonPhrase );
 
 	Return ThisObject;
+	
+EndFunction
+
+#EndRegion
+
+#Region OpenAPI
+
+// Adds the "specUrlOrPayload" property describing the data source or the data itself in OpenAPI format.
+// 
+// Parameters:
+// 	Source - String - the path to the OpenAPI document or the data itself in accordance with the OpenAPI specification;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object with added property;
+//
+// Example:
+//  
+// 	Mock.When(
+//		Mock.OpenAPI()
+//			.WithSource("https://example.com/openapi.json")
+//	).Verify(
+//		Mock.Times()
+//			.AtLeast(2)
+//	);
+//
+//  Result = Mock.OpenAPI().WithSource( "file:/Users/me/openapi.json" );
+//
+Function WithSource( Val Source ) Export
+	
+	CheckObjectPropertiesForMethod();
+	
+	AddConstructorStageProperty( "specUrlOrPayload", Source );
+	
+	Return ThisObject;
+	
+EndFunction
+
+// Adds the "operationId" property that specifies which operations of OpenAPI are included.
+// 
+// Parameters:
+// 	OperationId - String - the operation in the OpenAPI specification;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object with added property;
+//
+// Example:
+//  
+// 	Mock.When(
+//		Mock.OpenAPI()
+//			.WithSource("https://example.com/openapi.json")
+//			.WithOperationId("listPets")
+//	).Verify(
+//		Mock.Times()
+//			.AtLeast(2)
+//	);
+//
+//  Result = Mock.OpenAPI().WithSource( "file:/Users/me/openapi.json" ).WithOperationId("listPets");
+//
+Function WithOperationId( Val OperationId ) Export
+	
+	CheckObjectPropertiesForMethod();
+	
+	AddConstructorStageProperty( "operationId", OperationId );
+	
+	Return ThisObject;
+	
+EndFunction
+
+#EndRegion
+
+#EndRegion
+
+#Region Ru
+
+#Region Промежуточные
+
+Function Сервер( URL, Port = Undefined ) Export
+	
+	Return Server( URL, Port );
+	
+EndFunction
+
+Function Когда( Запрос ) Export
+	
+	Return When( Запрос );
+	
+EndFunction
+
+// Подготавливает коллекцию свойств запроса в узле "httpRequest".
+// 
+// Параметры:
+// 	Запрос - Строка - свойства запроса в виде строки в формате json;
+//          - Неопределено - в коллекцию условий для узла 'httpRequest' будет добавлена пустая коллекция;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с новой коллекцией условий;
+//
+// Пример:
+//	Мок.Когда( Мок.Запрос().Путь("/фуу/foo") ).Ответить( Мок.Ответ().Тело("some_response_body") );
+//	Мок.Когда( Мок.Запрос("""method"": ""GET""") ).Ответить( Мок.Ответ().Тело("some_response_body") );
+//
+Function Запрос( Запрос = Undefined ) Export
+	
+	Return Request( Запрос );
+	
+EndFunction
+
+
+// Подготавливает коллекцию свойств ответа в узле "httpResponse".
+// 
+// Параметры:
+// 	Ответ - Строка - свойства ответа в виде строки в формате json;
+//          - Неопределено - в коллекцию условий для узла 'httpResponse' будет добавлена пустая коллекция;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с новой коллекцией условий;
+//
+// Пример:
+//	Мок.Когда( Мок.Запрос().Путь("/фуу/foo") ).Ответить( Мок.Ответ().Тело("some_response_body") );
+//	Мок.Когда( Мок.Запрос().Путь("/фуу/foo") ).Ответить( Мок.Ответ("""body"": ""some_response_body""") );
+//
+Function Ответ( Ответ = Undefined ) Export
+	
+	Return Response( Ответ );
+	
+EndFunction
+
+// Устанавливает условия на проверку количества запросов к MockServer.
+// 
+// Параметры:
+// 	Условие - Строка - условие проверки на количество запросов в виде строки в формате json;
+//          - Неопределено - в коллекцию условий для узла 'times' будет добавлена пустая коллекция;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с новой коллекцией условий;
+//
+// Пример:
+//	Мок.Когда( Мок.Запрос().Метод("GET") ).Проверить( Мок.Повторений().НеБолее(3) );
+//  Результат = Мок.Проверить().НеМенее(3).НеБолее(3);
+//  Результат = Мок.Проверить( """atLeast"": 3, ""atMost"": 3" );
+//
+Function Повторений( Условие = Undefined ) Export
+	
+	Return Times( Условие );
+	
+EndFunction
+
+#Region Повторения
+
+// Добавляет условие, что количество запросов к MockServer было не менее n раз.
+// 
+// Параметры:
+// 	Повторений - Число - количество повторений запросов;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+//
+Function НеМенее( Val Повторений ) Export
+	
+	Return AtLeast( Повторений );
+	
+EndFunction
+
+// Добавляет условие, что количество запросов к MockServer было не более n раз.
+// 
+// Параметры:
+// 	Повторений - Число - количество повторений запросов;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+//
+Function НеБолее( Val Повторений ) Export
+	
+	Return AtMost( Повторений );
+	
+EndFunction
+
+// Добавляет условие, что количество запросов к MockServer было ровно n раз.
+// 
+// Параметры:
+// 	Повторений - Число - количество повторений запросов;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+//
+Function Точно( Val Повторений ) Export
+	
+	Return Exactly( Повторений );
+	
+EndFunction
+
+// Добавляет условие, что запрос к MockServer был только один раз.
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+//
+Function Однократно() Export
+	
+	Return Once();
+	
+EndFunction
+
+// Добавляет условие, что количество запросов к MockServer было от n до m раз.
+// 
+// Параметры:
+// 	От - Число - не менее n раз;
+// 	До - Число - не более m раз;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+//
+Function Между( Val От, Val До ) Export
+	
+	Return Between( От, До );
+	
+EndFunction
+
+#EndRegion
+
+#EndRegion
+
+#Region Терминальные
+
+Procedure Сбросить() Export
+	
+	Reset();
+	
+EndProcedure
+
+Procedure Ответить( Объект = Undefined ) Export
+	
+	Respond( Объект );
+	
+EndProcedure
+
+// Проверяет наличие отправленного на сервер запроса (терминальная операция).
+// 
+// Параметры:
+// 	Объект - ОбработкаОбъект.MockServerClient - объект с предварительно установленными условиями; 
+//
+// Пример:
+//	Мок.Когда( Мок.Запрос().Метод("GET") ).Проверить( Мок.Повторений().НеБолее(3) );
+//	Мок.Проверить( Мок.Повторений().НеБолее(3) );
+//	Мок.Проверить( Мок.Повторений("""atMost"": 3") );
+//
+Procedure Проверить( Объект = Undefined ) Export
+	
+	Verify( Объект );
+	
+EndProcedure
+
+// Устанавливает ожидание в соответствии с OpenAPI спецификацией (терминальная операция). 
+// 
+// Параметры:
+// 	Источник - Строка - путь к документу с описанием данных или сами данные в соответствии с OpenAPI спецификацией;
+// 	Операции - Строка - id операции и код статуса ответа для выбранной операции в виде строки в формате json;
+// 	
+// Пример:
+//  Мок.ОжидатьOpenAPI( "file:/Users/me/openapi.json" );
+//  Мок.ОжидатьOpenAPI( "http://example.com/mock/openapi.json", """some_operation_id"": ""200""" );
+//  Мок.ОжидатьOpenAPI( "---\n""
+//        + """openapi: 3.0.0\n"""
+//        + """info:\n"""
+//		...
+//        + """...OpenAPI specification here""" " );	
+//
+Procedure ОжидатьOpenAPI( Val Источник, Val Операции = "" ) Export
+
+	OpenAPIExpectation( Источник, Операции );
+	
+EndProcedure
+
+#EndRegion
+
+// Возвращает результат выполнения PUT-метода для последней терминальной операции (действия).
+// 
+// Возвращаемое значение:
+// 	Булево - Истина - операция выполнена успешно, иначе - Ложь;
+//
+Function Успешно() Export
+	
+	Return IsOk();
+	
+EndFunction
+
+#Region Условия
+
+Function Заголовки( Заголовки = Undefined ) Export
+	
+	Return Headers( Заголовки );
+	
+EndFunction
+
+Function Заголовок( Ключ, Значение ) Export
+	
+	Return WithHeader( Ключ, Значение );
+	
+EndFunction
+
+Function Метод( Метод ) Export
+	
+	Return WithMethod( Метод );
+	
+EndFunction
+
+Function Путь( Путь ) Export
+	
+	Return WithPath( Путь );
+	
+EndFunction
+
+#EndRegion
+
+#Region Действия
+
+Function Тело( Тело ) Export
+	
+	Return WithBody( Тело );
+	
+EndFunction
+
+Function КодОтвета( КодОтвета ) Export
+	
+	Return WithStatusCode( КодОтвета );
+	
+EndFunction
+
+Function Причина( Причина ) Export
+	
+	Return WithReasonPhrase( Причина );
+	
+EndFunction
+
+#EndRegion
+
+#Region OpenAPI
+
+// Добавляет свойство "specUrlOrPayload", которое описывает источник данных или сами данные в формате OpenAPI.
+// 
+// Параметры:
+// 	Источник - Строка - путь к документу с описанием данных или сами данные в соответствии с OpenAPI спецификацией;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с добавленным свойством;
+//
+// Пример:
+//  
+// 	Мок.Когда(
+//		Мок.OpenAPI()
+//			.Источник("https://example.com/openapi.json")
+//	).Проверить(
+//		Мок.Повторений()
+//			.НеМенее(2)
+//	);
+//
+//  Результат = Мок.OpenAPI().Источник( "file:/Users/me/openapi.json" );
+//
+Function Источник( Источник ) Export
+	
+	Return WithSource( Источник );
+	
+EndFunction
+
+// Добавляет свойство "operationId", указывающее на операцию из спецификации документа OpenAPI;
+// 
+// Параметры:
+// 	Операция - Строка - операция из документа OpenAPI;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с добавленным свойством;
+//
+// Пример:
+//  
+// 	Мок.Когда(
+//		Мок.OpenAPI()
+//			.Источник("https://example.com/openapi.json")
+//			.Операция("listPets")
+//	).Проверить(
+//		Мок.Повторений()
+//			.НеМенее(2)
+//	);
+//
+//  Результат = Мок.OpenAPI().Источник( "file:/Users/me/openapi.json" ).Операция("listPets");
+//
+Function Операция( Операция ) Export
+	
+	Return WithOperationId( Операция );
 	
 EndFunction
 
@@ -775,7 +1038,7 @@ Function MapStringValueToArray( Val Key, Val Value )
 	
 EndFunction
 
-Procedure FillActionTemplate( Result,  Val Key, Val Value )
+Procedure FillActionTemplate( Result, Val Key, Val Value )
 	
 	If ( TypeOf(Key) = Тип("String") AND NOT IsBlankString(Value) ) Then
 		
@@ -783,7 +1046,7 @@ Procedure FillActionTemplate( Result,  Val Key, Val Value )
 	        " ""%1"": {
 	        |%2
 	        | },", Key, Value );
-		
+			
 	EndIf;
 	
 EndProcedure
@@ -797,14 +1060,37 @@ Function JoinJsonParts()
 	FillActionTemplate( Result, "httpRequest", HttpRequestJson);
 	FillActionTemplate( Result, "httpResponse", HttpResponseJson);
 	FillActionTemplate( Result, "times", TimesJson);
-
-	Result = Left( Result, StrLen(Result) - 1 );
 	
+	Result = Left( Result, StrLen(Result) - 1 );
 	Result = Result + Chars.LF + "}";
 	
 	Возврат Result;
 	
 EndFunction
+
+Procedure GenerateOpenApiJson( Val Source, Val Condition = "" )
+	
+	Var Template;
+	Var ConditionTemplate;
+	
+	Template = "{
+		| ""specUrlOrPayload"": ""%1""%2
+	    |}";
+    
+    If ( NOT IsBlankString(Condition) ) Then
+    	
+		ConditionTemplate = ",
+			| ""operationsAndResponses"": {
+			|  %1
+			| }";
+			
+		Condition = StrTemplate( ConditionTemplate, Condition );
+    	
+    EndIf;
+    
+    ThisObject.Json = StrTemplate( Template, Source, Condition );
+
+EndProcedure
 
 Procedure GenerateJson()
 	
@@ -883,7 +1169,9 @@ Procedure RaiseIfCurrentStageEmpty()
 		            |ru = 'Сначала необходимо инициализировать действие.'" );
 	
 	If ( IsBlankString(ThisObject.CurrentStage) ) Then
+		
 		Raise RuntimeError( Message );
+		
 	EndIf;
 	
 EndProcedure

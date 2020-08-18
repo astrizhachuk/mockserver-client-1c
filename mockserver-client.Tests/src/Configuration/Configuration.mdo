@@ -62,5 +62,6 @@
   <commonModules>CommonModule.Tests_Reset</commonModules>
   <commonModules>CommonModule.Tests_Times</commonModules>
   <commonModules>CommonModule.Tests_TimesMethods</commonModules>
+  <commonModules>CommonModule.Tests_OpenAPI</commonModules>
   <commonModules>CommonModule.Tests_CallWrapperRu</commonModules>
 </mdclass:Configuration>

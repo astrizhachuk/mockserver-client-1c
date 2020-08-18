@@ -28,13 +28,30 @@ Procedure ExpectationFail(Context) Export
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
 	// when
-	Mock.Server("localhost", "1080").When("{}").Respond();
+	Mock.Server("localhost", "1080", true).When("{}").Respond();
 	// then
 	Assert.IsFalse(Mock.IsOk());
 
 EndProcedure
 
-// Request Properties Matcher Code Examples
+// @unit-test:integration
+Procedure RequestAndResponseJsonFormat(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Mock.Server("localhost", "1080", true)
+		.When(
+			Mock.Request("""path"": ""/some/path""")
+		).Respond(
+			Mock.Response("""body"": ""some_response_body""")
+		);
+	// then
+	Assert.IsTrue(Mock.IsOk());
+
+EndProcedure
+
+#Region RequestPropertiesMatcher
 
 // match request by path
 // 
@@ -44,7 +61,7 @@ Procedure MatchRequestByPath(Context) Export
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
 	// when
-	Mock.Server("localhost", "1080")
+	Mock.Server("localhost", "1080", true)
 		.When(
 			Mock.Request()
 				.WithPath("/some/path")
@@ -65,7 +82,7 @@ Procedure MatchRequestByQueryParameterWithRegexValue(Context) Export
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
 	// when
-	Mock.Server("localhost", "1080")
+	Mock.Server("localhost", "1080", true)
 		.When(
 			Mock.Request()
 				.WithPath("/some/path")
@@ -80,7 +97,9 @@ Procedure MatchRequestByQueryParameterWithRegexValue(Context) Export
 
 EndProcedure
 
-// Response Action Code Examples
+#EndRegion
+
+#Region ResponseAction
 
 // literal response with status code and reason phrase
 // 
@@ -90,7 +109,7 @@ Procedure LiteralResponseWithStatusCodeAndReasonPhrase(Context) Export
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
 	// when
-	Mock.Server("localhost", "1080")
+	Mock.Server("localhost", "1080", true)
 		.When(
 			Mock.Request()
 				.WithPath("/some/path")
@@ -104,6 +123,41 @@ Procedure LiteralResponseWithStatusCodeAndReasonPhrase(Context) Export
 	Assert.IsTrue(Mock.IsOk());
 
 EndProcedure
+
+#EndRegion
+
+#Region OpenAPI
+
+// @unit-test:integration
+Procedure OpenAPIExpectationOnlySource(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("localhost", "1080", true);
+	// when
+	Mock.OpenAPIExpectation( "https://raw.githubusercontent.com/mock-server/mockserver/master/mockserver-integration-testing/src/main/resources/org/mockserver/mock/openapi_petstore_example.json" );
+	// then
+	Assert.IsTrue(Mock.IsOk());
+	Assert.IsTrue(Mock.Успешно());
+
+EndProcedure
+
+// @unit-test:integration
+Procedure OpenAPIExpectationSourceAndOperations(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("localhost", "1080", true);
+	// when
+	Mock.OpenAPIExpectation( "https://raw.githubusercontent.com/mock-server/mockserver/master/mockserver-integration-testing/src/main/resources/org/mockserver/mock/openapi_petstore_example.json",
+								"""listPets"": ""200""" );
+	// then
+	Assert.IsTrue(Mock.IsOk());
+	Assert.IsTrue(Mock.Успешно());
+
+EndProcedure
+
+#EndRegion
 
 #Region VerifyingRepeatingRequests
 
@@ -241,6 +295,99 @@ Procedure VerifyRequestsReceivedExactlyTwiceFail(Context) Export
 		).Verify(
 			Mock.Times()
 				.Exactly(2)
+		);	
+	// then
+	Assert.IsFalse(Mock.IsOk());
+	Assert.IsFalse(Mock.Успешно());
+
+EndProcedure
+
+// verify requests received at least twice by openapi
+// 
+// @unit-test:integration
+Procedure VerifyRequestsReceivedAtLeastTwiceByOpenAPI(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("localhost", "1080", true);
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	HTTPConnector.Get( "http://localhost:1080/some/another" );
+	// when
+	Mock.When(
+			Mock.OpenAPI()
+				.WithSource("https://raw.githubusercontent.com/mock-server/mockserver/master/mockserver-integration-testing/src/main/resources/org/mockserver/mock/openapi_petstore_example.json")
+		).Verify(
+			Mock.Times()
+				.AtLeast(2)
+		);
+	// then
+	Assert.IsTrue(Mock.IsOk());
+	Assert.IsTrue(Mock.Успешно());
+
+EndProcedure
+
+// @unit-test:integration
+Procedure VerifyRequestsReceivedAtLeastTwiceByOpenAPIFailed(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("localhost", "1080", true);
+	HTTPConnector.Get( "http://localhost:1080/some/path" );
+	// when
+	Mock.When(
+			Mock.OpenAPI()
+				.WithSource("https://raw.githubusercontent.com/mock-server/mockserver/master/mockserver-integration-testing/src/main/resources/org/mockserver/mock/openapi_petstore_example.json")
+		).Verify(
+			Mock.Times()
+				.AtLeast(2)
+		);
+	// then
+	Assert.IsFalse(Mock.IsOk());
+	Assert.IsFalse(Mock.Успешно());
+
+EndProcedure
+
+// verify requests received at exactly once by openapi and operation
+// 
+// @unit-test:integration
+Procedure VerifyRequestsReceivedAtExactlyOnceByOpenAPIAndOperation(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("localhost", "1080", true);
+	HTTPConnector.Get( "http://localhost:1080/pets" );
+	// when
+	Mock.When(
+			Mock.OpenAPI()
+				.WithSource("https://raw.githubusercontent.com/mock-server/mockserver/master/mockserver-integration-testing/src/main/resources/org/mockserver/mock/openapi_petstore_example.json")
+				.WithOperationId("listPets")
+		).Verify(
+			Mock.Times()
+				.Once()
+		);
+	// then
+	Assert.IsTrue(Mock.IsOk());
+	Assert.IsTrue(Mock.Успешно());
+
+EndProcedure
+
+// @unit-test:integration
+Procedure VerifyRequestsReceivedAtExactlyOnceByOpenAPIAndOperationFail(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("localhost", "1080", true);
+	HTTPConnector.Get( "http://localhost:1080/pets" );
+	HTTPConnector.Get( "http://localhost:1080/pets" );
+	// when
+	Mock.When(
+			Mock.OpenAPI()
+				.WithSource("https://raw.githubusercontent.com/mock-server/mockserver/master/mockserver-integration-testing/src/main/resources/org/mockserver/mock/openapi_petstore_example.json")
+				.WithOperationId("listPets")
+		).Verify(
+			Mock.Times()
+				.Once()
 		);	
 	// then
 	Assert.IsFalse(Mock.IsOk());

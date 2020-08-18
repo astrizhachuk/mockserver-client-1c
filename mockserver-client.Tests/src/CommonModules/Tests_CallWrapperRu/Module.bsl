@@ -320,4 +320,71 @@ Procedure Verify(Context) Export
 
 EndProcedure
 
+// @unit-test
+Procedure WithSource(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("this.is.error.url", "1080");
+	// when
+	Mock.When( Mock.OpenAPI().Источник("http://...") ).Verify();
+	// then
+	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
+	Assert.AreEqual(Mock.CurrentStage, "");
+	Assert.IsNotUndefined(Mock.Constructor);
+	Assert.AreEqual(Mock.Json, "{
+								| ""httpRequest"": {
+								|  ""specUrlOrPayload"": ""http://...""
+								| }
+								|}");
+
+	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
+	Assert.IsTrue(IsBlankString(Mock.HttpResponseJson));
+	Assert.IsTrue(IsBlankString(Mock.TimesJson));
+	
+EndProcedure
+
+// @unit-test
+Procedure WithOperationId(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("this.is.error.url", "1080");
+	// when
+	Mock.When( Mock.OpenAPI().Операция("operation_id") ).Verify();
+	// then
+	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
+	Assert.AreEqual(Mock.CurrentStage, "");
+	Assert.IsNotUndefined(Mock.Constructor);
+	Assert.AreEqual(Mock.Json, "{
+								| ""httpRequest"": {
+								|  ""operationId"": ""operation_id""
+								| }
+								|}");
+
+	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
+	Assert.IsTrue(IsBlankString(Mock.HttpResponseJson));
+	Assert.IsTrue(IsBlankString(Mock.TimesJson));
+	
+EndProcedure
+
+// @unit-test
+Procedure OpenAPIExpectation(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("this.is.error.url", "1080");
+	// when
+	Mock.ОжидатьOpenAPI( "http://..." );
+	// then
+	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
+	Assert.AreEqual(Mock.CurrentStage, "");
+	Assert.IsFalse(IsBlankString(Mock.MockServerResponse.ТекстОшибки));
+	
+	Assert.AreEqual(Mock.Json, "{
+							   | ""specUrlOrPayload"": ""http://...""
+							   |}");
+		
+EndProcedure
+
 #EndRegion

@@ -5,7 +5,7 @@
 
 [english](https://github.com/astrizhachuk/mockserver-client-1c/blob/master/README.md)
 
-*[MockServer](https://www.mock-server.com/#what-is-mockserver)-client-1c* создан для [управления](https://www.mock-server.com/mock_server/mockserver_clients.html) MoskServer с помощью 1C:Предприятие 8. *Клиент* поставляется в виде расширения конфигурации и реализован в виде обработки, взаимодействующей с MockServer через [REST API](https://app.swaggerhub.com/apis/jamesdbloom/mock-server-openapi/5.11.x).
+*[MockServer](https://www.mock-server.com/#what-is-mockserver)-client-1c* создан для [управления](https://www.mock-server.com/mock_server/mockserver_clients.html) MoskServer с помощью 1C:Предприятие 8. *Клиент* поставляется в виде расширения конфигурации и реализован в виде обработки, взаимодействующей с MockServer через [REST API](https://app.swaggerhub.com/apis/jamesdbloom/mock-server-openapi/5.11.x). MockServer поддерживает OpenAPI v3 спецификацию как в JSON, так и в YAML форматах.
 
 ## Как это работает
 
@@ -189,6 +189,31 @@ docker-compose -f "docker-compose.yml" up -d --build
     ).Проверить(
       Мок.Повторений()
         .Точно(2)
+    );
+```
+
+#### проверить, что запросы получены не менее двух раз в соответствии с OpenAPI
+
+```text
+  Мок.Когда(
+      Мок.OpenAPI()
+        .Источник("https://raw.githubusercontent.com/mock-server/mockserver/master/mockserver-integration-testing/src/main/resources/org/mockserver/mock/openapi_petstore_example.json")
+    ).Проверить(
+      Мок.Повторений()
+        .НеМенее(2)
+    );
+```
+
+#### проверить, что запрос получен только один раз в соответствии с OpenAPI для некоторой операции
+
+```text
+  Мок.When(
+      Мок.OpenAPI()
+        .Источник("https://raw.githubusercontent.com/mock-server/mockserver/master/mockserver-integration-testing/src/main/resources/org/mockserver/mock/openapi_petstore_example.json")
+        .Операция("listPets")
+    ).Проверить(
+      Мок.Повторений()
+        .Однократно()
     );
 ```
 

@@ -102,3 +102,18 @@ Scenario: Between
 Scenario: Verify
 	And I execute 1C:Enterprise script at server
 	| 'Tests_CallWrapperRu.Verify(Context());' |
+
+@OnServer
+Scenario: WithSource
+	And I execute 1C:Enterprise script at server
+	| 'Tests_CallWrapperRu.WithSource(Context());' |
+
+@OnServer
+Scenario: WithOperationId
+	And I execute 1C:Enterprise script at server
+	| 'Tests_CallWrapperRu.WithOperationId(Context());' |
+
+@OnServer
+Scenario: OpenAPIExpectation
+	And I execute 1C:Enterprise script at server
+	| 'Tests_CallWrapperRu.OpenAPIExpectation(Context());' |

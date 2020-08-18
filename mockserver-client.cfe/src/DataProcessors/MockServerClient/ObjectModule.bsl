@@ -74,50 +74,87 @@ Function When( Val What ) Export
 	
 EndFunction
 
-Function Request( Val Self = Undefined ) Export
+// Prepares a set of request properties in "httpRequest" node.
+// 
+// Parameters:
+// 	Request - String - a request properties in json-format string;
+//          - Undefined - an empty collection will be added to the conditions collection for the 'httpRequest' node;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object with a new collection of properties;
+//
+// Example:
+//	Mock.When( Mock.Request().WithPath("/фуу/foo") ).Respond( Mock.Response().WithBody("some_response_body") );
+//	Mock.When( Mock.Request("""method"": ""GET""") ).Respond( Mock.Response().WithBody("some_response_body") );
+//
+Function Request( Val Request = Undefined ) Export
 
 	ThisObject.Json = "";
 	ThisObject.CurrentStage = "httpRequest";
 	
-	FillConstructorRootPropertyByValueType( "httpRequest", Self );
+	FillConstructorRootPropertyByValueType( "httpRequest", Request );
 
 	Return ThisObject;
 	
 EndFunction
 
-Function Response( Val Self = Undefined  ) Export
+// Prepares a set of response properties in "httpResponse" node.
+// 
+// Parameters:
+// 	Response - String - a response properties in json-format string;
+//           - Undefined - an empty collection will be added to the conditions collection for the 'httpResponse' node;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object with a new collection of properties;
+//
+// Example:
+//	Mock.When( Mock.Request().WithPath("/фуу/foo") ).Respond( Mock.Response().WithBody("some_response_body") );
+//	Mock.When( Mock.Request().WithPath("/фуу/foo") ).Respond( Mock.Response("""statusCode"": 200 ") );
+//
+Function Response( Val Response = Undefined  ) Export
 	
 	ThisObject.Json = "";
 	ThisObject.CurrentStage = "httpResponse";
 	
-	FillConstructorRootPropertyByValueType( "httpResponse", Self );
+	FillConstructorRootPropertyByValueType( "httpResponse", Response );
 	
 	Return ThisObject;
 	
 EndFunction
 
-
-// Description
+// Prepares a set of OpenAPI properties in "httpResponse" node.
 // 
 // Parameters:
-// 	Self - Undefined - Description
+// 	OpenAPI - String - OpenAPI properties in json-format string;
+//           - Undefined - an empty collection will be added to the conditions collection for the 'httpResponse' node;
+// 	
 // Returns:
-// 	DataProcessorObject.MockServerClient - Description
+// 	DataProcessorObject.MockServerClient - instance of mock-object with a new collection of properties;
 //
-Function OpenAPI( Val Self = Undefined ) Export
+// Example:
+//	Mock.When(
+//			Mock.OpenAPI()
+//				.WithSource("http://example.com/openapi_petstore_example.json")
+//				.WithOperationId("some_id")
+//		).Verify(
+//			Mock.Times()
+//				.Once()
+//		);
+//
+Function OpenAPI( Val OpenAPI = Undefined ) Export
 	
-	Return Request(Self);
+	Return Request( OpenAPI );
 	
 EndFunction
 
-// Sets condition that a request has been received by MockServer a specific number of time.
+// Sets conditions that a requests has been received by MockServer a specific number of time.
 // 
 // Parameters:
 // 	Condition - String - a conditions in json-format string;
-// 						an empty collection for 'times'-property is added to the conditions collection,
-// 						if the parameter is not specified
+//            - Undefined - an empty collection will be added to the conditions collection for the 'times' node;
+//
 // Returns:
-// 	DataProcessorObject.MockServerClient - instance of mock-object;
+// 	DataProcessorObject.MockServerClient - instance of mock-object with a new collection of properties;
 // 	
 // Example:
 //	Mock.When( Mock.Request().WithMethod("GET") ).Verify( Mock.Times().AtMost(3) );
@@ -518,26 +555,53 @@ Function Когда( Запрос ) Export
 	
 EndFunction
 
-Function Запрос( ЗапросJson = Undefined ) Export
+// Подготавливает коллекцию свойств запроса в узле "httpRequest".
+// 
+// Параметры:
+// 	Запрос - Строка - свойства запроса в виде строки в формате json;
+//          - Неопределено - в коллекцию условий для узла 'httpRequest' будет добавлена пустая коллекция;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с новой коллекцией условий;
+//
+// Пример:
+//	Мок.Когда( Мок.Запрос().Путь("/фуу/foo") ).Ответить( Мок.Ответ().Тело("some_response_body") );
+//	Мок.Когда( Мок.Запрос("""method"": ""GET""") ).Ответить( Мок.Ответ().Тело("some_response_body") );
+//
+Function Запрос( Запрос = Undefined ) Export
 	
-	Return Request( ЗапросJson );
+	Return Request( Запрос );
 	
 EndFunction
 
-Function Ответ( ОтветJson = Undefined ) Export
+
+// Подготавливает коллекцию свойств ответа в узле "httpResponse".
+// 
+// Параметры:
+// 	Ответ - Строка - свойства ответа в виде строки в формате json;
+//          - Неопределено - в коллекцию условий для узла 'httpResponse' будет добавлена пустая коллекция;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с новой коллекцией условий;
+//
+// Пример:
+//	Мок.Когда( Мок.Запрос().Путь("/фуу/foo") ).Ответить( Мок.Ответ().Тело("some_response_body") );
+//	Мок.Когда( Мок.Запрос().Путь("/фуу/foo") ).Ответить( Мок.Ответ("""body"": ""some_response_body""") );
+//
+Function Ответ( Ответ = Undefined ) Export
 	
-	Return Response( ОтветJson );
+	Return Response( Ответ );
 	
 EndFunction
 
 // Устанавливает условия на проверку количества запросов к MockServer.
 // 
 // Параметры:
-// 	Условие - Строка - (необязательно) условие проверки на количество запросов в виде строки json-формата;
-// 						если параметр не указан, то в условия для свойства 'times' добавляется пустая коллекция;
+// 	Условие - Строка - условие проверки на количество запросов в виде строки в формате json;
+//          - Неопределено - в коллекцию условий для узла 'times' будет добавлена пустая коллекция;
 // 	
 // Возвращаемое значение:
-// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с новой коллекцией условий;
 //
 // Пример:
 //	Мок.Когда( Мок.Запрос().Метод("GET") ).Проверить( Мок.Повторений().НеБолее(3) );
@@ -658,7 +722,7 @@ EndProcedure
 // 
 // Параметры:
 // 	Источник - Строка - путь к документу с описанием данных или сами данные в соответствии с OpenAPI спецификацией;
-// 	Операции - Строка - id операции и код статуса ответа для выбранной операции в виде строки json-формата;
+// 	Операции - Строка - id операции и код статуса ответа для выбранной операции в виде строки в формате json;
 // 	
 // Пример:
 //  Мок.ОжидатьOpenAPI( "file:/Users/me/openapi.json" );
@@ -674,6 +738,19 @@ Procedure ОжидатьOpenAPI( Val Источник, Val Операции = ""
 	OpenAPIExpectation( Источник, Операции );
 	
 EndProcedure
+
+#EndRegion
+
+// Возвращает результат выполнения PUT-метода для последней терминальной операции (действия).
+// 
+// Возвращаемое значение:
+// 	Булево - Истина - операция выполнена успешно, иначе - Ложь;
+//
+Function Успешно() Export
+	
+	Return IsOk();
+	
+EndFunction
 
 #Region Условия
 
@@ -703,17 +780,6 @@ EndFunction
 
 #EndRegion
 
-// Возвращает результат выполнения PUT-метода для последней терминальной операции (действия).
-// 
-// Возвращаемое значение:
-// 	Булево - Истина - операция выполнена успешно, иначе - Ложь;
-//
-Function Успешно() Export
-	
-	Return IsOk();
-	
-EndFunction
-
 #Region Действия
 
 Function Тело( Тело ) Export
@@ -733,8 +799,6 @@ Function Причина( Причина ) Export
 	Return WithReasonPhrase( Причина );
 	
 EndFunction
-
-#EndRegion
 
 #EndRegion
 

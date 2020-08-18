@@ -207,7 +207,7 @@ docker-compose -f "docker-compose.yml" up -d --build
 #### проверить, что запрос получен только один раз в соответствии с OpenAPI для некоторой операции
 
 ```text
-  Мок.When(
+  Мок.Когда(
       Мок.OpenAPI()
         .Источник("https://raw.githubusercontent.com/mock-server/mockserver/master/mockserver-integration-testing/src/main/resources/org/mockserver/mock/openapi_petstore_example.json")
         .Операция("listPets")

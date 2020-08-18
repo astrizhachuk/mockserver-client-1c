@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // 
 // Copyright © 2020 Alexander Strizhachuk
-// version: 0.1.2
+// version: 0.1.3
 
 #If Server Or ThickClientOrdinaryApplication Or ExternalConnection Then
 

@@ -96,7 +96,15 @@ Function Response( Val Self = Undefined  ) Export
 	
 EndFunction
 
-Function OpenAPI( Val Self = Undefined  ) Export
+
+// Description
+// 
+// Parameters:
+// 	Self - Undefined - Description
+// Returns:
+// 	DataProcessorObject.MockServerClient - Description
+//
+Function OpenAPI( Val Self = Undefined ) Export
 	
 	Return Request(Self);
 	
@@ -317,9 +325,24 @@ Procedure Verify( Val Self = Undefined ) Export
 	
 EndProcedure
 
-Procedure OpenAPIExpectation( Val Source, Val Condition = "" ) Export
+// Sets the expectations according to the OpenAPI specification (terminal operation).
+// 
+// Parameters:
+// 	Source - String - the path to the OpenAPI document or the data itself in accordance with the OpenAPI specification;
+// 	Operations - String - operation id and response status code for the selected operation as a json-format string;
+//
+// Example:
+//  Mock.OpenAPIExpectation( "file:/Users/me/openapi.json" );
+//  Mock.OpenAPIExpectation( "http://example.com/mock/openapi.json", """some_operation_id"": ""200""" );
+//  Mock.OpenAPIExpectation( "---\n""
+//        + """openapi: 3.0.0\n"""
+//        + """info:\n"""
+//		...
+//        + """...OpenAPI specification here""" " );	
+//
+Procedure OpenAPIExpectation( Val Source, Val Operations = "" ) Export
 	
-	GenerateOpenApiJson( Source, Condition );
+	GenerateOpenApiJson( Source, Operations );
 	
 	Try
 		
@@ -510,7 +533,7 @@ EndFunction
 // Устанавливает условия на проверку количества запросов к MockServer.
 // 
 // Параметры:
-// 	Условие - Строка - (необязательно) условие проверки на количество запросов в виде строки json-формата,
+// 	Условие - Строка - (необязательно) условие проверки на количество запросов в виде строки json-формата;
 // 						если параметр не указан, то в условия для свойства 'times' добавляется пустая коллекция;
 // 	
 // Возвращаемое значение:
@@ -628,6 +651,27 @@ EndProcedure
 Procedure Проверить( Объект = Undefined ) Export
 	
 	Verify( Объект );
+	
+EndProcedure
+
+// Устанавливает ожидание в соответствии с OpenAPI спецификацией (терминальная операция). 
+// 
+// Параметры:
+// 	Источник - Строка - путь к документу с описанием данных или сами данные в соответствии с OpenAPI спецификацией;
+// 	Операции - Строка - id операции и код статуса ответа для выбранной операции в виде строки json-формата;
+// 	
+// Пример:
+//  Мок.ОжидатьOpenAPI( "file:/Users/me/openapi.json" );
+//  Мок.ОжидатьOpenAPI( "http://example.com/mock/openapi.json", """some_operation_id"": ""200""" );
+//  Мок.ОжидатьOpenAPI( "---\n""
+//        + """openapi: 3.0.0\n"""
+//        + """info:\n"""
+//		...
+//        + """...OpenAPI specification here""" " );	
+//
+Procedure ОжидатьOpenAPI( Val Источник, Val Операции = "" ) Export
+
+	OpenAPIExpectation( Источник, Операции );
 	
 EndProcedure
 

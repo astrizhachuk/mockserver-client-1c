@@ -29,6 +29,16 @@ Scenario: LiteralResponseWithStatusCodeAndReasonPhrase
 	| 'Tests_Integration.LiteralResponseWithStatusCodeAndReasonPhrase(Context());' |
 
 @OnServer
+Scenario: OpenAPIExpectationOnlySource
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.OpenAPIExpectationOnlySource(Context());' |
+
+@OnServer
+Scenario: OpenAPIExpectationSourceAndOperations
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.OpenAPIExpectationSourceAndOperations(Context());' |
+
+@OnServer
 Scenario: VerifyRequestsReceivedAtLeastTwice
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Integration.VerifyRequestsReceivedAtLeastTwice(Context());' |

@@ -320,4 +320,23 @@ Procedure Verify(Context) Export
 
 EndProcedure
 
+// @unit-test
+Procedure OpenAPIExpectation(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("this.is.error.url", "1080");
+	// when
+	Mock.ОжидатьOpenAPI( "http://..." );
+	// then
+	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
+	Assert.AreEqual(Mock.CurrentStage, "");
+	Assert.IsFalse(IsBlankString(Mock.MockServerResponse.ТекстОшибки));
+	
+	Assert.AreEqual(Mock.Json, "{
+							   | ""specUrlOrPayload"": ""http://...""
+							   |}");
+		
+EndProcedure
+
 #EndRegion

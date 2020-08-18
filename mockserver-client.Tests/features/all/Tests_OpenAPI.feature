@@ -9,11 +9,16 @@ Feature: mockserver-client.Tests.Tests_OpenAPI
 	That I can guarantee the execution of the method
 
 @OnServer
-Scenario: OpenAPIOnlySource
+Scenario: OpenAPIExpectationOnlySource
 	And I execute 1C:Enterprise script at server
-	| 'Tests_OpenAPI.OpenAPIOnlySource(Context());' |
+	| 'Tests_OpenAPI.OpenAPIExpectationOnlySource(Context());' |
 
 @OnServer
-Scenario: OpenAPISourceAndOperations
+Scenario: OpenAPIExpectationSourceAndOperations
 	And I execute 1C:Enterprise script at server
-	| 'Tests_OpenAPI.OpenAPISourceAndOperations(Context());' |
+	| 'Tests_OpenAPI.OpenAPIExpectationSourceAndOperations(Context());' |
+
+@OnServer
+Scenario: OpenAPIExpectationSourceAndOperations2
+	And I execute 1C:Enterprise script at server
+	| 'Tests_OpenAPI.OpenAPIExpectationSourceAndOperations2(Context());' |

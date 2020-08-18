@@ -34,7 +34,7 @@ Procedure ExpectationFail(Context) Export
 
 EndProcedure
 
-// Request Properties Matcher Code Examples
+#Region RequestPropertiesMatcher
 
 // match request by path
 // 
@@ -80,7 +80,9 @@ Procedure MatchRequestByQueryParameterWithRegexValue(Context) Export
 
 EndProcedure
 
-// Response Action Code Examples
+#EndRegion
+
+#Region ResponseAction
 
 // literal response with status code and reason phrase
 // 
@@ -105,9 +107,11 @@ Procedure LiteralResponseWithStatusCodeAndReasonPhrase(Context) Export
 
 EndProcedure
 
+#EndRegion
+
 #Region OpenAPI
 
-// @unit-testv
+// @unit-test:integration
 Procedure OpenAPIExpectationOnlySource(Context) Export
 
 	// given
@@ -121,7 +125,7 @@ Procedure OpenAPIExpectationOnlySource(Context) Export
 
 EndProcedure
 
-// @unit-test
+// @unit-test:integration
 Procedure OpenAPIExpectationSourceAndOperations(Context) Export
 
 	// given

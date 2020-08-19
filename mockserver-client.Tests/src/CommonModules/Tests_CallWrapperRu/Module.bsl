@@ -6,7 +6,7 @@ Procedure Server(Context) Export
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
 	// when
-	Result = Mock.Сервер("example.org", "1090");
+	Result = Mock.Сервер("example.org", "1090", Ложь);
 	// then	
 	Assert.AreEqual(Result.URL, "example.org:1090");
 

@@ -30,10 +30,10 @@
 // 	URL - String - URL;
 // 	Port - String - port;
 // 	Reset - Boolean - true - reset MockServer, otherwise - false (default false);
-// 	
+//
 // Returns:
 // 	DataProcessorObject.MockServerClient - instance of mock-object;
-// 	
+//
 // Example:
 //  Mock = DataProcessors.MockServerClient.Create().Server("http://server");
 //  Mock = DataProcessors.MockServerClient.Create().Server("http://server", "1090");
@@ -75,11 +75,11 @@ Function When( Val What ) Export
 EndFunction
 
 // Prepares a set of request properties in "httpRequest" node.
-// 
+//
 // Parameters:
 // 	Request - String - a request properties in json-format string;
 //          - Undefined - an empty collection will be added to the conditions collection for the 'httpRequest' node;
-// 	
+//
 // Returns:
 // 	DataProcessorObject.MockServerClient - instance of mock-object with a new collection of properties;
 //
@@ -99,11 +99,11 @@ Function Request( Val Request = Undefined ) Export
 EndFunction
 
 // Prepares a set of response properties in "httpResponse" node.
-// 
+//
 // Parameters:
 // 	Response - String - a response properties in json-format string;
 //           - Undefined - an empty collection will be added to the conditions collection for the 'httpResponse' node;
-// 	
+//
 // Returns:
 // 	DataProcessorObject.MockServerClient - instance of mock-object with a new collection of properties;
 //
@@ -127,7 +127,7 @@ EndFunction
 // Parameters:
 // 	OpenAPI - String - OpenAPI properties in json-format string;
 //           - Undefined - an empty collection will be added to the conditions collection for the 'httpResponse' node;
-// 	
+//
 // Returns:
 // 	DataProcessorObject.MockServerClient - instance of mock-object with a new collection of properties;
 //
@@ -148,14 +148,14 @@ Function OpenAPI( Val OpenAPI = Undefined ) Export
 EndFunction
 
 // Sets conditions that a requests has been received by MockServer a specific number of time.
-// 
+//
 // Parameters:
 // 	Condition - String - a conditions in json-format string;
 //            - Undefined - an empty collection will be added to the conditions collection for the 'times' node;
 //
 // Returns:
 // 	DataProcessorObject.MockServerClient - instance of mock-object with a new collection of properties;
-// 	
+//
 // Example:
 //	Mock.When( Mock.Request().WithMethod("GET") ).Verify( Mock.Times().AtMost(3) );
 //  Result = Mock.Times().AtMost(3).AtLeast(3);
@@ -584,9 +584,9 @@ EndFunction
 
 #Region Промежуточные
 
-Function Сервер( URL, Port = Undefined ) Export
+Function Сервер( URL, Port = Undefined, Reset = Undefined ) Export
 	
-	Return Server( URL, Port );
+	Return Server( URL, Port, Reset );
 	
 EndFunction
 

@@ -44,6 +44,11 @@ Scenario: MatchRequestByQueryParameterWithRegexValue
 	| 'Tests_Integration.MatchRequestByQueryParameterWithRegexValue(Context());' |
 
 @OnServer
+Scenario: MatchRequestByHeaders
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.MatchRequestByHeaders(Context());' |
+
+@OnServer
 Scenario: LiteralResponseWithStatusCodeAndReasonPhrase
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Integration.LiteralResponseWithStatusCodeAndReasonPhrase(Context());' |

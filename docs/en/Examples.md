@@ -60,6 +60,22 @@
     );
 ```
 
+### match request by headers
+
+```text
+  Mock.When(
+      Mock.Request()
+        .WithMethod("GET")
+        .WithPath("/some/path")
+        .Headers()
+          .WithHeader("Accept", "application/json")
+          .WithHeader("Accept-Encoding", "gzip, deflate, br")
+    ).Respond(
+      Mock.Response()
+        .WithBody("some_response_body")
+    );
+```
+
 ## Verifying Repeating Requests
 
 ### verify requests received at least twice

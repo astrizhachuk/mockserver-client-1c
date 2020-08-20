@@ -199,7 +199,7 @@ Function AtLeast( Val Count ) Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	AddConstructorStageProperty( "atLeast", Count );
+	AddPropertyToConstructorByCurrentStage( "atLeast", Count );
 	
 	Return ThisObject;
 	
@@ -217,7 +217,7 @@ Function AtMost( Val Count ) Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	AddConstructorStageProperty( "atMost", Count );
+	AddPropertyToConstructorByCurrentStage( "atMost", Count );
 	
 	Return ThisObject;
 	
@@ -235,8 +235,8 @@ Function Exactly( Val Count ) Export
 	
 	CheckObjectPropertiesForMethod();
 
-	AddConstructorStageProperty( "atLeast", Count );
-	AddConstructorStageProperty( "atMost", Count );
+	AddPropertyToConstructorByCurrentStage( "atLeast", Count );
+	AddPropertyToConstructorByCurrentStage( "atMost", Count );
 	
 	Return ThisObject;
 	
@@ -251,8 +251,8 @@ Function Once() Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	AddConstructorStageProperty( "atLeast", 1 );
-	AddConstructorStageProperty( "atMost", 1 );
+	AddPropertyToConstructorByCurrentStage( "atLeast", 1 );
+	AddPropertyToConstructorByCurrentStage( "atMost", 1 );
 	
 	Return ThisObject;
 	
@@ -271,8 +271,8 @@ Function Between( Val AtLeast, Val AtMost ) Export
 	
 	CheckObjectPropertiesForMethod();
 
-	AddConstructorStageProperty( "atLeast", AtLeast );
-	AddConstructorStageProperty( "atMost", AtMost );
+	AddPropertyToConstructorByCurrentStage( "atLeast", AtLeast );
+	AddPropertyToConstructorByCurrentStage( "atMost", AtMost );
 	
 	Return ThisObject;
 	
@@ -467,7 +467,7 @@ Function WithMethod( Val Method ) Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	AddConstructorStageProperty( "method", Method );
+	AddPropertyToConstructorByCurrentStage( "method", Method );
 	
 	Return ThisObject;
 	
@@ -496,7 +496,7 @@ Function WithPath( Val Path ) Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	AddConstructorStageProperty( "path", Path );
+	AddPropertyToConstructorByCurrentStage( "path", Path );
 	
 	Return ThisObject;
 	
@@ -531,12 +531,51 @@ Function WithQueryStringParameter( Val Key, Val Value ) Export
 	CheckObjectPropertiesForMethod();
 	
 	NewQueryParameters = MapStringValueToArray( Key, Value );
-	InsertConstructorStageProperty( "queryStringParameters", NewQueryParameters );
+	AddMultipleValuesPropertyToConstructorByCurrentStage( "queryStringParameters", NewQueryParameters );
 
 	Return ThisObject;
 
 EndFunction
 
+// Prepares a set of headers properties in "headers" node.
+//
+// Parameters:
+// 	Headers - Map - a headers (key = header, value = array of strings);
+//          - Undefined - an empty collection will be added to the 'header' node;
+//
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object with added property;
+//
+// Example:
+// 
+// 	1:
+// 	
+//  Mock.When(
+//      Mock.Request()
+//        .WithMethod("GET")
+//        .WithPath("/some/path")
+//        .Headers()
+//          .WithHeader("Accept", "application/json")
+//          .WithHeader("Accept-Encoding", "gzip, deflate, br")
+//    ).Respond(
+//      Mock.Response()
+//        .WithBody("some_response_body")
+//    );
+//
+//	2:
+//	
+//	Header_1 = New Array();
+//	Header_1.Add("11");
+//	Header_1.Add("12");
+//	Header_2 = New Array();
+//	Header_2.Add("21");
+//	Header_2.Add("22");
+//	Headers = New Map();
+//	Headers.Insert("Header_1", Header_1);
+//	Headers.Insert("Header_2", Header_2);
+//	
+//	Mock.When( Mock.Request().Headers(Headers) ).Respond();
+//
 Function Headers( Val Headers = Undefined ) Export
 	
 	CheckObjectPropertiesForMethod();
@@ -556,7 +595,7 @@ Function WithHeader( Val Key, Val Value ) Export
 	CheckObjectPropertiesForMethod();
 	
 	NewHeader = MapStringValueToArray( Key, Value );
-	InsertConstructorStageProperty( "headers", NewHeader );
+	AddMultipleValuesPropertyToConstructorByCurrentStage( "headers", NewHeader );
 
 	Return ThisObject;
 	
@@ -566,7 +605,7 @@ Function WithBody( Val Body ) Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	AddConstructorStageProperty( "body", Body );
+	AddPropertyToConstructorByCurrentStage( "body", Body );
 
 	Return ThisObject;
 	
@@ -576,7 +615,7 @@ Function WithStatusCode( Val StatusCode ) Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	AddConstructorStageProperty( "statusCode", StatusCode );
+	AddPropertyToConstructorByCurrentStage( "statusCode", StatusCode );
 
 	Return ThisObject;
 	
@@ -586,7 +625,7 @@ Function WithReasonPhrase( Val ReasonPhrase ) Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	AddConstructorStageProperty( "reasonPhrase", ReasonPhrase );
+	AddPropertyToConstructorByCurrentStage( "reasonPhrase", ReasonPhrase );
 
 	Return ThisObject;
 	
@@ -618,7 +657,7 @@ Function WithSource( Val Source ) Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	AddConstructorStageProperty( "specUrlOrPayload", Source );
+	AddPropertyToConstructorByCurrentStage( "specUrlOrPayload", Source );
 	
 	Return ThisObject;
 	
@@ -649,7 +688,7 @@ Function WithOperationId( Val OperationId ) Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	AddConstructorStageProperty( "operationId", OperationId );
+	AddPropertyToConstructorByCurrentStage( "operationId", OperationId );
 	
 	Return ThisObject;
 	
@@ -993,6 +1032,45 @@ Function ПараметрСтрокиЗапроса( Ключ, Значение 
 	
 EndFunction
 
+// Добавляет коллекцию свойств в узле "headers" или создает пустую коллекцию.
+//
+// Параметры:
+// 	Заголовки - Соответствие - коллекция заголовков (Ключ = имя заголовка, Значение = массив строк);
+//          - Неопределено - в коллекцию условий для узла 'headers' будет добавлена пустая коллекция;
+//
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с добавленным свойством;
+//
+// Пример:
+// 
+// 	Вариант 1:
+// 	
+//  Мок.Когда(
+//      Мок.Запрос()
+//        .Метод("GET")
+//        .Путь("/some/path")
+//        .Заголовки()
+//          .Заголовок("Accept", "application/json")
+//          .Заголовок("Accept-Encoding", "gzip, deflate, br")
+//    ).Ответить(
+//      Мок.Ответ()
+//        .Тело("some_response_body")
+//    );
+//
+//	Вариант 2:
+//	
+//	Заголовок_1 = Новый Массив();
+//	Заголовок_1.Добавить("11");
+//	Заголовок_1.Добавить("12");
+//	Заголовок_2 = Новый Массив();
+//	Заголовок_2.Добавить("21");
+//	Заголовок_2.Добавить("22");
+//	Заголовки = Новый Соответствие();
+//	Заголовки.Вставить("Заголовок_1", Заголовок_1);
+//	Заголовки.Вставить("Заголовок_2", Заголовок_2);
+//	
+//	Мок.Когда( Мок.Запрос().Заголовки(Заголовки) ).Ответить();
+//
 Function Заголовки( Заголовки = Undefined ) Export
 	
 	Return Headers( Заголовки );
@@ -1130,7 +1208,7 @@ Function ConstructorRootProperty( Val Key )
 	
 EndFunction
 
-Procedure AddConstructorStageProperty( Val Key, Val Value )
+Procedure AddPropertyToConstructorByCurrentStage( Val Key, Val Value )
 	
 	Var ConstructorRootProperty;
 	
@@ -1139,7 +1217,7 @@ Procedure AddConstructorStageProperty( Val Key, Val Value )
 	
 EndProcedure
 
-Процедура InsertConstructorStageProperty( Val Key, Val Value )
+Процедура AddMultipleValuesPropertyToConstructorByCurrentStage( Val Key, Val Value )
 	
 	Var Result;
 	

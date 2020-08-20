@@ -155,6 +155,31 @@ Procedure MatchRequestByQueryParameterWithRegexValue(Context) Export
 
 EndProcedure
 
+// match request by headers
+// 
+// @unit-test:integration
+Procedure MatchRequestByHeaders(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Mock.Server("localhost", "1080", true)
+		.When(
+			Mock.Request()
+				.WithMethod("GET")
+				.WithPath("/some/path")
+				.Headers()
+					.WithHeader("Accept", "application/json")
+					.WithHeader("Accept-Encoding", "gzip, deflate, br")
+		).Respond(
+			Mock.Response()
+				.WithBody("some_response_body")
+		);
+	// then
+	Assert.IsTrue(Mock.IsOk());
+
+EndProcedure
+
 #EndRegion
 
 #Region ResponseAction

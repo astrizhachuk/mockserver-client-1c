@@ -445,10 +445,10 @@ EndFunction
 #Region Properties
 
 // Adds the "method" property.
+// See also: https://www.mock-server.com/mock_server/creating_expectations.html#request_property_matchers
 // 
 // Parameters:
-// 	Method - String - property matcher
-// 			(see also: https://www.mock-server.com/mock_server/creating_expectations.html#request_property_matchers);
+// 	Method - String - property matcher;
 // 	
 // Returns:
 // 	DataProcessorObject.MockServerClient - instance of mock-object with added property;
@@ -473,6 +473,25 @@ Function WithMethod( Val Method ) Export
 	
 EndFunction
 
+// Adds the "path" property.
+// See also: https://www.mock-server.com/mock_server/creating_expectations.html#request_property_matchers
+// 
+// Parameters:
+// 	Path - String - property matcher;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object with added property;
+//
+// Example:
+//  
+//	Mock.When(
+//		Mock.Request()
+//			.WithMethod("!GET")
+//	).Respond(
+//		Mock.Response()
+//			.WithBody("some_response_body")
+//	);
+//
 Function WithPath( Val Path ) Export
 	
 	CheckObjectPropertiesForMethod();
@@ -483,7 +502,29 @@ Function WithPath( Val Path ) Export
 	
 EndFunction
 
-Function WithQueryStringParameters( Val Key, Val Value ) Export
+// Adds the "queryStringParameters" property.
+// See also: https://www.mock-server.com/mock_server/getting_started.html#request_key_to_multivalue_matchers
+// 
+// Parameters:
+// 	Key - String - key of query parameter;
+// 	Value - String - value of query parameter;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object with added property;
+//
+// Example:
+//  
+//  Mock.When(
+//      Mock.Request()
+//        .WithPath("/some/path")
+//        .WithQueryStringParameter("cartId", "[A-Z0-9\\-]+")
+//        .WithQueryStringParameter("anotherId", "[A-Z0-9\\-]+")
+//    ).Respond(
+//      Mock.Response()
+//        .WithBody("some_response_body")
+//    );
+//
+Function WithQueryStringParameter( Val Key, Val Value ) Export
 	
 	Var NewQueryParameters;
 	
@@ -875,10 +916,10 @@ EndFunction
 #Region Свойства
 
 // Добавляет свойство "method".
+// См. также: https://www.mock-server.com/mock_server/creating_expectations.html#request_property_matchers 
 // 
 // Параметры:
-// 	Метод - Строка - метод, поддерживается сопоставление свойств
-// 			(см. также: https://www.mock-server.com/mock_server/creating_expectations.html#request_property_matchers);
+// 	Метод - Строка - имя метода;
 // 	
 // Возвращаемое значение:
 // 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с добавленным свойством;
@@ -899,15 +940,56 @@ Function Метод( Метод ) Export
 	
 EndFunction
 
+// Добавляет свойство "path".
+// См. также: https://www.mock-server.com/mock_server/creating_expectations.html#request_property_matchers
+// 
+// Параметры:
+// 	Путь - Строка - относительный путь;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с добавленным свойством;
+//
+// Пример:
+//  
+//  Мок.Когда(
+//      Мок.Запрос()
+//        .Путь("/some/path")
+//    ).Ответить(
+//      Мок.Ответ()
+//        .Тело("some_response_body")
+//    );
+//
 Function Путь( Путь ) Export
 	
 	Return WithPath( Путь );
 	
 EndFunction
 
-Function ПараметрыСтрокиЗапроса( Ключ, Значение ) Export
+// Добавляет свойство "queryStringParameters".
+// См. также: https://www.mock-server.com/mock_server/getting_started.html#request_key_to_multivalue_matchers
+// 
+// Параметры:
+// 	Ключ - Строка - ключ параметра строки запроса;
+// 	Значение - Строка - значение параметра строки запроса;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с добавленным свойством;
+//
+// Пример:
+//  
+//  Мок.Когда(
+//      Мок.Запрос()
+//        .Путь("/some/path")
+//        .ПараметрСтрокиЗапроса("cartId", "[A-Z0-9\\-]+")
+//        .ПараметрСтрокиЗапроса("anotherId", "[A-Z0-9\\-]+")
+//    ).Ответить(
+//      Мок.Ответ()
+//        .Тело("some_response_body")
+//    );
+//
+Function ПараметрСтрокиЗапроса( Ключ, Значение ) Export
 	
-	Return WithQueryStringParameters( Ключ, Значение );
+	Return WithQueryStringParameter( Ключ, Значение );
 	
 EndFunction
 

@@ -49,21 +49,7 @@ EndProcedure
 
 Tested!
 
-## Dependencies
-
-The project built with:
-
-1. [1C:Enterprise](https://1c-dn.com) 8.3.16.1502+ (8.3.16 compatibility mode)
-2. [1C:Enterprise Development Tools](https://edt.1c.ru) 2020.4 RC1
-3. [1Unit](https://github.com/DoublesunRUS/ru.capralow.dt.unit.launcher) 0.4.0+
-4. [vanessa-automation](https://github.com/Pr-Mex/vanessa-automation)
-5. [dt.bslls.validator](https://github.com/DoublesunRUS/ru.capralow.dt.bslls.validator)
-6. [BSL Language Server](https://github.com/1c-syntax/bsl-language-server)
-
-Working with HTTP is implemented using the following libraries:
-
-* [HTTPConnector](https://github.com/vbondarevsky/Connector)
-* [HTTPStatusCodes](https://github.com/astrizhachuk/HTTPStatusCodes)
+[Code Examples](https://github.com/astrizhachuk/mockserver-client-1c/blob/master/docs/en/Examples.md)
 
 ## Getting Started
 
@@ -152,137 +138,18 @@ Use method chaining style (fluent interface):
 
 ```
 
-## Examples
+## Dependencies
 
-### Clearing & Resetting Code Examples
+The project built with:
 
-#### reset everything
+1. [1C:Enterprise](https://1c-dn.com) 8.3.16.1502+ (8.3.16 compatibility mode)
+2. [1C:Enterprise Development Tools](https://edt.1c.ru) 2020.4 RC1
+3. [1Unit](https://github.com/DoublesunRUS/ru.capralow.dt.unit.launcher) 0.4.0+
+4. [vanessa-automation](https://github.com/Pr-Mex/vanessa-automation)
+5. [dt.bslls.validator](https://github.com/DoublesunRUS/ru.capralow.dt.bslls.validator)
+6. [BSL Language Server](https://github.com/1c-syntax/bsl-language-server)
 
-```text
-  Mock.Server("http://localhost", "1080").Reset();
-```
+Working with HTTP is implemented using the following libraries:
 
-### Request Properties Matcher Code Examples
-
-#### match request by method regex
-
-```text
-  Mock.When(
-      Mock.Request()
-        .WithMethod("P.*{2,3}")
-    ).Respond(
-      Mock.Response()
-        .WithBody("some_response_body")
-    );
-```
-
-#### match request by not matching method
-
-```text
-  Mock.When(
-      Mock.Request()
-        .WithMethod("!GET")
-    ).Respond(
-      Mock.Response()
-        .WithBody("some_response_body")
-    );
-```
-
-### Verifying Repeating Requests Code Examples
-
-#### verify requests received at least twice
-
-```text
-  Mock.When(
-      Mock.Request()
-        .WithPath("/some/path")
-    ).Verify(
-      Mock.Times()
-        .AtLeast(2)
-    );
-```
-
-#### verify requests received at most twice
-
-```text
-  Mock.When(
-      Mock.Request()
-        .WithPath("/some/path")
-    ).Verify(
-      Mock.Times()
-        .AtMost(2)
-    );
-```
-
-#### verify requests received exactly twice
-
-```text
-  Mock.When(
-      Mock.Request()
-        .WithPath("/some/path")
-    ).Verify(
-      Mock.Times()
-        .Exactly(2)
-    );
-```
-
-#### verify requests received at least twice by openapi
-
-```text
-  Mock.When(
-      Mock.OpenAPI()
-        .WithSource("https://raw.githubusercontent.com/mock-server/mockserver/master/mockserver-integration-testing/src/main/resources/org/mockserver/mock/openapi_petstore_example.json")
-    ).Verify(
-      Mock.Times()
-        .AtLeast(2)
-    );
-```
-
-#### verify requests received at exactly once by openapi and operation
-
-```text
-  Mock.When(
-      Mock.OpenAPI()
-        .WithSource("https://raw.githubusercontent.com/mock-server/mockserver/master/mockserver-integration-testing/src/main/resources/org/mockserver/mock/openapi_petstore_example.json")
-        .WithOperationId("listPets")
-    ).Verify(
-      Mock.Times()
-        .Once()
-    );
-```
-
-#### verify requests received at exactly once
-
-```text
-  Mock.When(
-      Mock.Request()
-        .WithPath("/some/path")
-    ).Verify(
-      Mock.Times()
-        .Once()
-    );
-```
-
-#### verify requests received between n and m times
-
-```text
-  Mock.When(
-      Mock.Request()
-        .WithPath("/some/path")
-    ).Verify(
-      Mock.Times()
-        .Between(2, 3)
-    );
-```
-
-#### verify requests never received
-
-```text
-  Mock.When(
-      Mock.Request()
-        .WithPath("/some/path")
-    ).Verify(
-      Mock.Times()
-        .Exactly(0)
-    );
-```
+* [HTTPConnector](https://github.com/vbondarevsky/Connector)
+* [HTTPStatusCodes](https://github.com/astrizhachuk/HTTPStatusCodes)

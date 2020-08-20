@@ -275,14 +275,14 @@ Procedure WithPathNotEmpty(Context) Export
 							   
 EndProcedure
 
-// @unit-test:dev
-Procedure WithQueryStringParametersNotEmpty(Context) Export
+// @unit-test
+Procedure WithQueryStringParameterNotEmpty(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
 	Mock.Server("this.is.error.url", "1080");
 	// when
-	Mock.When(Mock.Request().WithQueryStringParameters("cartId", "[A-Z0-9\\-]+")).Respond();
+	Mock.When(Mock.Request().WithQueryStringParameter("cartId", "[A-Z0-9\\-]+")).Respond();
 	// then
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
@@ -291,6 +291,37 @@ Procedure WithQueryStringParametersNotEmpty(Context) Export
 							   | ""httpRequest"": {
 							   |  ""queryStringParameters"": {
             				   |   ""cartId"": [
+            				   |    ""[A-Z0-9\\\\-]+""
+            				   |   ]
+        					   |  }
+							   | }
+							   |}");
+							   
+EndProcedure
+
+// @unit-test
+Procedure WithQueryStringParameterTwoParams(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("this.is.error.url", "1080");
+	// when
+	Mock.When(
+		Mock.Request()
+			.WithQueryStringParameter("cartId", "[A-Z0-9\\-]+")
+			.WithQueryStringParameter("anotherId", "[A-Z0-9\\-]+")
+	).Respond();
+	// then
+	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
+	Assert.AreEqual(Mock.CurrentStage, "");
+	Assert.AreEqual(Mock.Constructor["httpRequest"]["queryStringParameters"]["cartId"][0], "[A-Z0-9\\-]+");
+	Assert.AreEqual(Mock.Json, "{
+							   | ""httpRequest"": {
+							   |  ""queryStringParameters"": {
+            				   |   ""cartId"": [
+            				   |    ""[A-Z0-9\\\\-]+""
+            				   |   ],
+            				   |   ""anotherId"": [
             				   |    ""[A-Z0-9\\\\-]+""
             				   |   ]
         					   |  }

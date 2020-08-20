@@ -24,6 +24,11 @@ Scenario: Resetting
 	| 'Tests_Integration.Resetting(Context());' |
 
 @OnServer
+Scenario: MatchRequestByPath
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.MatchRequestByPath(Context());' |
+
+@OnServer
 Scenario: MatchRequestByMethodRegex
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Integration.MatchRequestByMethodRegex(Context());' |
@@ -32,11 +37,6 @@ Scenario: MatchRequestByMethodRegex
 Scenario: MatchRequestByNotMatchingMethod
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Integration.MatchRequestByNotMatchingMethod(Context());' |
-
-@OnServer
-Scenario: MatchRequestByPath
-	And I execute 1C:Enterprise script at server
-	| 'Tests_Integration.MatchRequestByPath(Context());' |
 
 @OnServer
 Scenario: MatchRequestByQueryParameterWithRegexValue

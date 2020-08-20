@@ -49,21 +49,7 @@
 
 Протестировано!
 
-## Зависимости
-
-Проект создан с помощью:
-
-1. [1C:Enterprise](https://1c-dn.com) 8.3.16.1502+ (8.3.16 compatibility mode)
-2. [1C:Enterprise Development Tools](https://edt.1c.ru) 2020.4 RC1
-3. [1Unit](https://github.com/DoublesunRUS/ru.capralow.dt.unit.launcher) 0.4.0+
-4. [vanessa-automation](https://github.com/Pr-Mex/vanessa-automation)
-5. [dt.bslls.validator](https://github.com/DoublesunRUS/ru.capralow.dt.bslls.validator)
-6. [BSL Language Server](https://github.com/1c-syntax/bsl-language-server)
-
-Работа с HTTP реализована с помощью следующих библиотек:
-
-* [HTTPConnector](https://github.com/vbondarevsky/Connector)
-* [HTTPStatusCodes](https://github.com/astrizhachuk/HTTPStatusCodes)
+[Примеры кода](https://github.com/astrizhachuk/mockserver-client-1c/blob/master/docs/ru/Examples.md)
 
 ## Начало работы
 
@@ -152,137 +138,19 @@ docker-compose -f "docker-compose.yml" up -d --build
 
 ```
 
-## Примеры
+## Зависимости
 
-### Сброс и очистка
+Проект создан с помощью:
 
-#### Сбросить все
+1. [1C:Enterprise](https://1c-dn.com) 8.3.16.1502+ (8.3.16 compatibility mode)
+2. [1C:Enterprise Development Tools](https://edt.1c.ru) 2020.4 RC1
+3. [1Unit](https://github.com/DoublesunRUS/ru.capralow.dt.unit.launcher) 0.4.0+
+4. [vanessa-automation](https://github.com/Pr-Mex/vanessa-automation)
+5. [dt.bslls.validator](https://github.com/DoublesunRUS/ru.capralow.dt.bslls.validator)
+6. [BSL Language Server](https://github.com/1c-syntax/bsl-language-server)
 
-```text
-  Мок.Сервер("http://localhost", "1080").Сбросить();
-```
+Работа с HTTP реализована с помощью следующих библиотек:
 
-### Сопоставление свойств запросов
+* [HTTPConnector](https://github.com/vbondarevsky/Connector)
+* [HTTPStatusCodes](https://github.com/astrizhachuk/HTTPStatusCodes)
 
-#### запрос совпадает по методу через регулярные выражения
-
-```text
-  Мок.Когда(
-      Мок.Запрос()
-        .Метод("P.*{2,3}")
-    ).Ответить(
-      Мок.Ответ()
-        .Тело("some_response_body")
-    );
-```
-
-#### запрос совпадает по неподходящему методу
-
-```text
-  Мок.Когда(
-      Мок.Запрос()
-        .Метод("!GET")
-    ).Ответить(
-      Мок.Ответ()
-        .Тело("some_response_body")
-    );
-```
-
-### Проверка повторений запросов
-
-#### проверить, что запросы получены не менее двух раз
-
-```text
-  Мок.Когда(
-      Мок.Запрос()
-        .Путь("/some/path")
-    ).Проверить(
-      Мок.Повторений()
-        .НеМенее(2)
-    );
-```
-
-#### проверить, что запросы получены не более двух раз
-
-```text
-  Мок.Когда(
-      Мок.Запрос()
-        .Путь("/some/path")
-    ).Проверить(
-      Мок.Повторений()
-        .НеБолее(2)
-    );
-```
-
-#### проверить, что запросы получены точно два раза
-
-```text
-  Мок.Когда(
-      Мок.Запрос()
-        .Путь("/some/path")
-    ).Проверить(
-      Мок.Повторений()
-        .Точно(2)
-    );
-```
-
-#### проверить, что запросы получены не менее двух раз в соответствии с OpenAPI
-
-```text
-  Мок.Когда(
-      Мок.OpenAPI()
-        .Источник("https://raw.githubusercontent.com/mock-server/mockserver/master/mockserver-integration-testing/src/main/resources/org/mockserver/mock/openapi_petstore_example.json")
-    ).Проверить(
-      Мок.Повторений()
-        .НеМенее(2)
-    );
-```
-
-#### проверить, что запрос получен только один раз в соответствии с OpenAPI для некоторой операции
-
-```text
-  Мок.Когда(
-      Мок.OpenAPI()
-        .Источник("https://raw.githubusercontent.com/mock-server/mockserver/master/mockserver-integration-testing/src/main/resources/org/mockserver/mock/openapi_petstore_example.json")
-        .Операция("listPets")
-    ).Проверить(
-      Мок.Повторений()
-        .Однократно()
-    );
-```
-
-#### проверить, что запрос получен только один раз
-
-```text
-  Мок.Когда(
-      Мок.Запрос()
-        .Путь("/some/path")
-    ).Проверить(
-      Мок.Повторений()
-        .Однократно()
-    );
-```
-
-#### проверить, что запросы получены в диапазоне между n и m раз
-
-```text
-  Мок.Когда(
-      Мок.Запрос()
-        .Путь("/some/path")
-    ).Проверить(
-      Мок.Повторений()
-        .Между(2, 3)
-    );
-```
-
-#### проверить, что запросов не было
-
-```text
-  Мок.Когда(
-      Мок.Запрос()
-        .Путь("/some/path")
-    ).Проверить(
-      Мок.Повторений()
-        .Точно(0)
-    );
-```

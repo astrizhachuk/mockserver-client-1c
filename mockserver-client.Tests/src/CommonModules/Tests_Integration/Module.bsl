@@ -69,6 +69,27 @@ EndProcedure
 
 #Region RequestPropertiesMatcher
 
+// match request by path
+// 
+// @unit-test:integration
+Procedure MatchRequestByPath(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Mock.Server("localhost", "1080", true)
+		.When(
+			Mock.Request()
+				.WithPath("/some/path")
+		).Respond(
+			Mock.Response()
+				.WithBody("some_response_body")
+		);
+	// then
+	Assert.IsTrue(Mock.IsOk());
+
+EndProcedure
+
 // match request by method regex
 // 
 // @unit-test:integration
@@ -111,27 +132,6 @@ Procedure MatchRequestByNotMatchingMethod(Context) Export
 
 EndProcedure
 
-// match request by path
-// 
-// @unit-test:integration
-Procedure MatchRequestByPath(Context) Export
-
-	// given
-	Mock = DataProcessors.MockServerClient.Create();
-	// when
-	Mock.Server("localhost", "1080", true)
-		.When(
-			Mock.Request()
-				.WithPath("/some/path")
-		).Respond(
-			Mock.Response()
-				.WithBody("some_response_body")
-		);
-	// then
-	Assert.IsTrue(Mock.IsOk());
-
-EndProcedure
-
 // match request by query parameter with regex value
 // 
 // @unit-test:integration
@@ -144,8 +144,8 @@ Procedure MatchRequestByQueryParameterWithRegexValue(Context) Export
 		.When(
 			Mock.Request()
 				.WithPath("/some/path")
-				.WithQueryStringParameters("cartId", "[A-Z0-9\\-]+")
-				.WithQueryStringParameters("anotherId", "[A-Z0-9\\-]+")
+				.WithQueryStringParameter("cartId", "[A-Z0-9\\-]+")
+				.WithQueryStringParameter("anotherId", "[A-Z0-9\\-]+")
 		).Respond(
 			Mock.Response()
 				.WithBody("some_response_body")

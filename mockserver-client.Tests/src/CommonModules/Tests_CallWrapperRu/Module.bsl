@@ -144,6 +144,30 @@ Procedure WithPath(Context) Export
 EndProcedure
 
 // @unit-test
+Procedure WithQueryStringParameter(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("this.is.error.url", "1080");
+	// when
+	Mock.When(Mock.Request().ПараметрСтрокиЗапроса("cartId", "[A-Z0-9\\-]+")).Respond();
+	// then
+	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
+	Assert.AreEqual(Mock.CurrentStage, "");
+	Assert.AreEqual(Mock.Constructor["httpRequest"]["queryStringParameters"]["cartId"][0], "[A-Z0-9\\-]+");
+	Assert.AreEqual(Mock.Json, "{
+							   | ""httpRequest"": {
+							   |  ""queryStringParameters"": {
+            				   |   ""cartId"": [
+            				   |    ""[A-Z0-9\\\\-]+""
+            				   |   ]
+        					   |  }
+							   | }
+							   |}");
+
+EndProcedure
+
+// @unit-test
 Procedure Response(Context) Export
 	
 	// given

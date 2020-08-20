@@ -24,12 +24,12 @@
 	
 #Region Intermediate
 
-// Defines and returns the client communicating to a MockServer at the specified host and port.
+// Initializes the client to communicate with the MockServer on the specified host and port.
 //
 // Parameters:
 // 	URL - String - URL;
 // 	Port - String - port;
-// 	Reset - Boolean - true - reset MockServer, otherwise - false (default false);
+// 	Reset - Boolean - True - reset MockServer, otherwise - False (default);
 //
 // Returns:
 // 	DataProcessorObject.MockServerClient - instance of mock-object;
@@ -37,7 +37,7 @@
 // Example:
 //  Mock = DataProcessors.MockServerClient.Create().Server("http://server");
 //  Mock = DataProcessors.MockServerClient.Create().Server("http://server", "1090");
-//  Mock = DataProcessors.MockServerClient.Create().Server("http://server", "1090", true);
+//  Mock = DataProcessors.MockServerClient.Create().Server("http://server", "1090", True);
 //
 Function Server( Val URL, Val Port = Undefined, Val Reset = False ) Export
 	
@@ -59,6 +59,19 @@ Function Server( Val URL, Val Port = Undefined, Val Reset = False ) Export
 	
 EndFunction
 
+// Presets any conditions or accepts fully prepared JSON for subsequent sending data to MockServer.
+// 
+// Parameters:
+// 	What - DataProcessorObject.MockServerClient - instance of mock-object with a predefined conditions;
+//       - String - JSON to send to MockServer;   
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object;
+// 	
+// Example:
+//  Mock.When( Mock.WithPath("/фуу/foo") ).Respond();
+// 	Mock.When("{""sample"": ""any""}").Respond();
+//
 Function When( Val What ) Export
 
 	ThisObject.Json = "";	
@@ -77,7 +90,7 @@ EndFunction
 // Prepares a set of request properties in "httpRequest" node.
 //
 // Parameters:
-// 	Request - String - a request properties in json-format string;
+// 	Request - String - a request properties in json-format;
 //          - Undefined - an empty collection will be added to the conditions collection for the 'httpRequest' node;
 //
 // Returns:
@@ -101,7 +114,7 @@ EndFunction
 // Prepares a set of response properties in "httpResponse" node.
 //
 // Parameters:
-// 	Response - String - a response properties in json-format string;
+// 	Response - String - a response properties in json-format;
 //           - Undefined - an empty collection will be added to the conditions collection for the 'httpResponse' node;
 //
 // Returns:
@@ -123,9 +136,9 @@ Function Response( Val Response = Undefined  ) Export
 EndFunction
 
 // Prepares a set of OpenAPI properties in "httpResponse" node.
-// 
+//
 // Parameters:
-// 	OpenAPI - String - OpenAPI properties in json-format string;
+// 	OpenAPI - String - OpenAPI properties in json-format;
 //           - Undefined - an empty collection will be added to the conditions collection for the 'httpResponse' node;
 //
 // Returns:
@@ -271,6 +284,8 @@ EndFunction
 
 #Region Terminal
 
+// Resets the MockServer completely (terminal operation).
+// 
 Procedure Reset() Export
 	
 	ThisObject.Json = "";
@@ -298,6 +313,16 @@ Procedure Reset() Export
 	
 EndProcedure
 
+// Sets requests expectation (terminal operation).
+// 
+// Parameters:
+// 	Self - DataProcessorObject.MockServerClient - a reference to object with preparing conditions; 
+//
+// Example:
+//	Mock.When( Mock.Request().WithMethod("GET") ).Respond( Mock.Response().WithBody("some_response_body") );
+//	Mock.Respond( Mock.Response().WithBody("some_response_body") );
+//	Mock.Respond( Mock.Response("""statusCode"": 404") );
+//
 Procedure Respond( Val Self = Undefined ) Export
 	
 	GenerateJson();
@@ -325,7 +350,7 @@ Procedure Respond( Val Self = Undefined ) Export
 	
 EndProcedure
 
-// Verify a request has been sent (terminal operation).
+// Verifies a request has been sent (terminal operation).
 // 
 // Parameters:
 // 	Self - DataProcessorObject.MockServerClient - a reference to object with preparing conditions; 
@@ -417,7 +442,7 @@ Function IsOk() Export
 	
 EndFunction
 
-#Region RequestMatchers
+#Region Properties
 
 Function WithMethod( Val Method ) Export
 	
@@ -477,10 +502,6 @@ Function WithHeader( Val Key, Val Value ) Export
 	
 EndFunction
 
-#EndRegion
-
-#Region ResponseAction
-
 Function WithBody( Val Body ) Export
 	
 	CheckObjectPropertiesForMethod();
@@ -510,8 +531,6 @@ Function WithReasonPhrase( Val ReasonPhrase ) Export
 	Return ThisObject;
 	
 EndFunction
-
-#EndRegion
 
 #Region OpenAPI
 
@@ -580,16 +599,46 @@ EndFunction
 
 #EndRegion
 
+#EndRegion
+
 #Region Ru
 
 #Region Промежуточные
 
-Function Сервер( URL, Port = Undefined, Reset = Undefined ) Export
+// Инициализирует клиента для связи с MockServer на указанном хосте и порту.
+//
+// Параметры:
+// 	URL - Строка - URL;
+// 	Порт - Строка - порт;
+// 	Сбросить - Булево - Истина - предварительно сбросить сервер MockServer, иначе - Ложь (по умолчанию);
+//
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+//
+// Пример:
+//  Мок = Обработки.MockServerClient.Создать().Сервер("http://server");
+//  Мок = Обработки.MockServerClient.Создать().Сервер("http://server", "1090");
+//  Мок = Обработки.MockServerClient.Создать().Сервер("http://server", "1090", Истина);
+//
+Function Сервер( URL, Порт = Undefined, Сбросить = Undefined ) Export
 	
-	Return Server( URL, Port, Reset );
+	Return Server( URL, Порт, Сбросить );
 	
 EndFunction
 
+// Предустанавливает любые условия или принимает полностью готовый JSON для последующией отправки данных на MockServer.
+// 
+// Параметры:
+// 	Запрос - ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с предустановленными условиями;
+//       - Строка - JSON для отправки на MockServer;   
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+// 	
+// Пример:
+//  Мок.Когда( Мок.Путь("/фуу/foo") ).Ответить();
+// 	Мок.Когда("{""sample"": ""any""}").Ответить();
+//
 Function Когда( Запрос ) Export
 	
 	Return When( Запрос );
@@ -614,7 +663,6 @@ Function Запрос( Запрос = Undefined ) Export
 	Return Request( Запрос );
 	
 EndFunction
-
 
 // Подготавливает коллекцию свойств ответа в узле "httpResponse".
 // 
@@ -731,12 +779,24 @@ EndFunction
 
 #Region Терминальные
 
+// Полностью сбрасывает MockServer (терминальная операция).
+// 
 Procedure Сбросить() Export
 	
 	Reset();
 	
 EndProcedure
 
+// Устанавливает ожидание запроса (терминальная операция).
+// 
+// Пример:
+// 	Объект - ОбработкаОбъект.MockServerClient - объект с предварительно установленными условиями; 
+//
+// Example:
+//	Мок.Когда( Мок.Запрос().Метод("GET") ).Ответить( Мок.Ответ().Тело("some_response_body") );
+//	Мок.Ответить( Мок.Ответ().Тело("some_response_body") );
+//	Мок.Ответить( Мок.Ответ("""statusCode"": 404") );
+//
 Procedure Ответить( Объект = Undefined ) Export
 	
 	Respond( Объект );
@@ -793,7 +853,7 @@ Function Успешно() Export
 	
 EndFunction
 
-#Region Условия
+#Region Свойства
 
 Function Заголовки( Заголовки = Undefined ) Export
 	
@@ -819,9 +879,11 @@ Function Путь( Путь ) Export
 	
 EndFunction
 
-#EndRegion
-
-#Region Действия
+Function ПараметрыСтрокиЗапроса( Ключ, Значение ) Export
+	
+	Return WithQueryStringParameters( Ключ, Значение );
+	
+EndFunction
 
 Function Тело( Тело ) Export
 	
@@ -840,8 +902,6 @@ Function Причина( Причина ) Export
 	Return WithReasonPhrase( Причина );
 	
 EndFunction
-
-#EndRegion
 
 #Region OpenAPI
 
@@ -897,6 +957,8 @@ Function Операция( Операция ) Export
 	Return WithOperationId( Операция );
 	
 EndFunction
+
+#EndRegion
 
 #EndRegion
 

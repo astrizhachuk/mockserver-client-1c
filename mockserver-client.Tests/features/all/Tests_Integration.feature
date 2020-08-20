@@ -24,6 +24,11 @@ Scenario: RequestAndResponseJsonFormat
 	| 'Tests_Integration.RequestAndResponseJsonFormat(Context());' |
 
 @OnServer
+Scenario: Resetting
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.Resetting(Context());' |
+
+@OnServer
 Scenario: MatchRequestByPath
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Integration.MatchRequestByPath(Context());' |

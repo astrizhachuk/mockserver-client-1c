@@ -51,6 +51,22 @@ Procedure RequestAndResponseJsonFormat(Context) Export
 
 EndProcedure
 
+#Region ClearingAndResetting
+
+// @unit-test:integration
+Procedure Resetting(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Mock.Server("localhost", "1080").Reset();
+	// then
+	Assert.IsTrue(Mock.IsOk());
+
+EndProcedure
+
+#EndRegion
+
 #Region RequestPropertiesMatcher
 
 // match request by path

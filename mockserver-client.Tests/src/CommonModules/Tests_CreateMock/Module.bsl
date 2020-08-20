@@ -80,4 +80,15 @@ Procedure CreateClientAndResetAfter(Context) Export
 		
 EndProcedure
 
+// @unit-test
+Procedure CreateFluence(Context) Export
+	
+	// when
+	Result = DataProcessors.MockServerClient.Create().Server("this.is.error.url", "1080", true);
+	// then	
+	Assert.AreEqual(Result.URL, "this.is.error.url:1080");
+	Assert.AreEqual(Result.MockServerResponse.КодСостояния, 500);
+		
+EndProcedure
+
 #EndRegion

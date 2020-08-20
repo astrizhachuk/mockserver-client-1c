@@ -11,7 +11,7 @@
 
 ```text
  Mock = DataProcessors.MockServerClient.Create();
- Mock.Server("localhost", "1080")
+ Mock.Server("http://localhost", "1080")
   .When(
    Mock.Request()
     .WithMetod("GET")
@@ -31,7 +31,7 @@ That's all! Mock is created!
 Procedure Verify(Context) Export
   // given
   Mock = DataProcessors.MockServerClient.Create();
-  Mock.Server( "localhost", "1080", true );
+  Mock.Server( "http://localhost", "1080", true );
   HTTPConnector.Get( "http://localhost:1080/some/path" );
   HTTPConnector.Get( "http://localhost:1080/some/path" );
   // when
@@ -153,6 +153,14 @@ Use method chaining style (fluent interface):
 ```
 
 ## Examples
+
+### Clearing & Resetting Code Examples
+
+#### reset everything
+
+```text
+  Mock.Server("http://localhost", "1080").Reset();
+```
 
 ### Verifying Repeating Requests Code Examples
 

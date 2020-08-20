@@ -162,6 +162,32 @@ Use method chaining style (fluent interface):
   Mock.Server("http://localhost", "1080").Reset();
 ```
 
+### Request Properties Matcher Code Examples
+
+#### match request by method regex
+
+```text
+  Mock.When(
+      Mock.Request()
+        .WithMethod("P.*{2,3}")
+    ).Respond(
+      Mock.Response()
+        .WithBody("some_response_body")
+    );
+```
+
+#### match request by not matching method
+
+```text
+  Mock.When(
+      Mock.Request()
+        .WithMethod("!GET")
+    ).Respond(
+      Mock.Response()
+        .WithBody("some_response_body")
+    );
+```
+
 ### Verifying Repeating Requests Code Examples
 
 #### verify requests received at least twice

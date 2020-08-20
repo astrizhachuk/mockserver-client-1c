@@ -69,6 +69,48 @@ EndProcedure
 
 #Region RequestPropertiesMatcher
 
+// match request by method regex
+// 
+// @unit-test:integration
+Procedure MatchRequestByMethodRegex(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Mock.Server("localhost", "1080", true)
+		.When(
+			Mock.Request()
+				.WithMethod("P.*{2,3}")
+		).Respond(
+			Mock.Response()
+				.WithBody("some_response_body")
+		);
+	// then
+	Assert.IsTrue(Mock.IsOk());
+
+EndProcedure
+
+// match request by not matching method
+// 
+// @unit-test:integration
+Procedure MatchRequestByNotMatchingMethod(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Mock.Server("localhost", "1080", true)
+		.When(
+			Mock.Request()
+				.WithMethod("!GET")
+		).Respond(
+			Mock.Response()
+				.WithBody("some_response_body")
+		);
+	// then
+	Assert.IsTrue(Mock.IsOk());
+
+EndProcedure
+
 // match request by path
 // 
 // @unit-test:integration

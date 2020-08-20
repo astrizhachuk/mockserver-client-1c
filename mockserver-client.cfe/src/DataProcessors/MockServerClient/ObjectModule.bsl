@@ -444,6 +444,25 @@ EndFunction
 
 #Region Properties
 
+// Adds the "method" property.
+// 
+// Parameters:
+// 	Method - String - property matcher
+// 			(see also: https://www.mock-server.com/mock_server/creating_expectations.html#request_property_matchers);
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object with added property;
+//
+// Example:
+//  
+//	Mock.When(
+//		Mock.Request()
+//			.WithMethod("!GET")
+//	).Respond(
+//		Mock.Response()
+//			.WithBody("some_response_body")
+//	);
+//
 Function WithMethod( Val Method ) Export
 	
 	CheckObjectPropertiesForMethod();
@@ -855,18 +874,25 @@ EndFunction
 
 #Region Свойства
 
-Function Заголовки( Заголовки = Undefined ) Export
-	
-	Return Headers( Заголовки );
-	
-EndFunction
-
-Function Заголовок( Ключ, Значение ) Export
-	
-	Return WithHeader( Ключ, Значение );
-	
-EndFunction
-
+// Добавляет свойство "method".
+// 
+// Параметры:
+// 	Метод - Строка - метод, поддерживается сопоставление свойств
+// 			(см. также: https://www.mock-server.com/mock_server/creating_expectations.html#request_property_matchers);
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с добавленным свойством;
+//
+// Пример:
+//  
+//  Мок.Когда(
+//      Мок.Запрос()
+//        .Метод("!GET")
+//    ).Ответить(
+//      Мок.Ответ()
+//        .Тело("some_response_body")
+//    );
+//
 Function Метод( Метод ) Export
 	
 	Return WithMethod( Метод );
@@ -882,6 +908,18 @@ EndFunction
 Function ПараметрыСтрокиЗапроса( Ключ, Значение ) Export
 	
 	Return WithQueryStringParameters( Ключ, Значение );
+	
+EndFunction
+
+Function Заголовки( Заголовки = Undefined ) Export
+	
+	Return Headers( Заголовки );
+	
+EndFunction
+
+Function Заголовок( Ключ, Значение ) Export
+	
+	Return WithHeader( Ключ, Значение );
 	
 EndFunction
 

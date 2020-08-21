@@ -588,6 +588,30 @@ Function Headers( Val Headers = Undefined ) Export
 	
 EndFunction
 
+// Adds the "header" property to the "headers" node.
+// See also: https://www.mock-server.com/mock_server/getting_started.html#request_key_to_multivalue_matchers
+// 
+// Parameters:
+// 	Key - String - key of header;
+// 	Value - String - value of header;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object with added property;
+//
+// Example:
+// 
+//  Mock.When(
+//      Mock.Request()
+//        .WithMethod("GET")
+//        .WithPath("/some/path")
+//        .Headers()
+//          .WithHeader("Accept", "application/json")
+//          .WithHeader("Accept-Encoding", "gzip, deflate, br")
+//    ).Respond(
+//      Mock.Response()
+//        .WithBody("some_response_body")
+//    );
+//
 Function WithHeader( Val Key, Val Value ) Export
 
 	Var NewHeader;
@@ -601,6 +625,25 @@ Function WithHeader( Val Key, Val Value ) Export
 	
 EndFunction
 
+// Adds the "body" property.
+// See also: https://www.mock-server.com/mock_server/creating_expectations.html#request_property_matchers
+// 
+// Parameters:
+// 	Body - String - property matcher;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object with added property;
+//
+// Example:
+//  
+//	Mock.When(
+//		Mock.Request()
+//			.WithMethod("!GET")
+//	).Respond(
+//		Mock.Response()
+//			.WithBody("some_response_body")
+//	);
+//
 Function WithBody( Val Body ) Export
 	
 	CheckObjectPropertiesForMethod();
@@ -1077,12 +1120,52 @@ Function Заголовки( Заголовки = Undefined ) Export
 	
 EndFunction
 
+// Добавляет свойство "header" в коллекцию свойств "headers".
+// См. также: https://www.mock-server.com/mock_server/getting_started.html#request_key_to_multivalue_matchers
+// 
+// Параметры:
+// 	Ключ - Строка - ключ заголовка;
+// 	Значение - Строка - значение заголовка;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с добавленным свойством;
+//
+// Пример:
+// 
+//  Мок.Когда(
+//      Мок.Запрос()
+//        .Метод("GET")
+//        .Путь("/some/path")
+//        .Заголовки()
+//          .Заголовок("Accept", "application/json")
+//          .Заголовок("Accept-Encoding", "gzip, deflate, br")
+//    ).Ответить(
+//      Мок.Ответ()
+//        .Тело("some_response_body")
+//    );
+//
 Function Заголовок( Ключ, Значение ) Export
 	
 	Return WithHeader( Ключ, Значение );
 	
 EndFunction
 
+// Добавляет свойство "body".
+// См. также: https://www.mock-server.com/mock_server/creating_expectations.html#request_property_matchers
+// 
+// Параметры:
+// 	Тело - Строка - строковое значение тела;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с добавленным свойством;
+//
+// Пример:
+//  
+//  Мок.Ответить(
+//      Мок.Ответ()
+//        .Тело("some_response_body")
+//    );
+//
 Function Тело( Тело ) Export
 	
 	Return WithBody( Тело );

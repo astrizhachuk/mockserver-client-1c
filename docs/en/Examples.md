@@ -76,6 +76,17 @@
     );
 ```
 
+## Response Action
+
+### literal response with body only
+
+```text
+  Mock.Respond(
+      Mock.Response()
+        .WithBody("some_response_body")
+    );
+```
+
 ## Verifying Repeating Requests
 
 ### verify requests received at least twice

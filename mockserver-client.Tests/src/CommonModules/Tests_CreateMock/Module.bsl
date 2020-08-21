@@ -29,7 +29,7 @@ Procedure CreateNewClientsWithServer(Context) Export
 EndProcedure
 
 // @unit-test
-Procedure CreateClientNotDefaultUrl(Context) Export
+Procedure CreateClientNotDefaultURL(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
@@ -74,6 +74,17 @@ Procedure CreateClientAndResetAfter(Context) Export
 	Mock = DataProcessors.MockServerClient.Create();
 	// when
 	Result = Mock.Server("this.is.error.url", "1080", true);
+	// then	
+	Assert.AreEqual(Result.URL, "this.is.error.url:1080");
+	Assert.AreEqual(Result.MockServerResponse.КодСостояния, 500);
+		
+EndProcedure
+
+// @unit-test
+Procedure CreateFluence(Context) Export
+	
+	// when
+	Result = DataProcessors.MockServerClient.Create().Server("this.is.error.url", "1080", true);
 	// then	
 	Assert.AreEqual(Result.URL, "this.is.error.url:1080");
 	Assert.AreEqual(Result.MockServerResponse.КодСостояния, 500);

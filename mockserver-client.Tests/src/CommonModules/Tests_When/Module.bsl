@@ -10,10 +10,10 @@ Procedure WhenParamsString(Context) Export
 	// then
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.IsUndefined(Result.Constructor);
-	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
-	Assert.IsTrue(IsBlankString(Result.TimesJson));
-	Assert.AreEqual(Result.Json, "{""sample"": ""any""}");
+	Assert.IsTrue(IsBlankString(Result.HttpRequestNode));
+	Assert.IsTrue(IsBlankString(Result.HttpResponseNode));
+	Assert.IsTrue(IsBlankString(Result.TimesNode));
+	Assert.AreEqual(Result.JSON, "{""sample"": ""any""}");
 
 EndProcedure
 
@@ -26,10 +26,10 @@ Procedure WhenParamsRequestAction(Context) Export
 	Result = Mock.When( Mock.Request() );
 	// then
 	Assert.AreEqual(Mock.CurrentStage, "");
-	Assert.IsTrue(IsBlankString(Result.Json));
-	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
-	Assert.IsTrue(IsBlankString(Result.TimesJson));
+	Assert.IsTrue(IsBlankString(Result.JSON));
+	Assert.IsTrue(IsBlankString(Result.HttpRequestNode));
+	Assert.IsTrue(IsBlankString(Result.HttpResponseNode));
+	Assert.IsTrue(IsBlankString(Result.TimesNode));
 	Assert.IsInstanceOfType("Map", Result.Constructor["httpRequest"]);
 	Assert.AreCollectionEmpty(Result.Constructor["httpRequest"]);
 
@@ -44,10 +44,10 @@ Procedure WhenWrongParams(Context) Export
 	Result = Mock.When( new Array() );
 	// then
 	Assert.AreEqual(Mock.CurrentStage, "");
-	Assert.IsTrue(IsBlankString(Result.Json));
-	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
-	Assert.IsTrue(IsBlankString(Result.TimesJson));
+	Assert.IsTrue(IsBlankString(Result.JSON));
+	Assert.IsTrue(IsBlankString(Result.HttpRequestNode));
+	Assert.IsTrue(IsBlankString(Result.HttpResponseNode));
+	Assert.IsTrue(IsBlankString(Result.TimesNode));
 	Assert.IsUndefined(Result.Constructor);
 
 EndProcedure

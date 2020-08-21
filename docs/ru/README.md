@@ -49,21 +49,9 @@
 
 Протестировано!
 
-## Зависимости
+[Примеры кода](https://github.com/astrizhachuk/mockserver-client-1c/blob/master/docs/ru/Examples.md)
 
-Проект создан с помощью:
-
-1. [1C:Enterprise](https://1c-dn.com) 8.3.16.1502+ (8.3.16 compatibility mode)
-2. [1C:Enterprise Development Tools](https://edt.1c.ru) 2020.4 RC1
-3. [1Unit](https://github.com/DoublesunRUS/ru.capralow.dt.unit.launcher) 0.4.0+
-4. [vanessa-automation](https://github.com/Pr-Mex/vanessa-automation)
-5. [dt.bslls.validator](https://github.com/DoublesunRUS/ru.capralow.dt.bslls.validator)
-6. [BSL Language Server](https://github.com/1c-syntax/bsl-language-server)
-
-Работа с HTTP реализована с помощью следующих библиотек:
-
-* [HTTPConnector](https://github.com/vbondarevsky/Connector)
-* [HTTPStatusCodes](https://github.com/astrizhachuk/HTTPStatusCodes)
+[Программный интерфейс](https://github.com/astrizhachuk/mockserver-client-1c/blob/master/docs/ru/PublicAPI.md)
 
 ## Начало работы
 
@@ -120,19 +108,19 @@ docker-compose -f "docker-compose.yml" up -d --build
 
 ### Установка ожидания поведения<a name="SetupExpectations"></a>
 
-Установка ожидания поведения (и проверка запросов) состоит из двух стадий: подготовка условий (в формате json) и выполнение действия для этих условий (отправка json на сервер).
+Установка ожидания поведения (и проверка запросов) состоит из двух стадий: подготовка условий (в формате JSON) и выполнение действия для этих условий (отправка JSON на сервер).
 
-Для клиента доступны два вида методов: **промежуточные** (возвращающие ссылки на объект клиента) и **терминальные** (выполняющие некоторое действие). Некоторые методы принимать в качестве параметров как ссылки на объекты с установленными предварительными условиями, так и строки в формате json. Перед отправкой сообщения на сервер будет автоматически сгенерирован необходимый json в зависимости от выбранной терминальной операции и предварительных условий.
+Для клиента доступны два вида методов: **промежуточные** (возвращающие ссылки на объект клиента) и **терминальные** (выполняющие некоторое действие). Некоторые методы принимать в качестве параметров как ссылки на объекты с установленными предварительными условиями, так и строки в формате JSON. Перед отправкой сообщения на сервер будет автоматически сгенерирован необходимый JSON в зависимости от выбранной терминальной операции и предварительных условий.
 
 Текущая реализация клиента позволяет использовать вызовы методов в виде цепочки действий, завершающихся терминальной операцией (fluent interface):
 
 ```text
-  # передача готового json без автоматической генерации
+  # передача готового JSON без автоматической генерации
   Мок.Сервер( "localhost", "1080" )
     .Когда( "{""name"":""value""}" )
     .Ответить();
 
-  # передача свойства httpRequest в json-формате
+  # передача свойства httpRequest в JSON-формате
   Мок.Server( "localhost", "1080" )
     .Когда(
       Мок.Запрос( """name"":""value""" )
@@ -152,103 +140,19 @@ docker-compose -f "docker-compose.yml" up -d --build
 
 ```
 
-## Примеры
+## Зависимости
 
-### Проверка повторений запросов
+Проект создан с помощью:
 
-#### проверить, что запросы получены не менее двух раз
+1. [1C:Enterprise](https://1c-dn.com) 8.3.16.1502+ (8.3.16 compatibility mode)
+2. [1C:Enterprise Development Tools](https://edt.1c.ru) 2020.4 RC1
+3. [1Unit](https://github.com/DoublesunRUS/ru.capralow.dt.unit.launcher) 0.4.0+
+4. [vanessa-automation](https://github.com/Pr-Mex/vanessa-automation)
+5. [dt.bslls.validator](https://github.com/DoublesunRUS/ru.capralow.dt.bslls.validator)
+6. [BSL Language Server](https://github.com/1c-syntax/bsl-language-server)
 
-```text
-  Мок.Когда(
-      Мок.Запрос()
-        .Путь("/some/path")
-    ).Проверить(
-      Мок.Повторений()
-        .НеМенее(2)
-    );
-```
+Работа с HTTP реализована с помощью следующих библиотек:
 
-#### проверить, что запросы получены не более двух раз
+* [HTTPConnector](https://github.com/vbondarevsky/Connector)
+* [HTTPStatusCodes](https://github.com/astrizhachuk/HTTPStatusCodes)
 
-```text
-  Мок.Когда(
-      Мок.Запрос()
-        .Путь("/some/path")
-    ).Проверить(
-      Мок.Повторений()
-        .НеБолее(2)
-    );
-```
-
-#### проверить, что запросы получены точно два раза
-
-```text
-  Мок.Когда(
-      Мок.Запрос()
-        .Путь("/some/path")
-    ).Проверить(
-      Мок.Повторений()
-        .Точно(2)
-    );
-```
-
-#### проверить, что запросы получены не менее двух раз в соответствии с OpenAPI
-
-```text
-  Мок.Когда(
-      Мок.OpenAPI()
-        .Источник("https://raw.githubusercontent.com/mock-server/mockserver/master/mockserver-integration-testing/src/main/resources/org/mockserver/mock/openapi_petstore_example.json")
-    ).Проверить(
-      Мок.Повторений()
-        .НеМенее(2)
-    );
-```
-
-#### проверить, что запрос получен только один раз в соответствии с OpenAPI для некоторой операции
-
-```text
-  Мок.Когда(
-      Мок.OpenAPI()
-        .Источник("https://raw.githubusercontent.com/mock-server/mockserver/master/mockserver-integration-testing/src/main/resources/org/mockserver/mock/openapi_petstore_example.json")
-        .Операция("listPets")
-    ).Проверить(
-      Мок.Повторений()
-        .Однократно()
-    );
-```
-
-#### проверить, что запрос получен только один раз
-
-```text
-  Мок.Когда(
-      Мок.Запрос()
-        .Путь("/some/path")
-    ).Проверить(
-      Мок.Повторений()
-        .Однократно()
-    );
-```
-
-#### проверить, что запросы получены в диапазоне между n и m раз
-
-```text
-  Мок.Когда(
-      Мок.Запрос()
-        .Путь("/some/path")
-    ).Проверить(
-      Мок.Повторений()
-        .Между(2, 3)
-    );
-```
-
-#### проверить, что запросов не было
-
-```text
-  Мок.Когда(
-      Мок.Запрос()
-        .Путь("/some/path")
-    ).Проверить(
-      Мок.Повторений()
-        .Точно(0)
-    );
-```

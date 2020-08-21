@@ -13,7 +13,7 @@ Procedure PropertyByStage(Context) Export
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpRequest"]["method"], "GET");
 	Assert.AreEqual(Mock.Constructor["httpResponse"]["method"], "POST");
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""httpRequest"": {
 							   |  ""method"": ""GET""
 							   | },
@@ -37,7 +37,7 @@ Procedure HeadersWithoutParams(Context) Export
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpRequest"].Count(), 1);
 	Assert.IsInstanceOfType("Map", Mock.Constructor["httpRequest"]["headers"]);
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""httpRequest"": {
 							   |  ""headers"": {}
 							   | }
@@ -69,7 +69,7 @@ Procedure HeadersWithParams(Context) Export
 	Assert.AreEqual(Mock.Constructor["httpRequest"]["headers"].Count(), 2);
 	Assert.AreEqual(Mock.Constructor["httpRequest"]["headers"]["header1"].Count(), 2);
 	Assert.AreEqual(Mock.Constructor["httpRequest"]["headers"]["header1"][0], "array1_1");
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""httpRequest"": {
 							   |  ""headers"": {
 							   |   ""header1"": [
@@ -99,7 +99,7 @@ Procedure HeadersByStage(Context) Export
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.IsInstanceOfType("Map", Mock.Constructor["httpRequest"]["headers"]);
 	Assert.IsInstanceOfType("Map", Mock.Constructor["httpResponse"]["headers"]);
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""httpRequest"": {
 							   |  ""headers"": {}
 							   | },
@@ -122,7 +122,7 @@ Procedure WithHeader(Context) Export
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpRequest"]["headers"]["key"][0], "value");
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""httpRequest"": {
 							   |  ""headers"": {
 							   |   ""key"": [
@@ -149,7 +149,7 @@ Procedure WithHeaderArrayValue(Context) Export
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpRequest"]["headers"]["key"][0], "value1");
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""httpRequest"": {
 							   |  ""headers"": {
 							   |   ""key"": [
@@ -174,7 +174,7 @@ Procedure WithHeaderWithoutHeaders(Context) Export
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);	
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpRequest"]["headers"]["key"][0], "value");
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""httpRequest"": {
 							   |  ""headers"": {
 							   |   ""key"": [
@@ -198,7 +198,7 @@ Procedure WithHeaderTwoHeader(Context) Export
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpRequest"]["headers"]["key1"][0], "value1");
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""httpRequest"": {
 							   |  ""headers"": {
 							   |   ""key1"": [
@@ -225,7 +225,7 @@ Procedure WithMethodNotEmpty(Context) Export
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpRequest"]["method"], "GET");
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""httpRequest"": {
 							   |  ""method"": ""GET""
 							   | }
@@ -247,7 +247,7 @@ Procedure WithMethodRewrite(Context) Export
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpRequest"].Count(), 1);
 	Assert.AreEqual(Mock.Constructor["httpRequest"]["method"], "POST");	
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""httpRequest"": {
 							   |  ""method"": ""POST""
 							   | }
@@ -267,7 +267,7 @@ Procedure WithPathNotEmpty(Context) Export
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpRequest"]["path"], "/фуу/foo");
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""httpRequest"": {
 							   |  ""path"": ""/фуу/foo""
 							   | }
@@ -275,22 +275,53 @@ Procedure WithPathNotEmpty(Context) Export
 							   
 EndProcedure
 
-// @unit-test:dev
-Procedure WithQueryStringParametersNotEmpty(Context) Export
+// @unit-test
+Procedure WithQueryStringParameterNotEmpty(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
 	Mock.Server("this.is.error.url", "1080");
 	// when
-	Mock.When(Mock.Request().WithQueryStringParameters("cartId", "[A-Z0-9\\-]+")).Respond();
+	Mock.When(Mock.Request().WithQueryStringParameter("cartId", "[A-Z0-9\\-]+")).Respond();
 	// then
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpRequest"]["queryStringParameters"]["cartId"][0], "[A-Z0-9\\-]+");
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""httpRequest"": {
 							   |  ""queryStringParameters"": {
             				   |   ""cartId"": [
+            				   |    ""[A-Z0-9\\\\-]+""
+            				   |   ]
+        					   |  }
+							   | }
+							   |}");
+							   
+EndProcedure
+
+// @unit-test
+Procedure WithQueryStringParameterTwoParams(Context) Export
+	
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	Mock.Server("this.is.error.url", "1080");
+	// when
+	Mock.When(
+		Mock.Request()
+			.WithQueryStringParameter("cartId", "[A-Z0-9\\-]+")
+			.WithQueryStringParameter("anotherId", "[A-Z0-9\\-]+")
+	).Respond();
+	// then
+	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
+	Assert.AreEqual(Mock.CurrentStage, "");
+	Assert.AreEqual(Mock.Constructor["httpRequest"]["queryStringParameters"]["cartId"][0], "[A-Z0-9\\-]+");
+	Assert.AreEqual(Mock.JSON, "{
+							   | ""httpRequest"": {
+							   |  ""queryStringParameters"": {
+            				   |   ""cartId"": [
+            				   |    ""[A-Z0-9\\\\-]+""
+            				   |   ],
+            				   |   ""anotherId"": [
             				   |    ""[A-Z0-9\\\\-]+""
             				   |   ]
         					   |  }

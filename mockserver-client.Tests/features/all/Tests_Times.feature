@@ -24,6 +24,6 @@ Scenario: TimesRequestExists
 	| 'Tests_Times.TimesRequestExists(Context());' |
 
 @OnServer
-Scenario: TimesStringJson
+Scenario: TimesStringJSON
 	And I execute 1C:Enterprise script at server
-	| 'Tests_Times.TimesStringJson(Context());' |
+	| 'Tests_Times.TimesStringJSON(Context());' |

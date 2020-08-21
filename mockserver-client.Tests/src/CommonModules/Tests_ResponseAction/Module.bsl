@@ -12,7 +12,7 @@ Procedure WithBody(Context) Export
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpResponse"]["body"], "some body");
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 								| ""httpResponse"": {
 								|  ""body"": ""some body""
 								| }
@@ -32,7 +32,7 @@ Procedure WithStatusCode(Context) Export
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpResponse"]["statusCode"], 404);
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 								| ""httpResponse"": {
 								|  ""statusCode"": 404
 								| }
@@ -54,7 +54,7 @@ Procedure WithStatusCodeRewrite(Context) Export
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpResponse"].Count(), 1);
 	Assert.AreEqual(Mock.Constructor["httpResponse"]["statusCode"], 400);
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 								| ""httpResponse"": {
 								|  ""statusCode"": 400
 								| }
@@ -74,7 +74,7 @@ Procedure WithReasonPhrase(Context) Export
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpResponse"]["reasonPhrase"], "I'm a teapot");
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 								| ""httpResponse"": {
 								|  ""reasonPhrase"": ""I'm a teapot""
 								| }

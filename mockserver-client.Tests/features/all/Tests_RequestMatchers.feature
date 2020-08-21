@@ -64,6 +64,11 @@ Scenario: WithPathNotEmpty
 	| 'Tests_RequestMatchers.WithPathNotEmpty(Context());' |
 
 @OnServer
-Scenario: WithQueryStringParametersNotEmpty
+Scenario: WithQueryStringParameterNotEmpty
 	And I execute 1C:Enterprise script at server
-	| 'Tests_RequestMatchers.WithQueryStringParametersNotEmpty(Context());' |
+	| 'Tests_RequestMatchers.WithQueryStringParameterNotEmpty(Context());' |
+
+@OnServer
+Scenario: WithQueryStringParameterTwoParams
+	And I execute 1C:Enterprise script at server
+	| 'Tests_RequestMatchers.WithQueryStringParameterTwoParams(Context());' |

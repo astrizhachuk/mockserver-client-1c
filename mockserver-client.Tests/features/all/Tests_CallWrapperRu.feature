@@ -49,6 +49,11 @@ Scenario: WithPath
 	| 'Tests_CallWrapperRu.WithPath(Context());' |
 
 @OnServer
+Scenario: WithQueryStringParameter
+	And I execute 1C:Enterprise script at server
+	| 'Tests_CallWrapperRu.WithQueryStringParameter(Context());' |
+
+@OnServer
 Scenario: Response
 	And I execute 1C:Enterprise script at server
 	| 'Tests_CallWrapperRu.Response(Context());' |

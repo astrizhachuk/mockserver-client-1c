@@ -11,7 +11,7 @@
 
 ```text
  Mock = DataProcessors.MockServerClient.Create();
- Mock.Server("localhost", "1080")
+ Mock.Server("http://localhost", "1080")
   .When(
    Mock.Request()
     .WithMetod("GET")
@@ -31,7 +31,7 @@ That's all! Mock is created!
 Procedure Verify(Context) Export
   // given
   Mock = DataProcessors.MockServerClient.Create();
-  Mock.Server( "localhost", "1080", true );
+  Mock.Server( "http://localhost", "1080", true );
   HTTPConnector.Get( "http://localhost:1080/some/path" );
   HTTPConnector.Get( "http://localhost:1080/some/path" );
   // when
@@ -49,21 +49,9 @@ EndProcedure
 
 Tested!
 
-## Dependencies
+[Code Examples](https://github.com/astrizhachuk/mockserver-client-1c/blob/master/docs/en/Examples.md)
 
-The project built with:
-
-1. [1C:Enterprise](https://1c-dn.com) 8.3.16.1502+ (8.3.16 compatibility mode)
-2. [1C:Enterprise Development Tools](https://edt.1c.ru) 2020.4 RC1
-3. [1Unit](https://github.com/DoublesunRUS/ru.capralow.dt.unit.launcher) 0.4.0+
-4. [vanessa-automation](https://github.com/Pr-Mex/vanessa-automation)
-5. [dt.bslls.validator](https://github.com/DoublesunRUS/ru.capralow.dt.bslls.validator)
-6. [BSL Language Server](https://github.com/1c-syntax/bsl-language-server)
-
-Working with HTTP is implemented using the following libraries:
-
-* [HTTPConnector](https://github.com/vbondarevsky/Connector)
-* [HTTPStatusCodes](https://github.com/astrizhachuk/HTTPStatusCodes)
+[Public API](https://github.com/astrizhachuk/mockserver-client-1c/blob/master/docs/en/PublicAPI.md)
 
 ## Getting Started
 
@@ -120,19 +108,19 @@ Mock = Mock.Server( "http://server", "1099", True );
 
 ### Setup Expectations<a name="SetupExpectations"></a>
 
-Setup expectation (and verify requests) consists of two stages: preparing conditions (json) and sending an action (PUT json).
+Setup expectation (and verify requests) consists of two stages: preparing conditions (JSON) and sending an action (PUT JSON).
 
-There are two types of methods: **intermediate** (returns self-object) and **terminal** (perform action). Some object's methods as parameters can accept a reference to themselves with preparing conditions or a json-format string. Before executing the action, the necessary json will be automatically generated depending on the selected terminal operation and preconditions.
+There are two types of methods: **intermediate** (returns self-object) and **terminal** (perform action). Some object's methods as parameters can accept a reference to themselves with preparing conditions or a JSON-format string. Before executing the action, the necessary JSON will be automatically generated depending on the selected terminal operation and preconditions.
 
 Use method chaining style (fluent interface):
 
 ```text
-  # full json without auto-generating
+  # full JSON without auto-generating
   Mock.Server( "localhost", "1080" )
     .When( "{""name"":""value""}" )
     .Respond();
 
-  # httpRequest property in json-style
+  # httpRequest property in JSON-style
   Mock.Server( "localhost", "1080" )
     .When(
       Mock.Request( """name"":""value""" )
@@ -152,103 +140,18 @@ Use method chaining style (fluent interface):
 
 ```
 
-## Examples
+## Dependencies
 
-### Verifying Repeating Requests Code Examples
+The project built with:
 
-#### verify requests received at least twice
+1. [1C:Enterprise](https://1c-dn.com) 8.3.16.1502+ (8.3.16 compatibility mode)
+2. [1C:Enterprise Development Tools](https://edt.1c.ru) 2020.4 RC1
+3. [1Unit](https://github.com/DoublesunRUS/ru.capralow.dt.unit.launcher) 0.4.0+
+4. [vanessa-automation](https://github.com/Pr-Mex/vanessa-automation)
+5. [dt.bslls.validator](https://github.com/DoublesunRUS/ru.capralow.dt.bslls.validator)
+6. [BSL Language Server](https://github.com/1c-syntax/bsl-language-server)
 
-```text
-  Mock.When(
-      Mock.Request()
-        .WithPath("/some/path")
-    ).Verify(
-      Mock.Times()
-        .AtLeast(2)
-    );
-```
+Working with HTTP is implemented using the following libraries:
 
-#### verify requests received at most twice
-
-```text
-  Mock.When(
-      Mock.Request()
-        .WithPath("/some/path")
-    ).Verify(
-      Mock.Times()
-        .AtMost(2)
-    );
-```
-
-#### verify requests received exactly twice
-
-```text
-  Mock.When(
-      Mock.Request()
-        .WithPath("/some/path")
-    ).Verify(
-      Mock.Times()
-        .Exactly(2)
-    );
-```
-
-#### verify requests received at least twice by openapi
-
-```text
-  Mock.When(
-      Mock.OpenAPI()
-        .WithSource("https://raw.githubusercontent.com/mock-server/mockserver/master/mockserver-integration-testing/src/main/resources/org/mockserver/mock/openapi_petstore_example.json")
-    ).Verify(
-      Mock.Times()
-        .AtLeast(2)
-    );
-```
-
-#### verify requests received at exactly once by openapi and operation
-
-```text
-  Mock.When(
-      Mock.OpenAPI()
-        .WithSource("https://raw.githubusercontent.com/mock-server/mockserver/master/mockserver-integration-testing/src/main/resources/org/mockserver/mock/openapi_petstore_example.json")
-        .WithOperationId("listPets")
-    ).Verify(
-      Mock.Times()
-        .Once()
-    );
-```
-
-#### verify requests received at exactly once
-
-```text
-  Mock.When(
-      Mock.Request()
-        .WithPath("/some/path")
-    ).Verify(
-      Mock.Times()
-        .Once()
-    );
-```
-
-#### verify requests received between n and m times
-
-```text
-  Mock.When(
-      Mock.Request()
-        .WithPath("/some/path")
-    ).Verify(
-      Mock.Times()
-        .Between(2, 3)
-    );
-```
-
-#### verify requests never received
-
-```text
-  Mock.When(
-      Mock.Request()
-        .WithPath("/some/path")
-    ).Verify(
-      Mock.Times()
-        .Exactly(0)
-    );
-```
+* [HTTPConnector](https://github.com/vbondarevsky/Connector)
+* [HTTPStatusCodes](https://github.com/astrizhachuk/HTTPStatusCodes)

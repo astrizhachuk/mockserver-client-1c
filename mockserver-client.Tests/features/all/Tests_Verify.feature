@@ -9,19 +9,19 @@ Feature: mockserver-client.Tests.Tests_Verify
 	That I can guarantee the execution of the method
 
 @OnServer
-Scenario: VerifyUrlException
+Scenario: VerifyURLException
 	And I execute 1C:Enterprise script at server
-	| 'Tests_Verify.VerifyUrlException(Context());' |
+	| 'Tests_Verify.VerifyURLException(Context());' |
 
 @OnServer
-Scenario: VerifyWhenFullJson
+Scenario: VerifyWhenFullJSON
 	And I execute 1C:Enterprise script at server
-	| 'Tests_Verify.VerifyWhenFullJson(Context());' |
+	| 'Tests_Verify.VerifyWhenFullJSON(Context());' |
 
 @OnServer
-Scenario: VerifyWhenRequestJson
+Scenario: VerifyWhenRequestJSON
 	And I execute 1C:Enterprise script at server
-	| 'Tests_Verify.VerifyWhenRequestJson(Context());' |
+	| 'Tests_Verify.VerifyWhenRequestJSON(Context());' |
 
 @OnServer
 Scenario: VerifyWhenRequestMap
@@ -29,14 +29,14 @@ Scenario: VerifyWhenRequestMap
 	| 'Tests_Verify.VerifyWhenRequestMap(Context());' |
 
 @OnServer
-Scenario: VerifyWhenVerifyJson
+Scenario: VerifyWhenVerifyJSON
 	And I execute 1C:Enterprise script at server
-	| 'Tests_Verify.VerifyWhenVerifyJson(Context());' |
+	| 'Tests_Verify.VerifyWhenVerifyJSON(Context());' |
 
 @OnServer
-Scenario: VerifyWhenTimesJson
+Scenario: VerifyWhenTimesNode
 	And I execute 1C:Enterprise script at server
-	| 'Tests_Verify.VerifyWhenTimesJson(Context());' |
+	| 'Tests_Verify.VerifyWhenTimesNode(Context());' |
 
 @OnServer
 Scenario: VerifydWhenTimesMap

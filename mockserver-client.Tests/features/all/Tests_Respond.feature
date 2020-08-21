@@ -9,19 +9,19 @@ Feature: mockserver-client.Tests.Tests_Respond
 	That I can guarantee the execution of the method
 
 @OnServer
-Scenario: RespondUrlException
+Scenario: RespondURLException
 	And I execute 1C:Enterprise script at server
-	| 'Tests_Respond.RespondUrlException(Context());' |
+	| 'Tests_Respond.RespondURLException(Context());' |
 
 @OnServer
-Scenario: RespondWhenFullJson
+Scenario: RespondWhenFullJSON
 	And I execute 1C:Enterprise script at server
-	| 'Tests_Respond.RespondWhenFullJson(Context());' |
+	| 'Tests_Respond.RespondWhenFullJSON(Context());' |
 
 @OnServer
-Scenario: RespondWhenRequestJson
+Scenario: RespondWhenRequestJSON
 	And I execute 1C:Enterprise script at server
-	| 'Tests_Respond.RespondWhenRequestJson(Context());' |
+	| 'Tests_Respond.RespondWhenRequestJSON(Context());' |
 
 @OnServer
 Scenario: RespondWhenRequestMap
@@ -29,14 +29,14 @@ Scenario: RespondWhenRequestMap
 	| 'Tests_Respond.RespondWhenRequestMap(Context());' |
 
 @OnServer
-Scenario: RespondWhenRespondJson
+Scenario: RespondWhenRespondJSON
 	And I execute 1C:Enterprise script at server
-	| 'Tests_Respond.RespondWhenRespondJson(Context());' |
+	| 'Tests_Respond.RespondWhenRespondJSON(Context());' |
 
 @OnServer
-Scenario: RespondWhenResponseJson
+Scenario: RespondWhenResponseJSON
 	And I execute 1C:Enterprise script at server
-	| 'Tests_Respond.RespondWhenResponseJson(Context());' |
+	| 'Tests_Respond.RespondWhenResponseJSON(Context());' |
 
 @OnServer
 Scenario: RespondWhenResponseMap

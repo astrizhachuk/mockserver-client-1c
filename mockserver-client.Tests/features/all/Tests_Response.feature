@@ -24,6 +24,6 @@ Scenario: ResponseRequestExists
 	| 'Tests_Response.ResponseRequestExists(Context());' |
 
 @OnServer
-Scenario: ResponseStringJson
+Scenario: ResponseStringJSON
 	And I execute 1C:Enterprise script at server
-	| 'Tests_Response.ResponseStringJson(Context());' |
+	| 'Tests_Response.ResponseStringJSON(Context());' |

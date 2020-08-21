@@ -15,14 +15,14 @@
   </synonym>
   <useStandardCommands>true</useStandardCommands>
   <attributes uuid="b364f2cc-edd3-4a22-a989-1b1e6ba8e619">
-    <name>Url</name>
+    <name>URL</name>
     <synonym>
       <key>en</key>
-      <value>Url</value>
+      <value>URL</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>Url</value>
+      <value>URL</value>
     </synonym>
     <type>
       <types>String</types>
@@ -59,14 +59,14 @@
     </type>
   </attributes>
   <attributes uuid="259a239b-f688-498e-a6c4-c4ffd50dffb8">
-    <name>Json</name>
+    <name>JSON</name>
     <synonym>
       <key>en</key>
-      <value>Json</value>
+      <value>JSON</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>Json</value>
+      <value>JSON</value>
     </synonym>
     <type>
       <types>String</types>
@@ -74,42 +74,42 @@
     </type>
   </attributes>
   <attributes uuid="93054b63-e2c2-4c70-9ce3-f4fc6df6c31b">
-    <name>HttpRequestJson</name>
+    <name>HttpRequestNode</name>
     <synonym>
       <key>en</key>
-      <value>HttpRequestJson</value>
+      <value>HttpRequestNode</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>HttpRequestJson</value>
+      <value>HttpRequestNode</value>
     </synonym>
     <type>
       <types>Arbitrary</types>
     </type>
   </attributes>
   <attributes uuid="13d4cea9-38f2-4636-8968-451eec4057dc">
-    <name>HttpResponseJson</name>
+    <name>HttpResponseNode</name>
     <synonym>
       <key>en</key>
-      <value>HttpResponseJson</value>
+      <value>HttpResponseNode</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>HttpResponseJson</value>
+      <value>HttpResponseNode</value>
     </synonym>
     <type>
       <types>Arbitrary</types>
     </type>
   </attributes>
   <attributes uuid="f6902609-2086-4001-9e15-31f518861bd1">
-    <name>TimesJson</name>
+    <name>TimesNode</name>
     <synonym>
       <key>en</key>
-      <value>TimesJson</value>
+      <value>TimesNode</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>TimesJson</value>
+      <value>TimesNode</value>
     </synonym>
     <type>
       <types>Arbitrary</types>

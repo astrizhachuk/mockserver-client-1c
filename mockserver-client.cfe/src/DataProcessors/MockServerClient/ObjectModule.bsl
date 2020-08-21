@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // 
 // Copyright © 2020 Alexander Strizhachuk
-// version: 0.1.3
+// version: 1.0.0
 
 #If Server Or ThickClientOrdinaryApplication Or ExternalConnection Then
 
@@ -24,20 +24,20 @@
 	
 #Region Intermediate
 
-// Defines and returns the client communicating to a MockServer at the specified host and port.
+// Initializes the client to communicate with the MockServer on the specified host and port.
 //
 // Parameters:
 // 	URL - String - URL;
 // 	Port - String - port;
-// 	Reset - Boolean - true - reset MockServer, otherwise - false (default false);
-// 	
+// 	Reset - Boolean - True - reset MockServer, otherwise - False (default);
+//
 // Returns:
 // 	DataProcessorObject.MockServerClient - instance of mock-object;
-// 	
+//
 // Example:
 //  Mock = DataProcessors.MockServerClient.Create().Server("http://server");
 //  Mock = DataProcessors.MockServerClient.Create().Server("http://server", "1090");
-//  Mock = DataProcessors.MockServerClient.Create().Server("http://server", "1090", true);
+//  Mock = DataProcessors.MockServerClient.Create().Server("http://server", "1090", True);
 //
 Function Server( Val URL, Val Port = Undefined, Val Reset = False ) Export
 	
@@ -59,14 +59,27 @@ Function Server( Val URL, Val Port = Undefined, Val Reset = False ) Export
 	
 EndFunction
 
+// Presets any conditions or accepts fully prepared JSON for subsequent sending data to MockServer.
+// 
+// Parameters:
+// 	What - DataProcessorObject.MockServerClient - instance of mock-object with a predefined conditions;
+//       - String - JSON to send to MockServer;   
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object;
+// 	
+// Example:
+//  Mock.When( Mock.WithPath("/фуу/foo") ).Respond();
+// 	Mock.When("{""sample"": ""any""}").Respond();
+//
 Function When( Val What ) Export
 
-	ThisObject.Json = "";	
+	ThisObject.JSON = "";	
 	ThisObject.CurrentStage = "";
 	
 	If ( TypeOf(What) = Type("String") ) Then
 		
-		ThisObject.Json = What;
+		ThisObject.JSON = What;
 		
 	EndIf;
 	
@@ -75,11 +88,11 @@ Function When( Val What ) Export
 EndFunction
 
 // Prepares a set of request properties in "httpRequest" node.
-// 
+//
 // Parameters:
-// 	Request - String - a request properties in json-format string;
+// 	Request - String - a request properties in JSON-format;
 //          - Undefined - an empty collection will be added to the conditions collection for the 'httpRequest' node;
-// 	
+//
 // Returns:
 // 	DataProcessorObject.MockServerClient - instance of mock-object with a new collection of properties;
 //
@@ -89,7 +102,7 @@ EndFunction
 //
 Function Request( Val Request = Undefined ) Export
 
-	ThisObject.Json = "";
+	ThisObject.JSON = "";
 	ThisObject.CurrentStage = "httpRequest";
 	
 	FillConstructorRootPropertyByValueType( "httpRequest", Request );
@@ -99,11 +112,11 @@ Function Request( Val Request = Undefined ) Export
 EndFunction
 
 // Prepares a set of response properties in "httpResponse" node.
-// 
+//
 // Parameters:
-// 	Response - String - a response properties in json-format string;
+// 	Response - String - a response properties in JSON-format;
 //           - Undefined - an empty collection will be added to the conditions collection for the 'httpResponse' node;
-// 	
+//
 // Returns:
 // 	DataProcessorObject.MockServerClient - instance of mock-object with a new collection of properties;
 //
@@ -113,7 +126,7 @@ EndFunction
 //
 Function Response( Val Response = Undefined  ) Export
 	
-	ThisObject.Json = "";
+	ThisObject.JSON = "";
 	ThisObject.CurrentStage = "httpResponse";
 	
 	FillConstructorRootPropertyByValueType( "httpResponse", Response );
@@ -123,11 +136,11 @@ Function Response( Val Response = Undefined  ) Export
 EndFunction
 
 // Prepares a set of OpenAPI properties in "httpResponse" node.
-// 
+//
 // Parameters:
-// 	OpenAPI - String - OpenAPI properties in json-format string;
+// 	OpenAPI - String - OpenAPI properties in JSON-format;
 //           - Undefined - an empty collection will be added to the conditions collection for the 'httpResponse' node;
-// 	
+//
 // Returns:
 // 	DataProcessorObject.MockServerClient - instance of mock-object with a new collection of properties;
 //
@@ -148,14 +161,14 @@ Function OpenAPI( Val OpenAPI = Undefined ) Export
 EndFunction
 
 // Sets conditions that a requests has been received by MockServer a specific number of time.
-// 
+//
 // Parameters:
-// 	Condition - String - a conditions in json-format string;
+// 	Condition - String - a conditions in JSON-format string;
 //            - Undefined - an empty collection will be added to the conditions collection for the 'times' node;
 //
 // Returns:
 // 	DataProcessorObject.MockServerClient - instance of mock-object with a new collection of properties;
-// 	
+//
 // Example:
 //	Mock.When( Mock.Request().WithMethod("GET") ).Verify( Mock.Times().AtMost(3) );
 //  Result = Mock.Times().AtMost(3).AtLeast(3);
@@ -163,7 +176,7 @@ EndFunction
 //
 Function Times( Val Condition = Undefined  ) Export
 	
-	ThisObject.Json = "";
+	ThisObject.JSON = "";
 	ThisObject.CurrentStage = "times";
 	
 	FillConstructorRootPropertyByValueType( "times", Condition );
@@ -186,7 +199,7 @@ Function AtLeast( Val Count ) Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	AddConstructorStageProperty( "atLeast", Count );
+	AddPropertyToConstructorByCurrentStage( "atLeast", Count );
 	
 	Return ThisObject;
 	
@@ -204,7 +217,7 @@ Function AtMost( Val Count ) Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	AddConstructorStageProperty( "atMost", Count );
+	AddPropertyToConstructorByCurrentStage( "atMost", Count );
 	
 	Return ThisObject;
 	
@@ -222,8 +235,8 @@ Function Exactly( Val Count ) Export
 	
 	CheckObjectPropertiesForMethod();
 
-	AddConstructorStageProperty( "atLeast", Count );
-	AddConstructorStageProperty( "atMost", Count );
+	AddPropertyToConstructorByCurrentStage( "atLeast", Count );
+	AddPropertyToConstructorByCurrentStage( "atMost", Count );
 	
 	Return ThisObject;
 	
@@ -238,8 +251,8 @@ Function Once() Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	AddConstructorStageProperty( "atLeast", 1 );
-	AddConstructorStageProperty( "atMost", 1 );
+	AddPropertyToConstructorByCurrentStage( "atLeast", 1 );
+	AddPropertyToConstructorByCurrentStage( "atMost", 1 );
 	
 	Return ThisObject;
 	
@@ -258,8 +271,8 @@ Function Between( Val AtLeast, Val AtMost ) Export
 	
 	CheckObjectPropertiesForMethod();
 
-	AddConstructorStageProperty( "atLeast", AtLeast );
-	AddConstructorStageProperty( "atMost", AtMost );
+	AddPropertyToConstructorByCurrentStage( "atLeast", AtLeast );
+	AddPropertyToConstructorByCurrentStage( "atMost", AtMost );
 	
 	Return ThisObject;
 	
@@ -271,9 +284,11 @@ EndFunction
 
 #Region Terminal
 
+// Resets the MockServer completely (terminal operation).
+// 
 Procedure Reset() Export
 	
-	ThisObject.Json = "";
+	ThisObject.JSON = "";
 	
 	Try
 		
@@ -298,9 +313,19 @@ Procedure Reset() Export
 	
 EndProcedure
 
+// Sets requests expectation (terminal operation).
+// 
+// Parameters:
+// 	Self - DataProcessorObject.MockServerClient - a reference to object with preparing conditions; 
+//
+// Example:
+//	Mock.When( Mock.Request().WithMethod("GET") ).Respond( Mock.Response().WithBody("some_response_body") );
+//	Mock.Respond( Mock.Response().WithBody("some_response_body") );
+//	Mock.Respond( Mock.Response("""statusCode"": 404") );
+//
 Procedure Respond( Val Self = Undefined ) Export
 	
-	GenerateJson();
+	GenerateJSON();
 	
 	Try
 		
@@ -325,7 +350,7 @@ Procedure Respond( Val Self = Undefined ) Export
 	
 EndProcedure
 
-// Verify a request has been sent (terminal operation).
+// Verifies a request has been sent (terminal operation).
 // 
 // Parameters:
 // 	Self - DataProcessorObject.MockServerClient - a reference to object with preparing conditions; 
@@ -337,7 +362,7 @@ EndProcedure
 //
 Procedure Verify( Val Self = Undefined ) Export
 	
-	GenerateJson();
+	GenerateJSON();
 	
 	Try
 		
@@ -366,7 +391,7 @@ EndProcedure
 // 
 // Parameters:
 // 	Source - String - the path to the OpenAPI document or the data itself in accordance with the OpenAPI specification;
-// 	Operations - String - operation id and response status code for the selected operation as a json-format string;
+// 	Operations - String - operation id and response status code for the selected operation as a JSON-format string;
 //
 // Example:
 //  Mock.OpenAPIExpectation( "file:/Users/me/openapi.json" );
@@ -379,7 +404,7 @@ EndProcedure
 //
 Procedure OpenAPIExpectation( Val Source, Val Operations = "" ) Export
 	
-	GenerateOpenApiJson( Source, Operations );
+	GenerateOpenApiJSON( Source, Operations );
 	
 	Try
 
@@ -417,41 +442,140 @@ Function IsOk() Export
 	
 EndFunction
 
-#Region RequestMatchers
+#Region Properties
 
+// Adds the "method" property.
+// See also: https://www.mock-server.com/mock_server/creating_expectations.html#request_property_matchers
+// 
+// Parameters:
+// 	Method - String - property matcher;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object with added property;
+//
+// Example:
+//  
+//	Mock.When(
+//		Mock.Request()
+//			.WithMethod("!GET")
+//	).Respond(
+//		Mock.Response()
+//			.WithBody("some_response_body")
+//	);
+//
 Function WithMethod( Val Method ) Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	AddConstructorStageProperty( "method", Method );
+	AddPropertyToConstructorByCurrentStage( "method", Method );
 	
 	Return ThisObject;
 	
 EndFunction
 
+// Adds the "path" property.
+// See also: https://www.mock-server.com/mock_server/creating_expectations.html#request_property_matchers
+// 
+// Parameters:
+// 	Path - String - property matcher;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object with added property;
+//
+// Example:
+//  
+//	Mock.When(
+//		Mock.Request()
+//			.WithMethod("!GET")
+//	).Respond(
+//		Mock.Response()
+//			.WithBody("some_response_body")
+//	);
+//
 Function WithPath( Val Path ) Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	AddConstructorStageProperty( "path", Path );
+	AddPropertyToConstructorByCurrentStage( "path", Path );
 	
 	Return ThisObject;
 	
 EndFunction
 
-Function WithQueryStringParameters( Val Key, Val Value ) Export
+// Adds the "queryStringParameters" property.
+// See also: https://www.mock-server.com/mock_server/getting_started.html#request_key_to_multivalue_matchers
+// 
+// Parameters:
+// 	Key - String - key of query parameter;
+// 	Value - String - value of query parameter;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object with added property;
+//
+// Example:
+//  
+//  Mock.When(
+//      Mock.Request()
+//        .WithPath("/some/path")
+//        .WithQueryStringParameter("cartId", "[A-Z0-9\\-]+")
+//        .WithQueryStringParameter("anotherId", "[A-Z0-9\\-]+")
+//    ).Respond(
+//      Mock.Response()
+//        .WithBody("some_response_body")
+//    );
+//
+Function WithQueryStringParameter( Val Key, Val Value ) Export
 	
 	Var NewQueryParameters;
 	
 	CheckObjectPropertiesForMethod();
 	
 	NewQueryParameters = MapStringValueToArray( Key, Value );
-	InsertConstructorStageProperty( "queryStringParameters", NewQueryParameters );
+	AddMultipleValuesPropertyToConstructorByCurrentStage( "queryStringParameters", NewQueryParameters );
 
 	Return ThisObject;
 
 EndFunction
 
+// Prepares a set of headers properties in "headers" node.
+//
+// Parameters:
+// 	Headers - Map - a headers (key = header, value = array of strings);
+//          - Undefined - an empty collection will be added to the 'header' node;
+//
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object with added property;
+//
+// Example:
+// 
+// 	1:
+// 	
+//  Mock.When(
+//      Mock.Request()
+//        .WithMethod("GET")
+//        .WithPath("/some/path")
+//        .Headers()
+//          .WithHeader("Accept", "application/json")
+//          .WithHeader("Accept-Encoding", "gzip, deflate, br")
+//    ).Respond(
+//      Mock.Response()
+//        .WithBody("some_response_body")
+//    );
+//
+//	2:
+//	
+//	Header_1 = New Array();
+//	Header_1.Add("11");
+//	Header_1.Add("12");
+//	Header_2 = New Array();
+//	Header_2.Add("21");
+//	Header_2.Add("22");
+//	Headers = New Map();
+//	Headers.Insert("Header_1", Header_1);
+//	Headers.Insert("Header_2", Header_2);
+//	
+//	Mock.When( Mock.Request().Headers(Headers) ).Respond();
+//
 Function Headers( Val Headers = Undefined ) Export
 	
 	CheckObjectPropertiesForMethod();
@@ -464,6 +588,30 @@ Function Headers( Val Headers = Undefined ) Export
 	
 EndFunction
 
+// Adds the "header" property to the "headers" node.
+// See also: https://www.mock-server.com/mock_server/getting_started.html#request_key_to_multivalue_matchers
+// 
+// Parameters:
+// 	Key - String - key of header;
+// 	Value - String - value of header;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object with added property;
+//
+// Example:
+// 
+//  Mock.When(
+//      Mock.Request()
+//        .WithMethod("GET")
+//        .WithPath("/some/path")
+//        .Headers()
+//          .WithHeader("Accept", "application/json")
+//          .WithHeader("Accept-Encoding", "gzip, deflate, br")
+//    ).Respond(
+//      Mock.Response()
+//        .WithBody("some_response_body")
+//    );
+//
 Function WithHeader( Val Key, Val Value ) Export
 
 	Var NewHeader;
@@ -471,47 +619,102 @@ Function WithHeader( Val Key, Val Value ) Export
 	CheckObjectPropertiesForMethod();
 	
 	NewHeader = MapStringValueToArray( Key, Value );
-	InsertConstructorStageProperty( "headers", NewHeader );
+	AddMultipleValuesPropertyToConstructorByCurrentStage( "headers", NewHeader );
 
 	Return ThisObject;
 	
 EndFunction
 
-#EndRegion
-
-#Region ResponseAction
-
+// Adds the "body" property.
+// See also: https://www.mock-server.com/mock_server/creating_expectations.html#request_property_matchers
+// 
+// Parameters:
+// 	Body - String - property matcher;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object with added property;
+//
+// Example:
+//  
+//	Mock.When(
+//		Mock.Request()
+//			.WithMethod("!GET")
+//	).Respond(
+//		Mock.Response()
+//			.WithBody("some_response_body")
+//	);
+//
 Function WithBody( Val Body ) Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	AddConstructorStageProperty( "body", Body );
+	AddPropertyToConstructorByCurrentStage( "body", Body );
 
 	Return ThisObject;
 	
 EndFunction
 
+// Adds the "statusCode" property.
+// See also: https://www.mock-server.com/mock_server/creating_expectations.html#request_property_matchers
+// 
+// Parameters:
+// 	StatusCode - Numeric - numeric status code;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object with added property;
+//
+// Example:
+//  
+//  Mock.When(
+//      Mock.Request()
+//        .WithMethod("GET")
+//        .WithPath("/some/path")
+//    ).Respond(
+//      Mock.Response()
+//        .WithStatusCode(418)
+//        .WithReasonPhrase("I'm a teapot")
+//    );
+//
 Function WithStatusCode( Val StatusCode ) Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	AddConstructorStageProperty( "statusCode", StatusCode );
+	AddPropertyToConstructorByCurrentStage( "statusCode", StatusCode );
 
 	Return ThisObject;
 	
 EndFunction
 
+// Adds the "reasonPhrase" property.
+// See also: https://www.mock-server.com/mock_server/creating_expectations.html#request_property_matchers
+// 
+// Parameters:
+// 	ReasonPhrase - String - reason phrase;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object with added property;
+//
+// Example:
+//  
+//  Mock.When(
+//      Mock.Request()
+//        .WithMethod("GET")
+//        .WithPath("/some/path")
+//    ).Respond(
+//      Mock.Response()
+//        .WithStatusCode(418)
+//        .WithReasonPhrase("I'm a teapot")
+//    );
+//
 Function WithReasonPhrase( Val ReasonPhrase ) Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	AddConstructorStageProperty( "reasonPhrase", ReasonPhrase );
+	AddPropertyToConstructorByCurrentStage( "reasonPhrase", ReasonPhrase );
 
 	Return ThisObject;
 	
 EndFunction
-
-#EndRegion
 
 #Region OpenAPI
 
@@ -539,7 +742,7 @@ Function WithSource( Val Source ) Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	AddConstructorStageProperty( "specUrlOrPayload", Source );
+	AddPropertyToConstructorByCurrentStage( "specUrlOrPayload", Source );
 	
 	Return ThisObject;
 	
@@ -570,7 +773,7 @@ Function WithOperationId( Val OperationId ) Export
 	
 	CheckObjectPropertiesForMethod();
 	
-	AddConstructorStageProperty( "operationId", OperationId );
+	AddPropertyToConstructorByCurrentStage( "operationId", OperationId );
 	
 	Return ThisObject;
 	
@@ -580,16 +783,47 @@ EndFunction
 
 #EndRegion
 
+#EndRegion
+
 #Region Ru
 
 #Region Промежуточные
 
-Function Сервер( URL, Port = Undefined ) Export
+// Инициализирует клиента для связи с MockServer на указанном хосте и порту.
+//
+// Параметры:
+// 	URL - Строка - URL;
+// 	Порт - Строка - порт;
+// 	Сбросить - Булево - Истина - предварительно сбросить сервер MockServer, иначе - Ложь (по умолчанию);
+//
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+//
+// Пример:
+//  Мок = Обработки.MockServerClient.Создать().Сервер("http://server");
+//  Мок = Обработки.MockServerClient.Создать().Сервер("http://server", "1090");
+//  Мок = Обработки.MockServerClient.Создать().Сервер("http://server", "1090", Истина);
+//
+Function Сервер( URL, Порт = Undefined, Сбросить = Undefined ) Export
 	
-	Return Server( URL, Port );
+	Return Server( URL, Порт, Сбросить );
 	
 EndFunction
 
+// Предварительно устанавливает любые условия или принимает полностью готовый JSON
+// для последующей отправки данных на MockServer.
+// 
+// Параметры:
+// 	Запрос - ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с предустановленными условиями;
+//       - Строка - JSON для отправки на MockServer;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
+// 	
+// Пример:
+//  Мок.Когда( Мок.Путь("/фуу/foo") ).Ответить();
+// 	Мок.Когда("{""sample"": ""any""}").Ответить();
+//
 Function Когда( Запрос ) Export
 	
 	Return When( Запрос );
@@ -599,7 +833,7 @@ EndFunction
 // Подготавливает коллекцию свойств запроса в узле "httpRequest".
 // 
 // Параметры:
-// 	Запрос - Строка - свойства запроса в виде строки в формате json;
+// 	Запрос - Строка - свойства запроса в виде строки в формате JSON;
 //          - Неопределено - в коллекцию условий для узла 'httpRequest' будет добавлена пустая коллекция;
 // 	
 // Возвращаемое значение:
@@ -615,11 +849,10 @@ Function Запрос( Запрос = Undefined ) Export
 	
 EndFunction
 
-
 // Подготавливает коллекцию свойств ответа в узле "httpResponse".
 // 
 // Параметры:
-// 	Ответ - Строка - свойства ответа в виде строки в формате json;
+// 	Ответ - Строка - свойства ответа в виде строки в формате JSON;
 //          - Неопределено - в коллекцию условий для узла 'httpResponse' будет добавлена пустая коллекция;
 // 	
 // Возвращаемое значение:
@@ -638,7 +871,7 @@ EndFunction
 // Устанавливает условия на проверку количества запросов к MockServer.
 // 
 // Параметры:
-// 	Условие - Строка - условие проверки на количество запросов в виде строки в формате json;
+// 	Условие - Строка - условие проверки на количество запросов в виде строки в формате JSON;
 //          - Неопределено - в коллекцию условий для узла 'times' будет добавлена пустая коллекция;
 // 	
 // Возвращаемое значение:
@@ -731,12 +964,24 @@ EndFunction
 
 #Region Терминальные
 
+// Полностью сбрасывает MockServer (терминальная операция).
+// 
 Procedure Сбросить() Export
 	
 	Reset();
 	
 EndProcedure
 
+// Устанавливает ожидание запроса (терминальная операция).
+// 
+// Пример:
+// 	Объект - ОбработкаОбъект.MockServerClient - объект с предварительно установленными условиями; 
+//
+// Example:
+//	Мок.Когда( Мок.Запрос().Метод("GET") ).Ответить( Мок.Ответ().Тело("some_response_body") );
+//	Мок.Ответить( Мок.Ответ().Тело("some_response_body") );
+//	Мок.Ответить( Мок.Ответ("""statusCode"": 404") );
+//
 Procedure Ответить( Объект = Undefined ) Export
 	
 	Respond( Объект );
@@ -763,7 +1008,7 @@ EndProcedure
 // 
 // Параметры:
 // 	Источник - Строка - путь к документу с описанием данных или сами данные в соответствии с OpenAPI спецификацией;
-// 	Операции - Строка - id операции и код статуса ответа для выбранной операции в виде строки в формате json;
+// 	Операции - Строка - id операции и код статуса ответа для выбранной операции в виде строки в формате JSON;
 // 	
 // Пример:
 //  Мок.ОжидатьOpenAPI( "file:/Users/me/openapi.json" );
@@ -793,55 +1038,236 @@ Function Успешно() Export
 	
 EndFunction
 
-#Region Условия
+#Region Свойства
 
-Function Заголовки( Заголовки = Undefined ) Export
-	
-	Return Headers( Заголовки );
-	
-EndFunction
-
-Function Заголовок( Ключ, Значение ) Export
-	
-	Return WithHeader( Ключ, Значение );
-	
-EndFunction
-
+// Добавляет свойство "method".
+// См. также: https://www.mock-server.com/mock_server/creating_expectations.html#request_property_matchers 
+// 
+// Параметры:
+// 	Метод - Строка - имя метода;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с добавленным свойством;
+//
+// Пример:
+//  
+//  Мок.Когда(
+//      Мок.Запрос()
+//        .Метод("!GET")
+//    ).Ответить(
+//      Мок.Ответ()
+//        .Тело("some_response_body")
+//    );
+//
 Function Метод( Метод ) Export
 	
 	Return WithMethod( Метод );
 	
 EndFunction
 
+// Добавляет свойство "path".
+// См. также: https://www.mock-server.com/mock_server/creating_expectations.html#request_property_matchers
+// 
+// Параметры:
+// 	Путь - Строка - относительный путь;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с добавленным свойством;
+//
+// Пример:
+//  
+//  Мок.Когда(
+//      Мок.Запрос()
+//        .Путь("/some/path")
+//    ).Ответить(
+//      Мок.Ответ()
+//        .Тело("some_response_body")
+//    );
+//
 Function Путь( Путь ) Export
 	
 	Return WithPath( Путь );
 	
 EndFunction
 
-#EndRegion
+// Добавляет свойство "queryStringParameters".
+// См. также: https://www.mock-server.com/mock_server/getting_started.html#request_key_to_multivalue_matchers
+// 
+// Параметры:
+// 	Ключ - Строка - ключ параметра строки запроса;
+// 	Значение - Строка - значение параметра строки запроса;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с добавленным свойством;
+//
+// Пример:
+//  
+//  Мок.Когда(
+//      Мок.Запрос()
+//        .Путь("/some/path")
+//        .ПараметрСтрокиЗапроса("cartId", "[A-Z0-9\\-]+")
+//        .ПараметрСтрокиЗапроса("anotherId", "[A-Z0-9\\-]+")
+//    ).Ответить(
+//      Мок.Ответ()
+//        .Тело("some_response_body")
+//    );
+//
+Function ПараметрСтрокиЗапроса( Ключ, Значение ) Export
+	
+	Return WithQueryStringParameter( Ключ, Значение );
+	
+EndFunction
 
-#Region Действия
+// Добавляет коллекцию свойств в узле "headers" или создает пустую коллекцию.
+//
+// Параметры:
+// 	Заголовки - Соответствие - коллекция заголовков (Ключ = имя заголовка, Значение = массив строк);
+//          - Неопределено - в коллекцию условий для узла 'headers' будет добавлена пустая коллекция;
+//
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с добавленным свойством;
+//
+// Пример:
+// 
+// 	Вариант 1:
+// 	
+//  Мок.Когда(
+//      Мок.Запрос()
+//        .Метод("GET")
+//        .Путь("/some/path")
+//        .Заголовки()
+//          .Заголовок("Accept", "application/json")
+//          .Заголовок("Accept-Encoding", "gzip, deflate, br")
+//    ).Ответить(
+//      Мок.Ответ()
+//        .Тело("some_response_body")
+//    );
+//
+//	Вариант 2:
+//	
+//	Заголовок_1 = Новый Массив();
+//	Заголовок_1.Добавить("11");
+//	Заголовок_1.Добавить("12");
+//	Заголовок_2 = Новый Массив();
+//	Заголовок_2.Добавить("21");
+//	Заголовок_2.Добавить("22");
+//	Заголовки = Новый Соответствие();
+//	Заголовки.Вставить("Заголовок_1", Заголовок_1);
+//	Заголовки.Вставить("Заголовок_2", Заголовок_2);
+//	
+//	Мок.Когда( Мок.Запрос().Заголовки(Заголовки) ).Ответить();
+//
+Function Заголовки( Заголовки = Undefined ) Export
+	
+	Return Headers( Заголовки );
+	
+EndFunction
 
+// Добавляет свойство "header" в коллекцию свойств "headers".
+// См. также: https://www.mock-server.com/mock_server/getting_started.html#request_key_to_multivalue_matchers
+// 
+// Параметры:
+// 	Ключ - Строка - ключ заголовка;
+// 	Значение - Строка - значение заголовка;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с добавленным свойством;
+//
+// Пример:
+// 
+//  Мок.Когда(
+//      Мок.Запрос()
+//        .Метод("GET")
+//        .Путь("/some/path")
+//        .Заголовки()
+//          .Заголовок("Accept", "application/json")
+//          .Заголовок("Accept-Encoding", "gzip, deflate, br")
+//    ).Ответить(
+//      Мок.Ответ()
+//        .Тело("some_response_body")
+//    );
+//
+Function Заголовок( Ключ, Значение ) Export
+	
+	Return WithHeader( Ключ, Значение );
+	
+EndFunction
+
+// Добавляет свойство "body".
+// См. также: https://www.mock-server.com/mock_server/creating_expectations.html#request_property_matchers
+// 
+// Параметры:
+// 	Тело - Строка - строковое значение тела;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с добавленным свойством;
+//
+// Пример:
+//  
+//  Мок.Ответить(
+//      Мок.Ответ()
+//        .Тело("some_response_body")
+//    );
+//
 Function Тело( Тело ) Export
 	
 	Return WithBody( Тело );
 	
 EndFunction
 
+// Добавляет свойство "statusCode".
+// См. также: https://www.mock-server.com/mock_server/creating_expectations.html#request_property_matchers
+// 
+// Параметры:
+// 	КодОтвета - Число - числовой код статуса ответа;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с добавленным свойством;
+//
+// Пример:
+//  
+//  Мок.Когда(
+//      Мок.Запрос()
+//        .Метод("GET")
+//        .Путь("/some/path")
+//    ).Ответить(
+//      Мок.Ответ()
+//        .КодОтвета(418)
+//        .Причина("I'm a teapot")
+//    );
+//
 Function КодОтвета( КодОтвета ) Export
 	
 	Return WithStatusCode( КодОтвета );
 	
 EndFunction
 
+// Добавляет свойство "reasonPhrase".
+// См. также: https://www.mock-server.com/mock_server/creating_expectations.html#request_property_matchers
+// 
+// Параметры:
+// 	Причина - Строка - причина;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с добавленным свойством;
+//
+// Пример:
+//  
+//  Мок.Когда(
+//      Мок.Запрос()
+//        .Метод("GET")
+//        .Путь("/some/path")
+//    ).Ответить(
+//      Мок.Ответ()
+//        .КодОтвета(418)
+//        .Причина("I'm a teapot")
+//    );
+//
 Function Причина( Причина ) Export
 	
 	Return WithReasonPhrase( Причина );
 	
 EndFunction
-
-#EndRegion
 
 #Region OpenAPI
 
@@ -904,6 +1330,8 @@ EndFunction
 
 #EndRegion
 
+#EndRegion
+
 #Region Private
 
 Процедура CheckObjectPropertiesForMethod()
@@ -948,7 +1376,7 @@ Function ConstructorRootProperty( Val Key )
 	
 EndFunction
 
-Procedure AddConstructorStageProperty( Val Key, Val Value )
+Procedure AddPropertyToConstructorByCurrentStage( Val Key, Val Value )
 	
 	Var ConstructorRootProperty;
 	
@@ -957,7 +1385,7 @@ Procedure AddConstructorStageProperty( Val Key, Val Value )
 	
 EndProcedure
 
-Процедура InsertConstructorStageProperty( Val Key, Val Value )
+Процедура AddMultipleValuesPropertyToConstructorByCurrentStage( Val Key, Val Value )
 	
 	Var Result;
 	
@@ -975,7 +1403,7 @@ Procedure FillConstructorRootPropertyByValueType( Key, Value, Stage = "" )
 	
 	If ( TypeOf(Value) = Type("String") ) Then
 		
-		ThisObject[ Key + "Json" ] = Value;
+		ThisObject[ Key + "Node" ] = Value;
 		
 	Else
 
@@ -1051,15 +1479,15 @@ Procedure FillActionTemplate( Result, Val Key, Val Value )
 	
 EndProcedure
 
-Function JoinJsonParts()
+Function JoinJSONParts()
 	
 	Var Result;
 
 	Result = "{" + Chars.LF;
 	
-	FillActionTemplate( Result, "httpRequest", HttpRequestJson);
-	FillActionTemplate( Result, "httpResponse", HttpResponseJson);
-	FillActionTemplate( Result, "times", TimesJson);
+	FillActionTemplate( Result, "httpRequest", HttpRequestNode);
+	FillActionTemplate( Result, "httpResponse", HttpResponseNode);
+	FillActionTemplate( Result, "times", TimesNode);
 	
 	Result = Left( Result, StrLen(Result) - 1 );
 	Result = Result + Chars.LF + "}";
@@ -1068,7 +1496,7 @@ Function JoinJsonParts()
 	
 EndFunction
 
-Procedure GenerateOpenApiJson( Val Source, Val Condition = "" )
+Procedure GenerateOpenApiJSON( Val Source, Val Condition = "" )
 	
 	Var Template;
 	Var ConditionTemplate;
@@ -1088,13 +1516,13 @@ Procedure GenerateOpenApiJson( Val Source, Val Condition = "" )
     	
     EndIf;
     
-    ThisObject.Json = StrTemplate( Template, Source, Condition );
+    ThisObject.JSON = StrTemplate( Template, Source, Condition );
 
 EndProcedure
 
-Procedure GenerateJson()
+Procedure GenerateJSON()
 	
-	If (Not IsBlankString(ThisObject.Json)) Then
+	If (Not IsBlankString(ThisObject.JSON)) Then
 		
 		Return;
 		
@@ -1102,21 +1530,21 @@ Procedure GenerateJson()
 	
 	If ( ThisObject.Constructor = Undefined ) Then
 		
-		ThisObject.Json = JoinJsonParts();
+		ThisObject.JSON = JoinJSONParts();
 
 	Else
 		
-		JsonWriterOptions = New Structure();
-		JsonWriterOptions.Insert( "ПереносСтрок", JsonLineBreak.Unix );
-		JsonWriterOptions.Insert( "СимволыОтступа", " " );
+		JSONWriterOptions = New Structure();
+		JSONWriterOptions.Insert( "ПереносСтрок", JSONLineBreak.Unix );
+		JSONWriterOptions.Insert( "СимволыОтступа", " " );
 		
-		ThisObject.Json = HTTPConnector.ОбъектВJson( ThisObject.Constructor, , JsonWriterOptions );
+		ThisObject.JSON = HTTPConnector.ОбъектВJson( ThisObject.Constructor, , JSONWriterOptions );
 		
-	Endif;
+	EndIf;
 	
 EndProcedure
 
-Function ContentTypeJsonHeaders()
+Function ContentTypeJSONHeaders()
 	
 	Var Headers;
 	
@@ -1129,26 +1557,26 @@ EndFunction
 
 Процедура DoAction( Val Action )
 	
-	Var PutJson;
+	Var PutJSON;
 	Var PutHeaders;
 	
 	ThisObject.CurrentStage = "";
 	ThisObject.IsActionOk = False;
 
-	If ( IsBlankString(ThisObject.Json) ) Then
+	If ( IsBlankString(ThisObject.JSON) ) Then
 		
-		PutJson = Undefined;
+		PutJSON = Undefined;
 		PutHeaders = Undefined;
 
 	Else
 		
-		PutJson = ThisObject.Json;
-		PutHeaders = ContentTypeJsonHeaders();
+		PutJSON = ThisObject.JSON;
+		PutHeaders = ContentTypeJSONHeaders();
 	
 	EndIf;
 	
-	ThisObject.MockServerResponse = HTTPConnector.Put( ThisObject.Url + "/mockserver/" + Action,
-															PutJson,
+	ThisObject.MockServerResponse = HTTPConnector.Put( ThisObject.URL + "/mockserver/" + Action,
+															PutJSON,
 															PutHeaders );
 														
 	If ( HTTPStatusCodesClientServerCached.IsServerError(ThisObject.MockServerResponse.КодСостояния) ) Then

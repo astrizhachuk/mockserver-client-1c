@@ -35,7 +35,7 @@ Procedure ExpectationFail(Context) Export
 EndProcedure
 
 // @unit-test:integration
-Procedure RequestAndResponseJsonFormat(Context) Export
+Procedure RequestAndResponseJSONFormat(Context) Export
 
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
@@ -50,6 +50,22 @@ Procedure RequestAndResponseJsonFormat(Context) Export
 	Assert.IsTrue(Mock.IsOk());
 
 EndProcedure
+
+#Region ClearingAndResetting
+
+// @unit-test:integration
+Procedure Resetting(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Mock.Server("localhost", "1080").Reset();
+	// then
+	Assert.IsTrue(Mock.IsOk());
+
+EndProcedure
+
+#EndRegion
 
 #Region RequestPropertiesMatcher
 
@@ -74,6 +90,48 @@ Procedure MatchRequestByPath(Context) Export
 
 EndProcedure
 
+// match request by method regex
+// 
+// @unit-test:integration
+Procedure MatchRequestByMethodRegex(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Mock.Server("localhost", "1080", true)
+		.When(
+			Mock.Request()
+				.WithMethod("P.*{2,3}")
+		).Respond(
+			Mock.Response()
+				.WithBody("some_response_body")
+		);
+	// then
+	Assert.IsTrue(Mock.IsOk());
+
+EndProcedure
+
+// match request by not matching method
+// 
+// @unit-test:integration
+Procedure MatchRequestByNotMatchingMethod(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Mock.Server("localhost", "1080", true)
+		.When(
+			Mock.Request()
+				.WithMethod("!GET")
+		).Respond(
+			Mock.Response()
+				.WithBody("some_response_body")
+		);
+	// then
+	Assert.IsTrue(Mock.IsOk());
+
+EndProcedure
+
 // match request by query parameter with regex value
 // 
 // @unit-test:integration
@@ -86,8 +144,33 @@ Procedure MatchRequestByQueryParameterWithRegexValue(Context) Export
 		.When(
 			Mock.Request()
 				.WithPath("/some/path")
-				.WithQueryStringParameters("cartId", "[A-Z0-9\\-]+")
-				.WithQueryStringParameters("anotherId", "[A-Z0-9\\-]+")
+				.WithQueryStringParameter("cartId", "[A-Z0-9\\-]+")
+				.WithQueryStringParameter("anotherId", "[A-Z0-9\\-]+")
+		).Respond(
+			Mock.Response()
+				.WithBody("some_response_body")
+		);
+	// then
+	Assert.IsTrue(Mock.IsOk());
+
+EndProcedure
+
+// match request by headers
+// 
+// @unit-test:integration
+Procedure MatchRequestByHeaders(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Mock.Server("localhost", "1080", true)
+		.When(
+			Mock.Request()
+				.WithMethod("GET")
+				.WithPath("/some/path")
+				.Headers()
+					.WithHeader("Accept", "application/json")
+					.WithHeader("Accept-Encoding", "gzip, deflate, br")
 		).Respond(
 			Mock.Response()
 				.WithBody("some_response_body")
@@ -100,6 +183,24 @@ EndProcedure
 #EndRegion
 
 #Region ResponseAction
+
+// literal response with body only
+// 
+// @unit-test:integration
+Procedure LiteralResponseWithBodyOnly(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Mock.Server("localhost", "1080", true)
+		.Respond(
+			Mock.Response()
+				.WithBody("some_response_body")
+		);	
+	// then
+	Assert.IsTrue(Mock.IsOk());
+
+EndProcedure
 
 // literal response with status code and reason phrase
 // 

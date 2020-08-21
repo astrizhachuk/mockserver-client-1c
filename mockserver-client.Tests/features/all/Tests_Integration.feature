@@ -19,9 +19,14 @@ Scenario: ExpectationFail
 	| 'Tests_Integration.ExpectationFail(Context());' |
 
 @OnServer
-Scenario: RequestAndResponseJsonFormat
+Scenario: RequestAndResponseJSONFormat
 	And I execute 1C:Enterprise script at server
-	| 'Tests_Integration.RequestAndResponseJsonFormat(Context());' |
+	| 'Tests_Integration.RequestAndResponseJSONFormat(Context());' |
+
+@OnServer
+Scenario: Resetting
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.Resetting(Context());' |
 
 @OnServer
 Scenario: MatchRequestByPath
@@ -29,9 +34,29 @@ Scenario: MatchRequestByPath
 	| 'Tests_Integration.MatchRequestByPath(Context());' |
 
 @OnServer
+Scenario: MatchRequestByMethodRegex
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.MatchRequestByMethodRegex(Context());' |
+
+@OnServer
+Scenario: MatchRequestByNotMatchingMethod
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.MatchRequestByNotMatchingMethod(Context());' |
+
+@OnServer
 Scenario: MatchRequestByQueryParameterWithRegexValue
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Integration.MatchRequestByQueryParameterWithRegexValue(Context());' |
+
+@OnServer
+Scenario: MatchRequestByHeaders
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.MatchRequestByHeaders(Context());' |
+
+@OnServer
+Scenario: LiteralResponseWithBodyOnly
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.LiteralResponseWithBodyOnly(Context());' |
 
 @OnServer
 Scenario: LiteralResponseWithStatusCodeAndReasonPhrase

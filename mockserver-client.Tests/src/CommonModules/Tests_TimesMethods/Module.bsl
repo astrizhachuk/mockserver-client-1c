@@ -9,10 +9,10 @@ Procedure AtLeast(Context) Export
 	Result = Mock.Times().AtLeast(2);
 	// then
 	Assert.AreEqual(Mock.CurrentStage, "times");
-	Assert.IsTrue(IsBlankString(Result.Json));
-	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
-	Assert.IsTrue(IsBlankString(Result.TimesJson));
+	Assert.IsTrue(IsBlankString(Result.JSON));
+	Assert.IsTrue(IsBlankString(Result.HttpRequestNode));
+	Assert.IsTrue(IsBlankString(Result.HttpResponseNode));
+	Assert.IsTrue(IsBlankString(Result.TimesNode));
 	Assert.IsInstanceOfType("Map", Result.Constructor);
 	Assert.AreEqual(Result.Constructor.Count(), 1);
 	Assert.IsInstanceOfType("Map", Result.Constructor["times"]);
@@ -30,10 +30,10 @@ Procedure AtMost(Context) Export
 	Result = Mock.Times().AtMost(2);
 	// then
 	Assert.AreEqual(Mock.CurrentStage, "times");
-	Assert.IsTrue(IsBlankString(Result.Json));
-	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
-	Assert.IsTrue(IsBlankString(Result.TimesJson));
+	Assert.IsTrue(IsBlankString(Result.JSON));
+	Assert.IsTrue(IsBlankString(Result.HttpRequestNode));
+	Assert.IsTrue(IsBlankString(Result.HttpResponseNode));
+	Assert.IsTrue(IsBlankString(Result.TimesNode));
 	Assert.IsInstanceOfType("Map", Result.Constructor);
 	Assert.AreEqual(Result.Constructor.Count(), 1);
 	Assert.IsInstanceOfType("Map", Result.Constructor["times"]);
@@ -51,10 +51,10 @@ Procedure Exactly(Context) Export
 	Result = Mock.Times().Exactly(2);
 	// then
 	Assert.AreEqual(Mock.CurrentStage, "times");
-	Assert.IsTrue(IsBlankString(Result.Json));
-	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
-	Assert.IsTrue(IsBlankString(Result.TimesJson));
+	Assert.IsTrue(IsBlankString(Result.JSON));
+	Assert.IsTrue(IsBlankString(Result.HttpRequestNode));
+	Assert.IsTrue(IsBlankString(Result.HttpResponseNode));
+	Assert.IsTrue(IsBlankString(Result.TimesNode));
 	Assert.IsInstanceOfType("Map", Result.Constructor);
 	Assert.AreEqual(Result.Constructor.Count(), 1);
 	Assert.IsInstanceOfType("Map", Result.Constructor["times"]);
@@ -73,10 +73,10 @@ Procedure Once(Context) Export
 	Result = Mock.Times().Once();
 	// then
 	Assert.AreEqual(Mock.CurrentStage, "times");
-	Assert.IsTrue(IsBlankString(Result.Json));
-	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
-	Assert.IsTrue(IsBlankString(Result.TimesJson));
+	Assert.IsTrue(IsBlankString(Result.JSON));
+	Assert.IsTrue(IsBlankString(Result.HttpRequestNode));
+	Assert.IsTrue(IsBlankString(Result.HttpResponseNode));
+	Assert.IsTrue(IsBlankString(Result.TimesNode));
 	Assert.IsInstanceOfType("Map", Result.Constructor);
 	Assert.AreEqual(Result.Constructor.Count(), 1);
 	Assert.IsInstanceOfType("Map", Result.Constructor["times"]);
@@ -95,10 +95,10 @@ Procedure Between(Context) Export
 	Result = Mock.Times().Between(2, 3);
 	// then
 	Assert.AreEqual(Mock.CurrentStage, "times");
-	Assert.IsTrue(IsBlankString(Result.Json));
-	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
-	Assert.IsTrue(IsBlankString(Result.TimesJson));
+	Assert.IsTrue(IsBlankString(Result.JSON));
+	Assert.IsTrue(IsBlankString(Result.HttpRequestNode));
+	Assert.IsTrue(IsBlankString(Result.HttpResponseNode));
+	Assert.IsTrue(IsBlankString(Result.TimesNode));
 	Assert.IsInstanceOfType("Map", Result.Constructor);
 	Assert.AreEqual(Result.Constructor.Count(), 1);
 	Assert.IsInstanceOfType("Map", Result.Constructor["times"]);

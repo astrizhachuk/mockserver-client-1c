@@ -19,6 +19,6 @@ Scenario: RequestReInitWrongConstructor
 	| 'Tests_Request.RequestReInitWrongConstructor(Context());' |
 
 @OnServer
-Scenario: RequestStringJson
+Scenario: RequestStringJSON
 	And I execute 1C:Enterprise script at server
-	| 'Tests_Request.RequestStringJson(Context());' |
+	| 'Tests_Request.RequestStringJSON(Context());' |

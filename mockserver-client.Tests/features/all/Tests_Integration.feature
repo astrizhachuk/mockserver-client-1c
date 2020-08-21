@@ -19,9 +19,9 @@ Scenario: ExpectationFail
 	| 'Tests_Integration.ExpectationFail(Context());' |
 
 @OnServer
-Scenario: RequestAndResponseJsonFormat
+Scenario: RequestAndResponseJSONFormat
 	And I execute 1C:Enterprise script at server
-	| 'Tests_Integration.RequestAndResponseJsonFormat(Context());' |
+	| 'Tests_Integration.RequestAndResponseJSONFormat(Context());' |
 
 @OnServer
 Scenario: Resetting

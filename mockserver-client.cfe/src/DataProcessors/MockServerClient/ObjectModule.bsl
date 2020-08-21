@@ -74,12 +74,12 @@ EndFunction
 //
 Function When( Val What ) Export
 
-	ThisObject.Json = "";	
+	ThisObject.JSON = "";	
 	ThisObject.CurrentStage = "";
 	
 	If ( TypeOf(What) = Type("String") ) Then
 		
-		ThisObject.Json = What;
+		ThisObject.JSON = What;
 		
 	EndIf;
 	
@@ -90,7 +90,7 @@ EndFunction
 // Prepares a set of request properties in "httpRequest" node.
 //
 // Parameters:
-// 	Request - String - a request properties in json-format;
+// 	Request - String - a request properties in JSON-format;
 //          - Undefined - an empty collection will be added to the conditions collection for the 'httpRequest' node;
 //
 // Returns:
@@ -102,7 +102,7 @@ EndFunction
 //
 Function Request( Val Request = Undefined ) Export
 
-	ThisObject.Json = "";
+	ThisObject.JSON = "";
 	ThisObject.CurrentStage = "httpRequest";
 	
 	FillConstructorRootPropertyByValueType( "httpRequest", Request );
@@ -114,7 +114,7 @@ EndFunction
 // Prepares a set of response properties in "httpResponse" node.
 //
 // Parameters:
-// 	Response - String - a response properties in json-format;
+// 	Response - String - a response properties in JSON-format;
 //           - Undefined - an empty collection will be added to the conditions collection for the 'httpResponse' node;
 //
 // Returns:
@@ -126,7 +126,7 @@ EndFunction
 //
 Function Response( Val Response = Undefined  ) Export
 	
-	ThisObject.Json = "";
+	ThisObject.JSON = "";
 	ThisObject.CurrentStage = "httpResponse";
 	
 	FillConstructorRootPropertyByValueType( "httpResponse", Response );
@@ -138,7 +138,7 @@ EndFunction
 // Prepares a set of OpenAPI properties in "httpResponse" node.
 //
 // Parameters:
-// 	OpenAPI - String - OpenAPI properties in json-format;
+// 	OpenAPI - String - OpenAPI properties in JSON-format;
 //           - Undefined - an empty collection will be added to the conditions collection for the 'httpResponse' node;
 //
 // Returns:
@@ -163,7 +163,7 @@ EndFunction
 // Sets conditions that a requests has been received by MockServer a specific number of time.
 //
 // Parameters:
-// 	Condition - String - a conditions in json-format string;
+// 	Condition - String - a conditions in JSON-format string;
 //            - Undefined - an empty collection will be added to the conditions collection for the 'times' node;
 //
 // Returns:
@@ -176,7 +176,7 @@ EndFunction
 //
 Function Times( Val Condition = Undefined  ) Export
 	
-	ThisObject.Json = "";
+	ThisObject.JSON = "";
 	ThisObject.CurrentStage = "times";
 	
 	FillConstructorRootPropertyByValueType( "times", Condition );
@@ -288,7 +288,7 @@ EndFunction
 // 
 Procedure Reset() Export
 	
-	ThisObject.Json = "";
+	ThisObject.JSON = "";
 	
 	Try
 		
@@ -325,7 +325,7 @@ EndProcedure
 //
 Procedure Respond( Val Self = Undefined ) Export
 	
-	GenerateJson();
+	GenerateJSON();
 	
 	Try
 		
@@ -362,7 +362,7 @@ EndProcedure
 //
 Procedure Verify( Val Self = Undefined ) Export
 	
-	GenerateJson();
+	GenerateJSON();
 	
 	Try
 		
@@ -391,7 +391,7 @@ EndProcedure
 // 
 // Parameters:
 // 	Source - String - the path to the OpenAPI document or the data itself in accordance with the OpenAPI specification;
-// 	Operations - String - operation id and response status code for the selected operation as a json-format string;
+// 	Operations - String - operation id and response status code for the selected operation as a JSON-format string;
 //
 // Example:
 //  Mock.OpenAPIExpectation( "file:/Users/me/openapi.json" );
@@ -404,7 +404,7 @@ EndProcedure
 //
 Procedure OpenAPIExpectation( Val Source, Val Operations = "" ) Export
 	
-	GenerateOpenApiJson( Source, Operations );
+	GenerateOpenApiJSON( Source, Operations );
 	
 	Try
 
@@ -810,11 +810,12 @@ Function Сервер( URL, Порт = Undefined, Сбросить = Undefined )
 	
 EndFunction
 
-// Предустанавливает любые условия или принимает полностью готовый JSON для последующией отправки данных на MockServer.
+// Предварительно устанавливает любые условия или принимает полностью готовый JSON
+// для последующей отправки данных на MockServer.
 // 
 // Параметры:
 // 	Запрос - ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с предустановленными условиями;
-//       - Строка - JSON для отправки на MockServer;   
+//       - Строка - JSON для отправки на MockServer;
 // 	
 // Возвращаемое значение:
 // 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта;
@@ -832,7 +833,7 @@ EndFunction
 // Подготавливает коллекцию свойств запроса в узле "httpRequest".
 // 
 // Параметры:
-// 	Запрос - Строка - свойства запроса в виде строки в формате json;
+// 	Запрос - Строка - свойства запроса в виде строки в формате JSON;
 //          - Неопределено - в коллекцию условий для узла 'httpRequest' будет добавлена пустая коллекция;
 // 	
 // Возвращаемое значение:
@@ -851,7 +852,7 @@ EndFunction
 // Подготавливает коллекцию свойств ответа в узле "httpResponse".
 // 
 // Параметры:
-// 	Ответ - Строка - свойства ответа в виде строки в формате json;
+// 	Ответ - Строка - свойства ответа в виде строки в формате JSON;
 //          - Неопределено - в коллекцию условий для узла 'httpResponse' будет добавлена пустая коллекция;
 // 	
 // Возвращаемое значение:
@@ -870,7 +871,7 @@ EndFunction
 // Устанавливает условия на проверку количества запросов к MockServer.
 // 
 // Параметры:
-// 	Условие - Строка - условие проверки на количество запросов в виде строки в формате json;
+// 	Условие - Строка - условие проверки на количество запросов в виде строки в формате JSON;
 //          - Неопределено - в коллекцию условий для узла 'times' будет добавлена пустая коллекция;
 // 	
 // Возвращаемое значение:
@@ -1007,7 +1008,7 @@ EndProcedure
 // 
 // Параметры:
 // 	Источник - Строка - путь к документу с описанием данных или сами данные в соответствии с OpenAPI спецификацией;
-// 	Операции - Строка - id операции и код статуса ответа для выбранной операции в виде строки в формате json;
+// 	Операции - Строка - id операции и код статуса ответа для выбранной операции в виде строки в формате JSON;
 // 	
 // Пример:
 //  Мок.ОжидатьOpenAPI( "file:/Users/me/openapi.json" );
@@ -1402,7 +1403,7 @@ Procedure FillConstructorRootPropertyByValueType( Key, Value, Stage = "" )
 	
 	If ( TypeOf(Value) = Type("String") ) Then
 		
-		ThisObject[ Key + "Json" ] = Value;
+		ThisObject[ Key + "Node" ] = Value;
 		
 	Else
 
@@ -1478,15 +1479,15 @@ Procedure FillActionTemplate( Result, Val Key, Val Value )
 	
 EndProcedure
 
-Function JoinJsonParts()
+Function JoinJSONParts()
 	
 	Var Result;
 
 	Result = "{" + Chars.LF;
 	
-	FillActionTemplate( Result, "httpRequest", HttpRequestJson);
-	FillActionTemplate( Result, "httpResponse", HttpResponseJson);
-	FillActionTemplate( Result, "times", TimesJson);
+	FillActionTemplate( Result, "httpRequest", HttpRequestNode);
+	FillActionTemplate( Result, "httpResponse", HttpResponseNode);
+	FillActionTemplate( Result, "times", TimesNode);
 	
 	Result = Left( Result, StrLen(Result) - 1 );
 	Result = Result + Chars.LF + "}";
@@ -1495,7 +1496,7 @@ Function JoinJsonParts()
 	
 EndFunction
 
-Procedure GenerateOpenApiJson( Val Source, Val Condition = "" )
+Procedure GenerateOpenApiJSON( Val Source, Val Condition = "" )
 	
 	Var Template;
 	Var ConditionTemplate;
@@ -1515,13 +1516,13 @@ Procedure GenerateOpenApiJson( Val Source, Val Condition = "" )
     	
     EndIf;
     
-    ThisObject.Json = StrTemplate( Template, Source, Condition );
+    ThisObject.JSON = StrTemplate( Template, Source, Condition );
 
 EndProcedure
 
-Procedure GenerateJson()
+Procedure GenerateJSON()
 	
-	If (Not IsBlankString(ThisObject.Json)) Then
+	If (Not IsBlankString(ThisObject.JSON)) Then
 		
 		Return;
 		
@@ -1529,21 +1530,21 @@ Procedure GenerateJson()
 	
 	If ( ThisObject.Constructor = Undefined ) Then
 		
-		ThisObject.Json = JoinJsonParts();
+		ThisObject.JSON = JoinJSONParts();
 
 	Else
 		
-		JsonWriterOptions = New Structure();
-		JsonWriterOptions.Insert( "ПереносСтрок", JsonLineBreak.Unix );
-		JsonWriterOptions.Insert( "СимволыОтступа", " " );
+		JSONWriterOptions = New Structure();
+		JSONWriterOptions.Insert( "ПереносСтрок", JSONLineBreak.Unix );
+		JSONWriterOptions.Insert( "СимволыОтступа", " " );
 		
-		ThisObject.Json = HTTPConnector.ОбъектВJson( ThisObject.Constructor, , JsonWriterOptions );
+		ThisObject.JSON = HTTPConnector.ОбъектВJson( ThisObject.Constructor, , JSONWriterOptions );
 		
-	Endif;
+	EndIf;
 	
 EndProcedure
 
-Function ContentTypeJsonHeaders()
+Function ContentTypeJSONHeaders()
 	
 	Var Headers;
 	
@@ -1556,26 +1557,26 @@ EndFunction
 
 Процедура DoAction( Val Action )
 	
-	Var PutJson;
+	Var PutJSON;
 	Var PutHeaders;
 	
 	ThisObject.CurrentStage = "";
 	ThisObject.IsActionOk = False;
 
-	If ( IsBlankString(ThisObject.Json) ) Then
+	If ( IsBlankString(ThisObject.JSON) ) Then
 		
-		PutJson = Undefined;
+		PutJSON = Undefined;
 		PutHeaders = Undefined;
 
 	Else
 		
-		PutJson = ThisObject.Json;
-		PutHeaders = ContentTypeJsonHeaders();
+		PutJSON = ThisObject.JSON;
+		PutHeaders = ContentTypeJSONHeaders();
 	
 	EndIf;
 	
 	ThisObject.MockServerResponse = HTTPConnector.Put( ThisObject.Url + "/mockserver/" + Action,
-															PutJson,
+															PutJSON,
 															PutHeaders );
 														
 	If ( HTTPStatusCodesClientServerCached.IsServerError(ThisObject.MockServerResponse.КодСостояния) ) Then

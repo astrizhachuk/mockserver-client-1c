@@ -16,7 +16,7 @@ Procedure VerifyUrlException(Context) Export
 EndProcedure
 
 // @unit-test
-Procedure VerifyWhenFullJson(Context) Export
+Procedure VerifyWhenFullJSON(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
@@ -27,15 +27,15 @@ Procedure VerifyWhenFullJson(Context) Export
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.IsUndefined(Mock.Constructor);
-	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Mock.HttpResponseJson));
-	Assert.IsTrue(IsBlankString(Mock.TimesJson));
-	Assert.AreEqual(Mock.Json, "{""name"":""value""}");
+	Assert.IsTrue(IsBlankString(Mock.HttpRequestNode));
+	Assert.IsTrue(IsBlankString(Mock.HttpResponseNode));
+	Assert.IsTrue(IsBlankString(Mock.TimesNode));
+	Assert.AreEqual(Mock.JSON, "{""name"":""value""}");
 		
 EndProcedure
 
 // @unit-test
-Procedure VerifyWhenRequestJson(Context) Export
+Procedure VerifyWhenRequestJSON(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
@@ -46,14 +46,14 @@ Procedure VerifyWhenRequestJson(Context) Export
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.IsUndefined(Mock.Constructor);
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""httpRequest"": {
 							   |""name"":""value""
 							   | }
 							   |}");
-	Assert.AreEqual(Mock.HttpRequestJson, """name"":""value""");
-	Assert.IsTrue(IsBlankString(Mock.HttpResponseJson));
-	Assert.IsTrue(IsBlankString(Mock.TimesJson));
+	Assert.AreEqual(Mock.HttpRequestNode, """name"":""value""");
+	Assert.IsTrue(IsBlankString(Mock.HttpResponseNode));
+	Assert.IsTrue(IsBlankString(Mock.TimesNode));
 
 EndProcedure
 
@@ -69,20 +69,20 @@ Procedure VerifyWhenRequestMap(Context) Export
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.IsNotUndefined(Mock.Constructor);
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 								| ""httpRequest"": {
 								|  ""method"": ""GET""
 								| }
 								|}");
 
-	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Mock.HttpResponseJson));
-	Assert.IsTrue(IsBlankString(Mock.TimesJson));
+	Assert.IsTrue(IsBlankString(Mock.HttpRequestNode));
+	Assert.IsTrue(IsBlankString(Mock.HttpResponseNode));
+	Assert.IsTrue(IsBlankString(Mock.TimesNode));
 
 EndProcedure
 
 // @unit-test
-Procedure VerifyWhenVerifyJson(Context) Export
+Procedure VerifyWhenVerifyJSON(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
@@ -94,16 +94,16 @@ Procedure VerifyWhenVerifyJson(Context) Export
 
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.IsUndefined(Mock.Constructor);
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 								|}");
-	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Mock.HttpResponseJson));
-	Assert.IsTrue(IsBlankString(Mock.TimesJson));
+	Assert.IsTrue(IsBlankString(Mock.HttpRequestNode));
+	Assert.IsTrue(IsBlankString(Mock.HttpResponseNode));
+	Assert.IsTrue(IsBlankString(Mock.TimesNode));
 
 EndProcedure
 
 // @unit-test
-Procedure VerifyWhenTimesJson(Context) Export
+Procedure VerifyWhenTimesNode(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();
@@ -114,14 +114,14 @@ Procedure VerifyWhenTimesJson(Context) Export
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.IsUndefined(Mock.Constructor);
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""times"": {
 							   |""atMost"": 2
 							   | }
 							   |}");
-	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Mock.HttpResponseJson));
-	Assert.AreEqual(Mock.TimesJson, """atMost"": 2");
+	Assert.IsTrue(IsBlankString(Mock.HttpRequestNode));
+	Assert.IsTrue(IsBlankString(Mock.HttpResponseNode));
+	Assert.AreEqual(Mock.TimesNode, """atMost"": 2");
 
 EndProcedure
 
@@ -135,14 +135,14 @@ Procedure VerifydWhenTimesMap(Context) Export
 	Mock.Verify( Mock.Times().AtMost(3) );
 	// then
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""times"": {
 							   |  ""atMost"": 3
 							   | }
 							   |}");
-	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Mock.HttpResponseJson));
-	Assert.IsTrue(IsBlankString(Mock.TimesJson));
+	Assert.IsTrue(IsBlankString(Mock.HttpRequestNode));
+	Assert.IsTrue(IsBlankString(Mock.HttpResponseNode));
+	Assert.IsTrue(IsBlankString(Mock.TimesNode));
 
 EndProcedure
 
@@ -156,7 +156,7 @@ Procedure VerifydWhenRequestAndTimes(Context) Export
 	Mock.Verify( Mock.Request().WithMethod("GET").Times().AtMost(3) );
 	// then
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""httpRequest"": {
 							   |  ""method"": ""GET""
 							   | },
@@ -164,9 +164,9 @@ Procedure VerifydWhenRequestAndTimes(Context) Export
 							   |  ""atMost"": 3
 							   | }
 							   |}");
-	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Mock.HttpResponseJson));
-	Assert.IsTrue(IsBlankString(Mock.TimesJson));
+	Assert.IsTrue(IsBlankString(Mock.HttpRequestNode));
+	Assert.IsTrue(IsBlankString(Mock.HttpResponseNode));
+	Assert.IsTrue(IsBlankString(Mock.TimesNode));
 
 EndProcedure
 
@@ -180,7 +180,7 @@ Procedure VerifydWhenRequestInWhenAndTimesInVerify(Context) Export
 	Mock.When( Mock.Request().WithMethod("GET") ).Verify( Mock.Times().AtMost(3) );
 	// then
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""httpRequest"": {
 							   |  ""method"": ""GET""
 							   | },
@@ -188,9 +188,9 @@ Procedure VerifydWhenRequestInWhenAndTimesInVerify(Context) Export
 							   |  ""atMost"": 3
 							   | }
 							   |}");
-	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Mock.HttpResponseJson));
-	Assert.IsTrue(IsBlankString(Mock.TimesJson));
+	Assert.IsTrue(IsBlankString(Mock.HttpRequestNode));
+	Assert.IsTrue(IsBlankString(Mock.HttpResponseNode));
+	Assert.IsTrue(IsBlankString(Mock.TimesNode));
 
 EndProcedure
 
@@ -204,7 +204,7 @@ Procedure VerifyWhenOpenAPIWithSource(Context) Export
 	Mock.When( Mock.OpenAPI().WithSource("http...") ).Verify( Mock.Times().AtMost(3) );
 	// then
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""httpRequest"": {
 							   |  ""specUrlOrPayload"": ""http...""
 							   | },
@@ -212,9 +212,9 @@ Procedure VerifyWhenOpenAPIWithSource(Context) Export
 							   |  ""atMost"": 3
 							   | }
 							   |}");
-	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Mock.HttpResponseJson));
-	Assert.IsTrue(IsBlankString(Mock.TimesJson));
+	Assert.IsTrue(IsBlankString(Mock.HttpRequestNode));
+	Assert.IsTrue(IsBlankString(Mock.HttpResponseNode));
+	Assert.IsTrue(IsBlankString(Mock.TimesNode));
 
 EndProcedure
 
@@ -228,7 +228,7 @@ Procedure VerifyWhenOpenAPIWithOperationId(Context) Export
 	Mock.When( Mock.OpenAPI().WithOperationId("operation") ).Verify( Mock.Times().AtMost(3) );
 	// then
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""httpRequest"": {
 							   |  ""operationId"": ""operation""
 							   | },
@@ -236,9 +236,9 @@ Procedure VerifyWhenOpenAPIWithOperationId(Context) Export
 							   |  ""atMost"": 3
 							   | }
 							   |}");
-	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Mock.HttpResponseJson));
-	Assert.IsTrue(IsBlankString(Mock.TimesJson));
+	Assert.IsTrue(IsBlankString(Mock.HttpRequestNode));
+	Assert.IsTrue(IsBlankString(Mock.HttpResponseNode));
+	Assert.IsTrue(IsBlankString(Mock.TimesNode));
 
 EndProcedure
 
@@ -252,7 +252,7 @@ Procedure VerifyWhenOpenAPI(Context) Export
 	Mock.When( Mock.OpenAPI().WithSource("http...").WithOperationId("operation") ).Verify( Mock.Times().AtMost(3) );
 	// then
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""httpRequest"": {
 							   |  ""specUrlOrPayload"": ""http..."",
 							   |  ""operationId"": ""operation""
@@ -261,9 +261,9 @@ Procedure VerifyWhenOpenAPI(Context) Export
 							   |  ""atMost"": 3
 							   | }
 							   |}");
-	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Mock.HttpResponseJson));
-	Assert.IsTrue(IsBlankString(Mock.TimesJson));
+	Assert.IsTrue(IsBlankString(Mock.HttpRequestNode));
+	Assert.IsTrue(IsBlankString(Mock.HttpResponseNode));
+	Assert.IsTrue(IsBlankString(Mock.TimesNode));
 
 EndProcedure
 

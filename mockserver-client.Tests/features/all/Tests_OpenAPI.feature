@@ -14,9 +14,9 @@ Scenario: OpenAPIUndefinedConstructor
 	| 'Tests_OpenAPI.OpenAPIUndefinedConstructor(Context());' |
 
 @OnServer
-Scenario: OpenAPIStringJson
+Scenario: OpenAPIStringJSON
 	And I execute 1C:Enterprise script at server
-	| 'Tests_OpenAPI.OpenAPIStringJson(Context());' |
+	| 'Tests_OpenAPI.OpenAPIStringJSON(Context());' |
 
 @OnServer
 Scenario: OpenAPIWhenOpenAPIMap

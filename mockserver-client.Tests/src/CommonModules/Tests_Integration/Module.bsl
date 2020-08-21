@@ -35,7 +35,7 @@ Procedure ExpectationFail(Context) Export
 EndProcedure
 
 // @unit-test:integration
-Procedure RequestAndResponseJsonFormat(Context) Export
+Procedure RequestAndResponseJSONFormat(Context) Export
 
 	// given
 	Mock = DataProcessors.MockServerClient.Create();

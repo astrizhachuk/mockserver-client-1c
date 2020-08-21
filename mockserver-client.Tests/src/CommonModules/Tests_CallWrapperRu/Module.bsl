@@ -35,10 +35,10 @@ Procedure When(Context) Export
 	Result = Mock.Когда("{""sample"": ""any""}");
 	// then
 	Assert.IsUndefined(Result.Constructor);
-	Assert.AreEqual(Result.Json, "{""sample"": ""any""}");
-	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));
-	Assert.IsTrue(IsBlankString(Result.TimesJson));		
+	Assert.AreEqual(Result.JSON, "{""sample"": ""any""}");
+	Assert.IsTrue(IsBlankString(Result.HttpRequestNode));
+	Assert.IsTrue(IsBlankString(Result.HttpResponseNode));
+	Assert.IsTrue(IsBlankString(Result.TimesNode));		
 
 EndProcedure
 
@@ -50,10 +50,10 @@ Procedure Request(Context) Export
 	// when
 	Result = Mock.Запрос("""method"": ""GET""");
 	// then
-	Assert.IsTrue(IsBlankString(Result.Json));
-	Assert.IsFalse(IsBlankString(Result.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Result.HttpResponseJson));		
-	Assert.IsTrue(IsBlankString(Result.TimesJson));		
+	Assert.IsTrue(IsBlankString(Result.JSON));
+	Assert.IsFalse(IsBlankString(Result.HttpRequestNode));
+	Assert.IsTrue(IsBlankString(Result.HttpResponseNode));		
+	Assert.IsTrue(IsBlankString(Result.TimesNode));		
 	Assert.IsUndefined(Result.Constructor);
 
 EndProcedure
@@ -71,7 +71,7 @@ Procedure Headers(Context) Export
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpRequest"].Count(), 1);
 	Assert.IsInstanceOfType("Map", Mock.Constructor["httpRequest"]["headers"]);
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""httpRequest"": {
 							   |  ""headers"": {}
 							   | }
@@ -91,7 +91,7 @@ Procedure WithHeader(Context) Export
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpRequest"]["headers"]["key"][0], "value");
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""httpRequest"": {
 							   |  ""headers"": {
 							   |   ""key"": [
@@ -115,7 +115,7 @@ Procedure WithMethod(Context) Export
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpRequest"]["method"], "GET");
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""httpRequest"": {
 							   |  ""method"": ""GET""
 							   | }
@@ -135,7 +135,7 @@ Procedure WithPath(Context) Export
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpRequest"]["path"], "/фуу/foo");
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""httpRequest"": {
 							   |  ""path"": ""/фуу/foo""
 							   | }
@@ -155,7 +155,7 @@ Procedure WithQueryStringParameter(Context) Export
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpRequest"]["queryStringParameters"]["cartId"][0], "[A-Z0-9\\-]+");
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""httpRequest"": {
 							   |  ""queryStringParameters"": {
             				   |   ""cartId"": [
@@ -175,10 +175,10 @@ Procedure Response(Context) Export
 	// when
 	Result = Mock.Ответ("""statusCode"": 200 ");
 	// then
-	Assert.IsTrue(IsBlankString(Result.Json));
-	Assert.IsTrue(IsBlankString(Result.HttpRequestJson));
-	Assert.IsFalse(IsBlankString(Result.HttpResponseJson));		
-	Assert.IsTrue(IsBlankString(Result.TimesJson));
+	Assert.IsTrue(IsBlankString(Result.JSON));
+	Assert.IsTrue(IsBlankString(Result.HttpRequestNode));
+	Assert.IsFalse(IsBlankString(Result.HttpResponseNode));		
+	Assert.IsTrue(IsBlankString(Result.TimesNode));
 	Assert.IsUndefined(Result.Constructor);
 	
 EndProcedure
@@ -195,7 +195,7 @@ Procedure WithStatusCode(Context) Export
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpResponse"]["statusCode"], 404);
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 								| ""httpResponse"": {
 								|  ""statusCode"": 404
 								| }
@@ -215,7 +215,7 @@ Procedure WithReasonPhrase(Context) Export
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.AreEqual(Mock.Constructor["httpResponse"]["reasonPhrase"], "I'm a teapot");
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 								| ""httpResponse"": {
 								|  ""reasonPhrase"": ""I'm a teapot""
 								| }
@@ -234,7 +234,7 @@ Procedure Respond(Context) Export
 	// then
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
-	Assert.AreEqual(Mock.Json, "{""name"":""value""}");
+	Assert.AreEqual(Mock.JSON, "{""name"":""value""}");
 
 EndProcedure
 
@@ -330,7 +330,7 @@ Procedure Verify(Context) Export
 	Mock.When( Mock.Request().Метод("GET") ).Проверить( Mock.Times().AtMost(3) );
 	// then
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""httpRequest"": {
 							   |  ""method"": ""GET""
 							   | },
@@ -338,9 +338,9 @@ Procedure Verify(Context) Export
 							   |  ""atMost"": 3
 							   | }
 							   |}");
-	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Mock.HttpResponseJson));
-	Assert.IsTrue(IsBlankString(Mock.TimesJson));
+	Assert.IsTrue(IsBlankString(Mock.HttpRequestNode));
+	Assert.IsTrue(IsBlankString(Mock.HttpResponseNode));
+	Assert.IsTrue(IsBlankString(Mock.TimesNode));
 
 EndProcedure
 
@@ -356,15 +356,15 @@ Procedure WithSource(Context) Export
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.IsNotUndefined(Mock.Constructor);
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 								| ""httpRequest"": {
 								|  ""specUrlOrPayload"": ""http://...""
 								| }
 								|}");
 
-	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Mock.HttpResponseJson));
-	Assert.IsTrue(IsBlankString(Mock.TimesJson));
+	Assert.IsTrue(IsBlankString(Mock.HttpRequestNode));
+	Assert.IsTrue(IsBlankString(Mock.HttpResponseNode));
+	Assert.IsTrue(IsBlankString(Mock.TimesNode));
 	
 EndProcedure
 
@@ -380,15 +380,15 @@ Procedure WithOperationId(Context) Export
 	Assert.AreEqual(Mock.MockServerResponse.КодСостояния, 500);
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.IsNotUndefined(Mock.Constructor);
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 								| ""httpRequest"": {
 								|  ""operationId"": ""operation_id""
 								| }
 								|}");
 
-	Assert.IsTrue(IsBlankString(Mock.HttpRequestJson));
-	Assert.IsTrue(IsBlankString(Mock.HttpResponseJson));
-	Assert.IsTrue(IsBlankString(Mock.TimesJson));
+	Assert.IsTrue(IsBlankString(Mock.HttpRequestNode));
+	Assert.IsTrue(IsBlankString(Mock.HttpResponseNode));
+	Assert.IsTrue(IsBlankString(Mock.TimesNode));
 	
 EndProcedure
 
@@ -405,7 +405,7 @@ Procedure OpenAPIExpectation(Context) Export
 	Assert.AreEqual(Mock.CurrentStage, "");
 	Assert.IsFalse(IsBlankString(Mock.MockServerResponse.ТекстОшибки));
 	
-	Assert.AreEqual(Mock.Json, "{
+	Assert.AreEqual(Mock.JSON, "{
 							   | ""specUrlOrPayload"": ""http://...""
 							   |}");
 		

@@ -184,6 +184,24 @@ EndProcedure
 
 #Region ResponseAction
 
+// literal response with body only
+// 
+// @unit-test:integration
+Procedure LiteralResponseWithBodyOnly(Context) Export
+
+	// given
+	Mock = DataProcessors.MockServerClient.Create();
+	// when
+	Mock.Server("localhost", "1080", true)
+		.Respond(
+			Mock.Response()
+				.WithBody("some_response_body")
+		);	
+	// then
+	Assert.IsTrue(Mock.IsOk());
+
+EndProcedure
+
 // literal response with status code and reason phrase
 // 
 // @unit-test:integration

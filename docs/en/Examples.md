@@ -87,6 +87,20 @@
     );
 ```
 
+### literal response with status code and reason phrase
+
+```text
+  Mock.When(
+      Mock.Request()
+        .WithMethod("GET")
+        .WithPath("/some/path")
+    ).Respond(
+      Mock.Response()
+        .WithStatusCode(418)
+        .WithReasonPhrase("I'm a teapot")
+    );
+```
+
 ## Verifying Repeating Requests
 
 ### verify requests received at least twice

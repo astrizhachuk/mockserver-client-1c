@@ -654,6 +654,27 @@ Function WithBody( Val Body ) Export
 	
 EndFunction
 
+// Adds the "statusCode" property.
+// See also: https://www.mock-server.com/mock_server/creating_expectations.html#request_property_matchers
+// 
+// Parameters:
+// 	StatusCode - Numeric - numeric status code;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object with added property;
+//
+// Example:
+//  
+//  Mock.When(
+//      Mock.Request()
+//        .WithMethod("GET")
+//        .WithPath("/some/path")
+//    ).Respond(
+//      Mock.Response()
+//        .WithStatusCode(418)
+//        .WithReasonPhrase("I'm a teapot")
+//    );
+//
 Function WithStatusCode( Val StatusCode ) Export
 	
 	CheckObjectPropertiesForMethod();
@@ -664,6 +685,27 @@ Function WithStatusCode( Val StatusCode ) Export
 	
 EndFunction
 
+// Adds the "reasonPhrase" property.
+// See also: https://www.mock-server.com/mock_server/creating_expectations.html#request_property_matchers
+// 
+// Parameters:
+// 	ReasonPhrase - String - reason phrase;
+// 	
+// Returns:
+// 	DataProcessorObject.MockServerClient - instance of mock-object with added property;
+//
+// Example:
+//  
+//  Mock.When(
+//      Mock.Request()
+//        .WithMethod("GET")
+//        .WithPath("/some/path")
+//    ).Respond(
+//      Mock.Response()
+//        .WithStatusCode(418)
+//        .WithReasonPhrase("I'm a teapot")
+//    );
+//
 Function WithReasonPhrase( Val ReasonPhrase ) Export
 	
 	CheckObjectPropertiesForMethod();
@@ -1172,12 +1214,54 @@ Function Тело( Тело ) Export
 	
 EndFunction
 
+// Добавляет свойство "statusCode".
+// См. также: https://www.mock-server.com/mock_server/creating_expectations.html#request_property_matchers
+// 
+// Параметры:
+// 	КодОтвета - Число - числовой код статуса ответа;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с добавленным свойством;
+//
+// Пример:
+//  
+//  Мок.Когда(
+//      Мок.Запрос()
+//        .Метод("GET")
+//        .Путь("/some/path")
+//    ).Ответить(
+//      Мок.Ответ()
+//        .КодОтвета(418)
+//        .Причина("I'm a teapot")
+//    );
+//
 Function КодОтвета( КодОтвета ) Export
 	
 	Return WithStatusCode( КодОтвета );
 	
 EndFunction
 
+// Добавляет свойство "reasonPhrase".
+// См. также: https://www.mock-server.com/mock_server/creating_expectations.html#request_property_matchers
+// 
+// Параметры:
+// 	Причина - Строка - причина;
+// 	
+// Возвращаемое значение:
+// 	ОбработкаОбъект.MockServerClient - текущий экземпляр мок-объекта с добавленным свойством;
+//
+// Пример:
+//  
+//  Мок.Когда(
+//      Мок.Запрос()
+//        .Метод("GET")
+//        .Путь("/some/path")
+//    ).Ответить(
+//      Мок.Ответ()
+//        .КодОтвета(418)
+//        .Причина("I'm a teapot")
+//    );
+//
 Function Причина( Причина ) Export
 	
 	Return WithReasonPhrase( Причина );

@@ -54,6 +54,11 @@ Scenario: MatchRequestByHeaders
 	| 'Tests_Integration.MatchRequestByHeaders(Context());' |
 
 @OnServer
+Scenario: LiteralResponseWithBodyOnly
+	And I execute 1C:Enterprise script at server
+	| 'Tests_Integration.LiteralResponseWithBodyOnly(Context());' |
+
+@OnServer
 Scenario: LiteralResponseWithStatusCodeAndReasonPhrase
 	And I execute 1C:Enterprise script at server
 	| 'Tests_Integration.LiteralResponseWithStatusCodeAndReasonPhrase(Context());' |

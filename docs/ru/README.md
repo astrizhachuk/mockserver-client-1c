@@ -51,6 +51,8 @@
 
 [Примеры кода](https://github.com/astrizhachuk/mockserver-client-1c/blob/master/docs/ru/Examples.md)
 
+[Программный интерфейс](https://github.com/astrizhachuk/mockserver-client-1c/blob/master/docs/ru/PublicAPI.md)
+
 ## Начало работы
 
 [Руководство пользователя (англ.)](https://www.mock-server.com/mock_server/getting_started.html)

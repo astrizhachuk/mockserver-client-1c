@@ -51,6 +51,8 @@ Tested!
 
 [Code Examples](https://github.com/astrizhachuk/mockserver-client-1c/blob/master/docs/en/Examples.md)
 
+[Public API](https://github.com/astrizhachuk/mockserver-client-1c/blob/master/docs/en/PublicAPI.md)
+
 ## Getting Started
 
 [Overview](https://www.mock-server.com/mock_server/getting_started.html)

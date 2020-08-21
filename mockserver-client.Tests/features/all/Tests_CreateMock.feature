@@ -19,9 +19,9 @@ Scenario: CreateNewClientsWithServer
 	| 'Tests_CreateMock.CreateNewClientsWithServer(Context());' |
 
 @OnServer
-Scenario: CreateClientNotDefaultUrl
+Scenario: CreateClientNotDefaultURL
 	And I execute 1C:Enterprise script at server
-	| 'Tests_CreateMock.CreateClientNotDefaultUrl(Context());' |
+	| 'Tests_CreateMock.CreateClientNotDefaultURL(Context());' |
 
 @OnServer
 Scenario: CreateClientOnlyServerName

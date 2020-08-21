@@ -1,7 +1,7 @@
 #Region Internal
 
 // @unit-test
-Procedure VerifyUrlException(Context) Export
+Procedure VerifyURLException(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();

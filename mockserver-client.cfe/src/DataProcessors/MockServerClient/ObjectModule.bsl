@@ -1575,7 +1575,7 @@ EndFunction
 	
 	EndIf;
 	
-	ThisObject.MockServerResponse = HTTPConnector.Put( ThisObject.Url + "/mockserver/" + Action,
+	ThisObject.MockServerResponse = HTTPConnector.Put( ThisObject.URL + "/mockserver/" + Action,
 															PutJSON,
 															PutHeaders );
 														

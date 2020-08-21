@@ -9,9 +9,9 @@ Feature: mockserver-client.Tests.Tests_Respond
 	That I can guarantee the execution of the method
 
 @OnServer
-Scenario: RespondUrlException
+Scenario: RespondURLException
 	And I execute 1C:Enterprise script at server
-	| 'Tests_Respond.RespondUrlException(Context());' |
+	| 'Tests_Respond.RespondURLException(Context());' |
 
 @OnServer
 Scenario: RespondWhenFullJSON

@@ -108,19 +108,19 @@ Mock = Mock.Server( "http://server", "1099", True );
 
 ### Setup Expectations<a name="SetupExpectations"></a>
 
-Setup expectation (and verify requests) consists of two stages: preparing conditions (json) and sending an action (PUT json).
+Setup expectation (and verify requests) consists of two stages: preparing conditions (JSON) and sending an action (PUT JSON).
 
-There are two types of methods: **intermediate** (returns self-object) and **terminal** (perform action). Some object's methods as parameters can accept a reference to themselves with preparing conditions or a json-format string. Before executing the action, the necessary json will be automatically generated depending on the selected terminal operation and preconditions.
+There are two types of methods: **intermediate** (returns self-object) and **terminal** (perform action). Some object's methods as parameters can accept a reference to themselves with preparing conditions or a JSON-format string. Before executing the action, the necessary JSON will be automatically generated depending on the selected terminal operation and preconditions.
 
 Use method chaining style (fluent interface):
 
 ```text
-  # full json without auto-generating
+  # full JSON without auto-generating
   Mock.Server( "localhost", "1080" )
     .When( "{""name"":""value""}" )
     .Respond();
 
-  # httpRequest property in json-style
+  # httpRequest property in JSON-style
   Mock.Server( "localhost", "1080" )
     .When(
       Mock.Request( """name"":""value""" )

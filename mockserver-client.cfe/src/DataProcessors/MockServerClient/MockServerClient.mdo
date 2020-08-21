@@ -15,14 +15,14 @@
   </synonym>
   <useStandardCommands>true</useStandardCommands>
   <attributes uuid="b364f2cc-edd3-4a22-a989-1b1e6ba8e619">
-    <name>Url</name>
+    <name>URL</name>
     <synonym>
       <key>en</key>
-      <value>Url</value>
+      <value>URL</value>
     </synonym>
     <synonym>
       <key>ru</key>
-      <value>Url</value>
+      <value>URL</value>
     </synonym>
     <type>
       <types>String</types>

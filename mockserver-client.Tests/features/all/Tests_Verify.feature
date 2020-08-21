@@ -9,9 +9,9 @@ Feature: mockserver-client.Tests.Tests_Verify
 	That I can guarantee the execution of the method
 
 @OnServer
-Scenario: VerifyUrlException
+Scenario: VerifyURLException
 	And I execute 1C:Enterprise script at server
-	| 'Tests_Verify.VerifyUrlException(Context());' |
+	| 'Tests_Verify.VerifyURLException(Context());' |
 
 @OnServer
 Scenario: VerifyWhenFullJSON

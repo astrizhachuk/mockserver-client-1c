@@ -29,7 +29,7 @@ Procedure CreateNewClientsWithServer(Context) Export
 EndProcedure
 
 // @unit-test
-Procedure CreateClientNotDefaultUrl(Context) Export
+Procedure CreateClientNotDefaultURL(Context) Export
 	
 	// given
 	Mock = DataProcessors.MockServerClient.Create();

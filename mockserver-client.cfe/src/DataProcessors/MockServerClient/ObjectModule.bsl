@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // 
 // Copyright © 2020 Alexander Strizhachuk
-// version: 1.0.0
+// version: 1.0.1
 
 #If Server Or ThickClientOrdinaryApplication Or ExternalConnection Then
 
@@ -804,7 +804,7 @@ EndFunction
 //  Мок = Обработки.MockServerClient.Создать().Сервер("http://server", "1090");
 //  Мок = Обработки.MockServerClient.Создать().Сервер("http://server", "1090", Истина);
 //
-Function Сервер( URL, Порт = Undefined, Сбросить = Undefined ) Export
+Function Сервер( URL, Порт = Undefined, Сбросить = False ) Export
 	
 	Return Server( URL, Порт, Сбросить );
 	
